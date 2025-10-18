@@ -1,0 +1,51 @@
+.user-icon {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  cursor: pointer;
+  color: #3f51b5;
+  transition: transform 0.2s ease, color 0.3s ease;
+}
+
+.user-icon:hover {
+  transform: scale(1.1);
+  color: #283593;
+}
+
+p {
+  text-align: center;
+  margin-top: 5rem;
+  font-size: 1.2rem;
+  font-family: 'Noto Sans', sans-serif;
+}
+
+
+/* Contenedor principal */
+div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Noto Sans', sans-serif;
+  background-color: #f5f5f5;
+}
+
+
+/* Cuadrado negro centrado */
+.square {
+  width: 700px;
+  height: 700px;
+  background-color: rgb(117, 117, 117);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+img {
+  width: 400px;
+  height: 400px;
+}
+
