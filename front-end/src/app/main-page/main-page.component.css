@@ -1,51 +1,122 @@
-.user-icon {
-  position: fixed;
-  top: 1.5rem;
-  right: 1.5rem;
-  cursor: pointer;
-  color: #3f51b5;
-  transition: transform 0.2s ease, color 0.3s ease;
-}
-
-.user-icon:hover {
-  transform: scale(1.1);
-  color: #283593;
-}
-
-p {
-  text-align: center;
-  margin-top: 5rem;
-  font-size: 1.2rem;
-  font-family: 'Noto Sans', sans-serif;
-}
-
-
-/* Contenedor principal */
-div {
+/* CONTENEDOR PRINCIPAL */
+.container {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-family: 'Noto Sans', sans-serif;
-  background-color: #f5f5f5;
+  overflow: hidden;
+  height: 100vh;
+  padding: 0;
+  margin: 0;
+  transition: opacity 0.8s ease;
 }
 
+.container::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('../../assets/images/ps2-background.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  filter: blur(10px);
+  z-index: -1;
+}
 
-/* Cuadrado negro centrado */
+/* CUADRADO CON IMAGEN */
 .square {
   width: 700px;
   height: 700px;
-  background-color: rgb(117, 117, 117);
+  background-image: url('../../assets/images/ps2-background.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+}
+
+.square img {
+  width: auto;
+  height: 700px;
+  display: block;
+  z-index: 2;
+}
+
+/* TÍTULO */
+.title {
+  position: absolute;
+  left: 10rem;
+  font-size: 320px;
+  color: var(--text-secondary);
+  text-shadow: 0 0 25px rgba(0, 0, 0, 1);
+  font-family: 'Jersey 10', sans-serif;
+  z-index: 1;
+}
+
+/* ICONO DE USUARIO */
+.user-icon {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  cursor: pointer;
+  color: var(--primary-color);
+  transition: transform 0.2s ease, color 0.3s ease;
+  z-index: 10;
+}
+
+.user-icon:hover {
+  transform: scale(1.1);
+  color: var(--hover-color);
+}
+
+/* BOTÓN */
+.start-btn {
+  position: absolute;
+  padding: 20px 40px;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 10px;
+  background-color: var(--primary-color);
+  text-transform: uppercase;
   color: white;
-  font-weight: bold;
-  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  opacity: 0.5;
+  z-index: 2;
 }
 
-img {
-  width: 400px;
-  height: 400px;
+.start-btn:hover {
+  background-color: var(--hover-color);
+  opacity: 1;
+  transform: scale(1.1);
+  box-shadow: 0 0 25px var(--hover-color);
 }
 
+/* NUEVO CONTENIDO (PANTALLA COMPLETA) */
+.new-content {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+  background: radial-gradient(circle at center, rgba(0,0,0,0.85) 0%, rgba(0,0,0,1) 100%);
+  animation: fadeIn 0.8s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

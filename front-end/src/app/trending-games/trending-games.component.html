@@ -1,0 +1,23 @@
+
+<div class="container">
+
+  <div *ngIf="loading">Cargando juegos trending...</div>
+  
+  <h2>Trending Games</h2>
+  
+  <div *ngIf="!loading" class="games-grid">
+    <div *ngFor="let game of trendingGames" class="game-card">
+      <div class="game-image" [style.backgroundImage]="'url(' + game.background_image + ')'">
+        <div class="game-info">
+          <h3>{{ game.name }}</h3>
+          <div class="icons">
+            <img src="assets/images/icons/controller.svg" alt="Rating" width="16" height="16">
+            <img src="assets/images/icons/bookmark.svg" alt="Rating" width="16" height="16">
+            <img src="assets/images/icons/list.svg" alt="Rating" width="16" height="16">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</div>
