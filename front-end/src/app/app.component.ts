@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { AuthModalComponent } from './auth/auth-modal/auth-modal.component';
 import { MainPageComponent } from "./main-page/main-page.component";
+import { NavComponent } from "./components/nav/nav.component";
 
 @Component({
   selector: 'app-root',
@@ -9,11 +10,19 @@ import { MainPageComponent } from "./main-page/main-page.component";
   imports: [
     RouterOutlet,
     AuthModalComponent,
-    MainPageComponent
+    MainPageComponent,
+    NavComponent
 ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'front-end';
+  title = 'Game Tracker';
+
+  showNav = false;  
+  
+  onTrackingStarted() {
+    this.showNav = true;
+  }
+  
 }

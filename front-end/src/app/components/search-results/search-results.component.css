@@ -1,0 +1,27 @@
+.results {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px;
+  padding: 20px;
+  background-color: #101010;
+}
+
+.game {
+  background: #202020;
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+  color: white;
+}
+
+.game img {
+  width: 100%;
+  border-radius: 6px;
+  margin-bottom: 8px;
+}
+
+.loading {
+  padding: 1rem;
+  text-align: center;
+  color: white;
+}

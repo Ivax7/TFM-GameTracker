@@ -1,0 +1,6 @@
+<div class="results" *ngIf="results.length > 0">
+  <div class="game" *ngFor="let game of results">
+    <img [src]="game.background_image" alt="{{ game.name }}" />
+    <span>{{ game.name }}</span>
+  </div>
+</div>

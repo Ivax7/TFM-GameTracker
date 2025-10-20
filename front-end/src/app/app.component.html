@@ -1,2 +1,5 @@
+@if (showNav) {
+  <app-nav></app-nav>
+}
+<app-main-page (trackingStarted)="onTrackingStarted()"></app-main-page>
 <router-outlet></router-outlet>
-<app-main-page></app-main-page>

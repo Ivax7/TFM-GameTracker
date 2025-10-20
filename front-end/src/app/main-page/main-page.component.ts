@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { AuthModalComponent } from '../auth/auth-modal/auth-modal.component';
 import { TrendingGamesComponent } from '../trending-games/trending-games.component';
 import {
@@ -32,6 +32,8 @@ export class MainPageComponent {
   showAuthModal = false;
   isTrackingStarted = false;
 
+  @Output() trackingStarted = new EventEmitter<void>();
+
 
   // Toggle Modal
   toggleAuthModal() {
@@ -41,7 +43,7 @@ export class MainPageComponent {
   // Start tracking
   startTracking() {
     this.isTrackingStarted = true;
+    this.trackingStarted.emit();
   }
-
 
 }
