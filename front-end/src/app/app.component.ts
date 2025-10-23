@@ -1,28 +1,25 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { AuthModalComponent } from './auth/auth-modal/auth-modal.component';
-import { MainPageComponent } from "./main-page/main-page.component";
-import { NavComponent } from "./components/nav/nav.component";
+import { Router, NavigationEnd, RouterOutlet } from '@angular/router';
+import { NavComponent } from './components/nav/nav.component';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [
-    RouterOutlet,
-    AuthModalComponent,
-    MainPageComponent,
-    NavComponent
-],
+  imports: [RouterOutlet, NavComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'Game Tracker';
+  showNav = false;
 
-  showNav = false;  
-  
-  onTrackingStarted() {
-    this.showNav = true;
+  constructor(private router: Router) {
+    // Suscribirse a cambios de ruta
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        // Mostrar nav en todas las rutas excepto "/"
+        this.showNav = event.urlAfterRedirects !== '/';
+      });
   }
-  
 }

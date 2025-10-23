@@ -20,6 +20,7 @@ export class AuthController {
     return this.authService.login(body.email, body.password);
   }
 
+
   // 👇 ejemplo de ruta protegida (requiere token)
   @UseGuards(AuthGuard('jwt'))
   @Get('users')

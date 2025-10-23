@@ -7,11 +7,13 @@
   color: white;
 }
 
+/* --- LOGO --- */
 .logo {
   font-size: 1.5rem;
   font-weight: bold;
 }
 
+/* --- SEARCH BAR --- */
 .search-bar {
   display: flex;
   align-items: center;
@@ -40,3 +42,48 @@
   background-color: var(--hover-color, #7ab4ff);
 }
 
+/* --- USER SECTION --- */
+.user-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-width: 200px;
+  justify-content: flex-end;
+  position: relative;
+}
+
+/* --- USERNAME --- */
+.username {
+  font-weight: 500;
+  font-size: 1rem;
+  color: white;
+  margin-right: auto; /* 👈 Empuja el icono hacia la derecha */
+}
+
+/* --- ICONO USUARIO --- */
+.user-icon {
+  cursor: pointer;
+  color: var(--primary-color, #5b9af7);
+  transition: transform 0.2s ease, color 0.3s ease;
+}
+
+.user-icon:hover {
+  transform: scale(1.1);
+  color: var(--hover-color, #7ab4ff);
+}
+
+/* --- BOTÓN LOGOUT --- */
+.logout-btn {
+  background: transparent;
+  border: 1px solid var(--primary-color, #5b9af7);
+  color: white;
+  border-radius: 6px;
+  padding: 0.4rem 0.8rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+  background: var(--primary-color, #5b9af7);
+  color: #fff;
+}

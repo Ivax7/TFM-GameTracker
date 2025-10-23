@@ -1,49 +1,41 @@
 import { Component, EventEmitter, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthModalComponent } from '../auth/auth-modal/auth-modal.component';
-import { TrendingGamesComponent } from '../trending-games/trending-games.component';
 import {
   trigger,
   transition,
   style,
   animate
-} from '@angular/animations'
-
+} from '@angular/animations';
 
 @Component({
   selector: 'app-main-page',
   standalone: true,
-  imports: [AuthModalComponent, TrendingGamesComponent],
+  imports: [AuthModalComponent],
   templateUrl: './main-page.component.html',
   styleUrl: './main-page.component.css',
   animations: [
     trigger('fadeAnimation', [
-      transition(':enter', [ // fade in
+      transition(':enter', [
         style({ opacity: 0 }),
         animate('900ms ease-out', style({ opacity: 1 }))
       ]),
-      transition(':leave', [ // fade out
+      transition(':leave', [
         animate('400ms ease-in', style({ opacity: 0 }))
       ])
     ])
   ]
 })
 export class MainPageComponent {
-
   showAuthModal = false;
-  isTrackingStarted = false;
 
-  @Output() trackingStarted = new EventEmitter<void>();
+  constructor(private router: Router) {}
 
-
-  // Toggle Modal
   toggleAuthModal() {
-    this.showAuthModal = !this.showAuthModal
+    this.showAuthModal = !this.showAuthModal;
   }
 
-  // Start tracking
   startTracking() {
-    this.isTrackingStarted = true;
-    this.trackingStarted.emit();
+    this.router.navigate(['/trending']);
   }
-
 }

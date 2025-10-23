@@ -1,39 +1,41 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RawgService } from '../../services/rawg.service';
-import { SearchResultsComponent } from '../search-results/search-results.component';
+import { AuthModalComponent } from '../../auth/auth-modal/auth-modal.component';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-nav',
   standalone: true,
-  imports: [CommonModule, FormsModule, SearchResultsComponent],
+  imports: [CommonModule, FormsModule, AuthModalComponent],
   templateUrl: './nav.component.html',
   styleUrls: ['./nav.component.css']
 })
-export class NavComponent {
+export class NavComponent implements OnInit {
   query = '';
-  results: any[] = [];
-  loading = false;
+  showAuthModal = false;
+  currentUser: string | null = null;
 
-  constructor(private rawgService: RawgService) {}
+  constructor(private router: Router, private authService: AuthService) {}
+
+  ngOnInit() {
+    this.authService.currentUser$.subscribe(user => {
+      this.currentUser = user;
+      console.log(this.currentUser)
+    });
+  }
 
   searchGames() {
-    if (!this.query.trim()) {
-      this.results = [];
-      return;
-    }
+    if (!this.query.trim()) return;
+    this.router.navigate(['/search', this.query]);
+  }
 
-    this.loading = true;
-    this.rawgService.getGamesByName(this.query).subscribe({
-      next: (res) => {
-        this.results = res.results;
-        this.loading = false;
-      },
-      error: (err) => {
-        console.error('Error al buscar juegos:', err);
-        this.loading = false;
-      }
-    });
+  toggleAuthModal() {
+    this.showAuthModal = !this.showAuthModal;
+  }
+
+  logout() {
+    this.authService.logout();
   }
 }

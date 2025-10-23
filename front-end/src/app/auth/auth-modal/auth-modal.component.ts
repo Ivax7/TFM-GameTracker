@@ -28,20 +28,21 @@ export class AuthModalComponent {
     if (isLogin) this.username = '';
   }
 
-  onSubmit() {
-    if (this.isLoginMode) {
-      this.authService.login(this.email, this.password).subscribe({
-        next: () => this.message = '✅ Login successful!',
-        error: err => this.message = '❌ Invalid credentials'
-      });
-    } else {
-      this.authService.register(this.email, this.password, this.username).subscribe({
-        next: () => this.message = '✅ Account created! You can log in now.',
-        error: err =>  {
-          this.message = '❌ ' + 'Registration failed'
-          console.log(err) 
-        }
-      });
-    }
+onSubmit() {
+  if (this.isLoginMode) {
+    this.authService.login(this.email, this.password).subscribe({
+      next: () => {
+        this.message = '✅ Login successful!';
+        setTimeout(() => this.close.emit(), 800); // Cierra el modal tras 0.8s
+      },
+      error: () => this.message = '❌ Invalid credentials'
+    });
+  } else {
+    this.authService.register(this.email, this.password, this.username).subscribe({
+      next: () => this.message = '✅ Account created! You can log in now.',
+      error: err => this.message = '❌ Registration failed'
+    });
   }
+}
+
 }

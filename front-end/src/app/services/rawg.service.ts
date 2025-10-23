@@ -21,6 +21,8 @@ export class RawgService {
     const url = `${this.apiUrl}/games?key=${this.apiKey}&dates=${from},${to}&ordering=-added&page_size=24`;
     return this.http.get(url);
   }
+
+  // SEARCH RESULTS
   getGamesByName(query: string): Observable<any> {
     const url = `${this.apiUrl}/games?key=${this.apiKey}&search=${encodeURIComponent(query)}&page_size=20`;
     return this.http.get(url);

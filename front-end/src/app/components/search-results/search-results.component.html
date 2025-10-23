@@ -1,6 +1,14 @@
-<div class="results" *ngIf="results.length > 0">
-  <div class="game" *ngFor="let game of results">
-    <img [src]="game.background_image" alt="{{ game.name }}" />
-    <span>{{ game.name }}</span>
+<h2>Results for "{{ query }}"</h2>
+
+<div *ngIf="loading">Loading...</div>
+
+<div *ngIf="!loading && results.length > 0" class="results">
+  <div *ngFor="let game of results" class="game">
+    <img [src]="game.background_image" [alt]="game.name" width="200">
+    <p>{{ game.name }}</p>
   </div>
+</div>
+
+<div *ngIf="!loading && results.length === 0">
+  <p>No results found.</p>
 </div>
