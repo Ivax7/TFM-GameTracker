@@ -1,5 +1,5 @@
 <nav class="nav">
-  <img src="assets/images/logo.png" alt="GT" height="100px" width="100px">
+  <img routerLink="/trending" src="assets/images/logo.png" alt="GT" height="100px" width="100px">
 
   <div class="search-bar">
     <input
@@ -12,16 +12,49 @@
   </div>
 
   <div class="user-section">
-    <div class="user-icon" (click)="toggleAuthModal()">
-      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
-      </svg>
-    </div>
+    @if (!currentUser) {
+
+      <div class="user-icon" (click)="toggleAuthModal()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
+        </svg>
+      </div>
+    }
 
     @if (currentUser) {
-      <span class="username">{{ currentUser }}</span>
-      <button class="logout-btn" (click)="logout()">Logout</button>
-    }
+      <div class="dropdown" [class.open]="isDropdownOpen">
+        <button 
+          class="user-dropdown" 
+          type="button" 
+          (click)="toggleDropdown()"
+        >
+          <div class="user-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
+            </svg>
+          </div>
+          <span class="username">{{ currentUser.username }}</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M1.5 5.5l6 6 6-6h-12z"/>
+          </svg>
+        </button>
+      
+        @if (isDropdownOpen) {
+
+          
+          <ul class="dropdown-menu show">
+            <button class="close-dropdown" (click)="toggleDropdown()">✕</button>
+            <li><a class="dropdown-item" routerLink="/profile">Profile</a></li>
+            <li><a class="dropdown-item" routerLink="/wishlist">Wishlist</a></li>
+            <li><a class="dropdown-item" routerLink="/collection">Collection Status</a></li>
+            <li><a class="dropdown-item" routerLink="/lists">Lists</a></li>
+            <li><a class="dropdown-item" routerLink="/settings">Settings</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
+          </ul>
+        }
+      </div>
+      }
   </div>
 </nav>
 

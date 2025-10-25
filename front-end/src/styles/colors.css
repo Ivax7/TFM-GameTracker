@@ -2,6 +2,7 @@
 /* Paleta de colores*/
 :root {
   --background: #0a121f; /* Fondo Principal */
+  --background-secondary: #222222; /* Fondo Principal */
   --hover-color: #05647a;     /* Hover / Interacción */
   --primary-color: #06829d;   /* Color Primario */
   --text-main: #f0f0f0;       /* Texto Principal */

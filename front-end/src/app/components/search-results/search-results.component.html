@@ -1,14 +1,24 @@
-<h2>Results for "{{ query }}"</h2>
+<div class="container">
+  <h2>Results for "{{ query }}"</h2>
 
-<div *ngIf="loading">Loading...</div>
+  <div *ngIf="loading" class="loading">Loading...</div>
 
-<div *ngIf="!loading && results.length > 0" class="results">
-  <div *ngFor="let game of results" class="game">
-    <img [src]="game.background_image" [alt]="game.name" width="200">
-    <p>{{ game.name }}</p>
+  <div *ngIf="!loading && results.length > 0" class="games-grid">
+    <div *ngFor="let game of results" class="game-card">
+      <div class="game-image" [style.backgroundImage]="'url(' + game.background_image + ')'">
+        <div class="game-info">
+          <h3>{{ game.name }}</h3>
+          <div class="icons">
+            <img src="assets/images/icons/controller.svg" alt="Controller" width="16" height="16">
+            <img src="assets/images/icons/bookmark.svg" alt="Bookmark" width="16" height="16">
+            <img src="assets/images/icons/list.svg" alt="List" width="16" height="16">
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
 
-<div *ngIf="!loading && results.length === 0">
-  <p>No results found.</p>
+  <div *ngIf="!loading && results.length === 0">
+    <p>No results found.</p>
+  </div>
 </div>

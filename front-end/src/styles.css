@@ -29,4 +29,7 @@ body::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Edge moderno */
 }
 
+* {
+  box-sizing: border-box
+}
 
