@@ -1,0 +1,59 @@
+@if (game) {
+  <div class="game-detail">
+    <!-- CABECERA: solo la imagen -->
+    <div class="header">
+      <img [src]="game.background_image" [alt]="game.name" class="cover" />
+    </div>
+
+    <!-- INFO DEL JUEGO -->
+    <div class="info">
+      <h1>{{ game.name }}</h1>
+      <p class="released">📅 Release date: {{ game.released || 'N/A' }}</p>
+
+      <p class="genres">
+        🎮 Genres:
+        @for (g of game.genres; track g) {
+          {{ g.name }}@if (!$last) {, }
+        }
+      </p>
+
+      <p class="developers">
+        🧑‍💻 Developers:
+        @for (d of game.developers; track d) {
+          {{ d.name }}@if (!$last) {, }
+        }
+      </p>
+
+      <p class="publishers">
+        🏢 Publishers:
+        @for (p of game.publishers; track p) {
+          {{ p.name }}@if (!$last) {, }
+        }
+      </p>
+
+      @if (game.website) {
+        <p class="website">
+          🌐 Official site:
+          <a [href]="game.website" target="_blank">{{ game.website }}</a>
+        </p>
+      }
+
+      @if (game.stores && game.stores.length > 0) {
+        <p class="steam">
+          💰 Buy on:
+          @for (store of game.stores; track store) {
+            <a [href]="store.url" target="_blank">{{ store.store.name }}</a>
+          }
+        </p>
+      }
+    </div>
+
+    <!-- DESCRIPCIÓN -->
+    <div class="description">
+      <h2>📝 Description</h2>
+      <p [innerHTML]="game.description"></p>
+    </div>
+  </div>
+} @else {
+  <p>Loading game details...</p>
+}

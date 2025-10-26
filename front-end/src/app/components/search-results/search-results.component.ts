@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { RawgService } from '../../services/rawg.service';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-search-results',
   standalone: true,
@@ -17,7 +17,8 @@ export class SearchResultsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private rawgService: RawgService
+    private rawgService: RawgService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -44,5 +45,9 @@ export class SearchResultsComponent implements OnInit {
         this.loading = false;
       }
     });
+  }
+
+    seeGameDetail(gameId: number) {
+    this.router.navigate(['/detail', gameId])
   }
 }

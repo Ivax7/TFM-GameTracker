@@ -3,15 +3,16 @@
   justify-content: space-between;
   align-items: center;
   background-color: #181818;
-  padding: 1rem 2rem;
+  padding-inline: 2rem;
   color: white;
   flex-wrap: wrap;
 }
 
 /* --- LOGO --- */
 .logo {
-  font-size: 1.5rem;
-  font-weight: bold;
+  height: 70px;
+  width: 70px;
+  cursor: pointer;
 }
 
 /* --- SEARCH BAR --- */

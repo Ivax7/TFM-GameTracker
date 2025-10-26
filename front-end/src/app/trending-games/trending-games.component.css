@@ -24,6 +24,7 @@ h2 {
   overflow: hidden;
   text-align: center;
   height: 280px;
+  cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
 }
 

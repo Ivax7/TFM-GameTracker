@@ -27,5 +27,11 @@ export class RawgService {
     const url = `${this.apiUrl}/games?key=${this.apiKey}&search=${encodeURIComponent(query)}&page_size=20`;
     return this.http.get(url);
   }
+  
+  // GET DETAIL
+  getGameById(id: number): Observable<any> {
+    const url = `${this.apiUrl}/games/${id}?key=${this.apiKey}`;
+    return this.http.get(url);
+  }
 
 }

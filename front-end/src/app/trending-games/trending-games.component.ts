@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RawgService } from '../services/rawg.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-trending-games',
@@ -13,7 +14,10 @@ export class TrendingGamesComponent implements OnInit {
   trendingGames: any[] = [];
   loading = true;
 
-  constructor(private rawgService: RawgService) {}
+  constructor(
+    private rawgService: RawgService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.rawgService.getTrendingGames().subscribe({
@@ -26,5 +30,9 @@ export class TrendingGamesComponent implements OnInit {
         this.loading = false;
       }
     });
+  }
+
+  seeGameDetail(gameId: number) {
+    this.router.navigate(['/detail', gameId])
   }
 }
