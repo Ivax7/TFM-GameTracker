@@ -27,11 +27,11 @@
 
 
 
-/* 📋 Info del juego */
+/* Info del juego */
 .info {
   padding: 2rem;
-  max-width: 900px;
-  margin: 0 auto;
+  padding-bottom: 0;
+  max-width: 700px;
   text-align: left;
 }
 
@@ -54,30 +54,153 @@
   text-decoration: underline;
 }
 
-/* 📝 Descripción */
+/* Contenedor rating + icons */
+.rating-icons {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0.5rem 0 1rem;
+}
+
+/* Rating */
+.rating {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #ffcc00;
+  font-weight: 500;
+}
+
+/* Icons */
+.icons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+  width: 100%;
+}
+
+.icons img {
+  width: 24px;
+  height: 24px;
+  filter: invert(1);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.icons img:hover {
+  transform: scale(1.1);
+}
+
+
+
+/* Descripción */
 .description {
-  max-width: 900px;
-  margin: 2rem auto;
-  padding: 0 2rem;
-}
-
-.description h2 {
-  margin-bottom: 1rem;
-}
-
-.description p {
+  width: 90%;
+  margin-inline: 2rem;
   color: #ccc;
+  overflow: visible;
+}
+
+.description-content {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.description .text {
+  flex: 2;
   line-height: 1.6;
 }
 
-.loading {
+.description .text p {
+  color: #ccc;
+  font-size: 1rem;
+  text-align: justify;
+}
+
+/* Imagen del juego */
+.description .image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.description .image img {
+  width: 100%;
+  height: auto;
+  max-width: 400px;
+  border-radius: 12px;
+  object-fit: cover;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.description .image img:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.6);
+}
+
+
+
+/* ADDITIONAL INFO GRID */
+.additional-info {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 1.5rem;
+  width: 80%;
+  margin: 3rem auto;
+  padding: 2rem;
+  background-color: #181818;
+  border-radius: 16px;
+  color: #f0f0f0;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.info-item {
   text-align: center;
-  margin-top: 3rem;
-  font-size: 1.2rem;
+}
+
+.info-item h3 {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: #00bfff;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.info-item p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  color: #ccc;
+}
+
+.info-item a {
+  color: #00bfff;
+  text-decoration: none;
+}
+
+.info-item a:hover {
+  text-decoration: underline;
 }
 
 /* 📱 Responsive */
+@media (max-width: 1200px) {
+  .additional-info {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
 @media (max-width: 768px) {
+  .additional-info {
+    grid-template-columns: repeat(2, 1fr);
+    width: 90%;
+    padding: 1.5rem;
+  }
+
   .header {
     height: 35vh;
   }
@@ -88,5 +211,17 @@
 
   .info h1 {
     font-size: 1.6rem;
+  }
+
+    
+  .description-content {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .additional-info {
+    grid-template-columns: 1fr;
   }
 }
