@@ -1,0 +1,42 @@
+.container {
+  background-color: var(--background);
+}
+
+h2 {
+  text-align: left;
+  margin: 0 20px;
+  font-size: 2rem;
+  color: var(--text-main);
+}
+
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 20px;
+  padding: 20px;
+}
+
+/* Responsivo */
+@media (max-width: 1600px) {
+  .games-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+@media (max-width: 1200px) {
+  .games-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .games-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .games-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,5 +1,5 @@
 <div class="wishlist-container">
-  <h2>Mi Wishlist</h2>
+  <h2>Wishlist</h2>
 
   @if (loading) {
     <p>Cargando tus juegos guardados...</p>
@@ -16,11 +16,15 @@
   @if (!loading && wishlist.length > 0) {
     <div class="wishlist-grid">
       @for (game of wishlist; track game.id) {
-        <div class="wishlist-card">
-          <div class="image" [style.backgroundImage]="'url(' + game.backgroundImage + ')'"></div>
-          <h3>{{ game.gameName }}</h3>
-          <button (click)="removeFromWishlist(game.gameId)">Eliminar</button>
-        </div>
+        <app-game-card
+          [game]="{
+            id: game.gameId,
+            name: game.gameName,
+            background_image: game.backgroundImage
+          }"
+          [initialBookmarked]="true"
+          (bookmarkToggled)="removeFromWishlist($event)"
+        ></app-game-card>
       }
     </div>
   }

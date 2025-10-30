@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { MainPageComponent } from './main-page/main-page.component';
 import { SearchResultsComponent } from './components/search-results/search-results.component';
-import { TrendingGamesComponent } from './trending-games/trending-games.component';
+import { TrendingGamesComponent } from './components/pages/trending-games/trending-games.component';
 import { GameDetailComponent } from './components/game-detail/game-detail.component';
 import { WishlistComponent } from './components/pages/wishlist/wishlist.component';
 

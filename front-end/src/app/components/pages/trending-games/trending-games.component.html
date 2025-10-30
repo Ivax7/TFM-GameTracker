@@ -1,0 +1,20 @@
+<div class="container">
+
+  @if (loading) {
+    <div>Cargando juegos trending...</div>
+  }
+
+  <h2>Trending Games</h2>
+
+  @if (!loading) {
+    <div class="games-grid">
+      @for (game of trendingGames; track game.id) {
+        <app-game-card
+          [game]="game"
+          [initialBookmarked]="false"
+          (cardClicked)="seeGameDetail($event)"
+        ></app-game-card>
+      }
+    </div>
+  }
+</div>

@@ -7,37 +7,11 @@
 
   @if (!loading && results.length > 0) {
     <div class="games-grid">
-      @for (game of results; track game) {
-        <div class="game-card" (click)="seeGameDetail(game.id)">
-          <div
-            class="game-image"
-            [style.backgroundImage]="'url(' + game.background_image + ')'"
-          >
-            <div class="game-info">
-              <h3>{{ game.name }}</h3>
-              <div class="icons">
-                <img
-                  src="assets/images/icons/controller.svg"
-                  alt="Controller"
-                  width="16"
-                  height="16"
-                />
-                <img
-                  src="assets/images/icons/bookmark.svg"
-                  alt="Bookmark"
-                  width="16"
-                  height="16"
-                />
-                <img
-                  src="assets/images/icons/list.svg"
-                  alt="List"
-                  width="16"
-                  height="16"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
+      @for (game of results; track game.id) {
+        <app-game-card
+          [game]="game"
+          (cardClicked)="seeGameDetail($event)"
+        ></app-game-card>
       }
     </div>
   } @else if (!loading && results.length === 0) {

@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { WishlistService } from '../../../services/wishlist.service';
+import { GameCardComponent } from '../../game-card/game-card.component';
+import { AuthService } from '../../../services/auth.service';
+
 @Component({
   selector: 'app-wishlist',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, GameCardComponent],
   templateUrl: './wishlist.component.html',
   styleUrls: ['./wishlist.component.css']
 })
@@ -12,10 +15,16 @@ export class WishlistComponent implements OnInit {
   wishlist: any[] = [];
   loading = true;
   error = '';
+  userName = '';
 
-  constructor(private wishlistService: WishlistService) {}
+  constructor(
+    private wishlistService: WishlistService,
+    private authService: AuthService,
+  ) {}
 
   ngOnInit(): void {
+    const user = this.authService.getUser();
+    this.userName = user.username;
     this.loadWishlist();
   }
 
@@ -34,10 +43,10 @@ export class WishlistComponent implements OnInit {
     });
   }
 
-  removeFromWishlist(gameId: number) {
-    this.wishlistService.removeFromWishlist(gameId).subscribe({
+  removeFromWishlist(game: any) {
+    this.wishlistService.removeFromWishlist(game.gameId).subscribe({
       next: () => {
-        this.wishlist = this.wishlist.filter(game => game.gameId !== gameId);
+        this.wishlist = this.wishlist.filter(g => g.gameId !== game.gameId);
       },
       error: (err) => console.error(err)
     });

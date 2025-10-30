@@ -3,10 +3,12 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { RawgService } from '../../services/rawg.service';
 import { Router } from '@angular/router';
+import { GameCardComponent } from '../game-card/game-card.component'; // importa el componente de la card
+
 @Component({
   selector: 'app-search-results',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, GameCardComponent], // lo añadimos aquí
   templateUrl: './search-results.component.html',
   styleUrls: ['./search-results.component.css']
 })
@@ -29,7 +31,6 @@ export class SearchResultsComponent implements OnInit {
     });
   }
 
-
   searchGames() {
     if (!this.query.trim()) return;
 
@@ -38,7 +39,6 @@ export class SearchResultsComponent implements OnInit {
       next: (res) => {
         this.results = res.results;
         this.loading = false;
-        console.log(this.results)
       },
       error: (err) => {
         console.log(err);
@@ -47,7 +47,7 @@ export class SearchResultsComponent implements OnInit {
     });
   }
 
-    seeGameDetail(gameId: number) {
-    this.router.navigate(['/detail', gameId])
+  seeGameDetail(gameId: number) {
+    this.router.navigate(['/detail', gameId]);
   }
 }

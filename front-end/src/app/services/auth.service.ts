@@ -18,7 +18,6 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  // ✅ Login
   login(email: string, password: string): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.apiUrl}/login`, { email, password })
       .pipe(
@@ -30,25 +29,28 @@ export class AuthService {
       );
   }
 
-  // ✅ Registro (opcional)
   register(email: string, password: string, username: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/register`, { email, password, username });
   }
 
-  // ✅ Obtener token JWT
   getToken(): string | null {
     return localStorage.getItem('token');
   }
 
-  // ✅ Saber si está logueado
   isLoggedIn(): boolean {
     return !!this.getToken();
   }
 
-  // ✅ Logout
   logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('username');
     localStorage.removeItem('email');
   }
+
+  getUser() {
+    const username = localStorage.getItem('username') || '';
+    const email = localStorage.getItem('email') || '';
+    return { username, email };
+  }
+
 }
