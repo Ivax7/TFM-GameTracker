@@ -149,14 +149,16 @@
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   gap: 1.5rem;
-  width: 80%;
-  margin: 3rem auto;
+  width: 60%;
+  margin: 3rem 0 3rem 2rem; /* 🔹 elimina auto y lo pega a la izquierda */
   padding: 2rem;
   background-color: #181818;
   border-radius: 16px;
   color: #f0f0f0;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  justify-content: start; /* 🔹 asegura que las columnas se peguen a la izquierda */
 }
+
 
 .info-item {
   text-align: center;

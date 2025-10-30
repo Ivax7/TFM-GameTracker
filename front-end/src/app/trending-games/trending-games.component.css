@@ -73,6 +73,11 @@ h2 {
   width: 24px;
   height: 24px;
   filter: invert(1);
+  transition: all 0.2s ease;
+}
+
+.icons img:hover {
+  transform: scale(1.1);
 }
 
 /* Responsivo */

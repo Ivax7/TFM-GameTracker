@@ -1,5 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
-
+import { Wishlist } from 'src/wishlist/wishlist.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
@@ -13,6 +13,9 @@ export class User {
 
   @Column()
   password: string;
+
+  @OneToMany(() => Wishlist, (wishlist) => wishlist.user)
+  wishlist: Wishlist[];
 
   @Column({ default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;

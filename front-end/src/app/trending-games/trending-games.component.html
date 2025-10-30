@@ -24,10 +24,16 @@
                   height="16"
                 />
                 <img
-                  src="assets/images/icons/bookmark.svg"
+                  (click)="toggleBookmark($event, game)"
+                  [src]="
+                    isBookmarked(game.id)
+                      ? 'assets/images/icons/bookmark-filled.svg'
+                      : 'assets/images/icons/bookmark.svg'
+                  "
                   alt="Bookmark"
                   width="16"
                   height="16"
+                  title="Guardar en wishlist"
                 />
                 <img
                   src="assets/images/icons/list.svg"

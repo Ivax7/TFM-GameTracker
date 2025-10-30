@@ -1,0 +1,27 @@
+<div class="wishlist-container">
+  <h2>Mi Wishlist</h2>
+
+  @if (loading) {
+    <p>Cargando tus juegos guardados...</p>
+  }
+
+  @if (error) {
+    <p class="error">{{ error }}</p>
+  }
+
+  @if (!loading && wishlist.length === 0) {
+    <p>No tienes juegos en tu wishlist todavía.</p>
+  }
+
+  @if (!loading && wishlist.length > 0) {
+    <div class="wishlist-grid">
+      @for (game of wishlist; track game.id) {
+        <div class="wishlist-card">
+          <div class="image" [style.backgroundImage]="'url(' + game.backgroundImage + ')'"></div>
+          <h3>{{ game.gameName }}</h3>
+          <button (click)="removeFromWishlist(game.gameId)">Eliminar</button>
+        </div>
+      }
+    </div>
+  }
+</div>

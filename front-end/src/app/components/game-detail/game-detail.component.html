@@ -44,7 +44,7 @@
         </div>
 
         <div class="info-item">
-          <h3>🎮 Genres</h3>
+          <h3>Genres</h3>
           <p>
             @for (g of game.genres; track g) {
               {{ g.name }}@if (!$last) {, }
@@ -53,7 +53,7 @@
         </div>
 
         <div class="info-item">
-          <h3>🧑‍💻 Developers</h3>
+          <h3>Developers</h3>
           <p>
             @for (d of game.developers; track d) {
               {{ d.name }}@if (!$last) {, }
@@ -62,7 +62,7 @@
         </div>
 
         <div class="info-item">
-          <h3>🏢 Publishers</h3>
+          <h3>Publishers</h3>
           <p>
             @for (p of game.publishers; track p) {
               {{ p.name }}@if (!$last) {, }
@@ -72,14 +72,14 @@
 
         @if (game.website) {
           <div class="info-item">
-            <h3>🌐 Official Site</h3>
+            <h3>Official Site</h3>
             <p><a [href]="game.website" target="_blank">{{ game.website }}</a></p>
           </div>
         }
 
         @if (game.stores && game.stores.length > 0) {
           <div class="info-item">
-            <h3>💰 Buy On</h3>
+            <h3>Buy On</h3>
             <p>
               @for (store of game.stores; track store) {
                 <a [href]="store.url" target="_blank">{{ store.store.name }}</a>
