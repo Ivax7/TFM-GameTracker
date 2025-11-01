@@ -6,9 +6,23 @@
       type="text"
       placeholder="Search games..."
       [(ngModel)]="query"
+      (input)="onSearchChange()"
       (keyup.enter)="searchGames()"
     />
     <button (click)="searchGames()">Search</button>
+  
+    
+    @if (showSuggestions) {
+      <ul class="suggestions">
+        @for (result of searchResults; track result.id) {
+          <li (click)="selectGame(result.id)">
+            <img [src]="result.background_image" [alt]="result.name" width="40" height="40" />
+            <span>{{ result.name }}</span>
+          </li>
+        }
+      </ul>
+    }
+  
   </div>
 
   <div class="user-section">

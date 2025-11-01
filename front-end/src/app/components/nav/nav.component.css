@@ -17,6 +17,7 @@
 
 /* --- SEARCH BAR --- */
 .search-bar {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -37,12 +38,49 @@
   color: white;
   border-radius: 6px;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .search-bar button:hover {
   background-color: var(--hover-color, #7ab4ff);
 }
+
+/* Suggestions */
+
+.suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  max-height: 250px;
+  overflow-y: auto;
+  background: #1c1c1c;
+  border: 1px solid #333;
+  border-radius: 6px;
+  z-index: 1000;
+  list-style: none;
+  padding: 0;
+  margin: 4px 0 0 0;
+}
+
+.suggestions li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  cursor: pointer;
+  color: #fff;
+}
+
+.suggestions li:hover {
+  background-color: #2a2a2a;
+}
+
+.suggestions img {
+  border-radius: 4px;
+  object-fit: cover;
+}
+
 
 /* --- USER SECTION --- */
 .user-section {

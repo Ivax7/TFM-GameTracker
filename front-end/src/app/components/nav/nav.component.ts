@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthModalComponent } from '../../auth/auth-modal/auth-modal.component';
 import { AuthService } from '../../auth/auth.service';
+import { RawgService } from '../../services/rawg.service';
+import { Subject, debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-nav',
@@ -14,26 +16,63 @@ import { AuthService } from '../../auth/auth.service';
 })
 export class NavComponent implements OnInit {
   query = '';
+  searchResults: any[] = [];
+  private searchSubject = new Subject<string>();
+
+
   showAuthModal = false;
   currentUser: any = null;
   isDropdownOpen = false;
+  showSuggestions = false;
 
   constructor(
     private router: Router,
     private auth: AuthService,
+    private rawgService: RawgService,
     private elementRef: ElementRef
   ) {}
 
   ngOnInit() {
     this.auth.currentUser$.subscribe(user => {
       this.currentUser = user;
-      console.log(this.currentUser)
     });
+    
+    // Búsqueda reactiva
+    this.searchSubject.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap(query =>
+        query.trim().length > 0 ? this.rawgService.getGamesByName(query) : []
+      )
+    ).subscribe({
+      next: (res: any) => {
+        this.searchResults = res.results?.slice(0, 5) || [];
+        this.showSuggestions = this.searchResults.length > 0;
+      },
+      error: (err) => console.log(err)
+    })
+  }
+
+  onSearchChange() {
+    this.searchSubject.next(this.query);
   }
 
   searchGames() {
     if (!this.query.trim()) return;
     this.router.navigate(['/search', this.query]);
+    this.showSuggestions = false;
+    this.resetSearch();
+  }
+
+  selectGame(gameId: number) {
+    this.router.navigate(['/detail', gameId]);
+    this.resetSearch();
+  }
+
+  resetSearch() {
+    this.query = '';
+    this.searchResults = [];
+    this.showSuggestions = false;
   }
 
   toggleAuthModal() {
