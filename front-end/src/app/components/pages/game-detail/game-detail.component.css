@@ -41,7 +41,6 @@
 }
 
 .info p {
-  margin: 0.4rem 0;
   line-height: 1.5;
 }
 
@@ -55,41 +54,19 @@
 }
 
 /* Contenedor rating + icons */
-.rating-icons {
+.icons {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin: 0.5rem 0 1rem;
+  justify-content: flex-start;
 }
 
 /* Rating */
 .rating {
-  margin: 0;
+  margin-right: 2rem;
   font-size: 1.2rem;
   color: #ffcc00;
   font-weight: 500;
 }
-
-/* Icons */
-.icons {
-  display: flex;
-  justify-content: flex-end;
-  gap: 20px;
-  width: 100%;
-}
-
-.icons img {
-  width: 24px;
-  height: 24px;
-  filter: invert(1);
-  cursor: pointer;
-  transition: transform 0.2s ease;
-}
-
-.icons img:hover {
-  transform: scale(1.1);
-}
-
 
 
 /* Descripción */
@@ -141,8 +118,6 @@
   transform: scale(1.03);
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.6);
 }
-
-
 
 /* ADDITIONAL INFO GRID */
 .additional-info {

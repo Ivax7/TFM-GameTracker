@@ -48,9 +48,16 @@ export class AuthService {
   }
 
   getUser() {
-    const username = localStorage.getItem('username') || '';
-    const email = localStorage.getItem('email') || '';
-    return { username, email };
+    const userString = localStorage.getItem('user');
+    if (userString) {
+      try {
+        return JSON.parse(userString);
+      } catch {
+        return { username: '', email: '' };
+      }
+    }
+    return { username: '', email: '' };
   }
+
 
 }

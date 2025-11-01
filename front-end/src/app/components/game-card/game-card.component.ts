@@ -4,11 +4,12 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { WishlistService } from '../../services/wishlist.service';
 import { AuthService } from '../../auth/auth.service';
+import { GameActionsComponent } from "../game-actions/game-actions.component";
 
 @Component({
   selector: 'app-game-card',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, GameActionsComponent],
   templateUrl: './game-card.component.html',
   styleUrls: ['./game-card.component.css']
 })
@@ -17,61 +18,27 @@ export class GameCardComponent {
   @Input() initialBookmarked = false;
 
   @Output() cardClicked = new EventEmitter<number>();
+  @Output() bookmarkToggled = new EventEmitter<boolean>();
+
 
   isBookmarked = false;
 
   constructor(
-    private wishlistService: WishlistService,
-    private authService: AuthService,
     private router: Router
   ) {}
 
-ngOnInit() {
-  this.isBookmarked = this.initialBookmarked;
-
-  if (this.authService.isLoggedIn()) {
-    this.wishlistService.isInWishlist(this.game.id).subscribe({
-      next: (inWishlist) => this.isBookmarked = inWishlist,
-      error: (err) => console.error('Error checking wishlist:', err)
-    });
+  ngOnInit() {
+    this.isBookmarked = this.initialBookmarked;
   }
-}
-
 
   onCardClick() {
     this.cardClicked.emit(this.game.id);
   }
 
-  toggleBookmark(event: MouseEvent) {
-    event.stopPropagation();
-
-    if (!this.authService.isLoggedIn()) {
-      alert('Por favor, inicia sesión para guardar juegos en tu wishlist');
-      this.router.navigate(['/login']);
-      return;
-    }
-
-    const action$ = this.isBookmarked
-      ? this.wishlistService.removeFromWishlist(this.game.id)
-      : this.wishlistService.addToWishlist({
-          gameId: this.game.id,
-          gameName: this.game.name,
-          backgroundImage: this.game.background_image
-        });
-
-    action$.subscribe({
-      next: () => this.isBookmarked = !this.isBookmarked,
-      error: (err) => this.handleAuthError(err)
-    });
+  onBookmarkChange(newState: boolean) {
+    this.isBookmarked = newState;
+    this.bookmarkToggled.emit(newState);
   }
 
-  private handleAuthError(err: any) {
-    if (err.status === 401) {
-      alert('Tu sesión ha expirado. Por favor, inicia sesión nuevamente.');
-      this.authService.logout();
-      this.router.navigate(['/login']);
-    } else {
-      console.error(err);
-    }
-  }
+
 }

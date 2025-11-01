@@ -1,5 +1,4 @@
 <div class="container">
-
   @if (loading) {
     <div>Cargando juegos trending...</div>
   }
@@ -11,7 +10,7 @@
       @for (game of trendingGames; track game.id) {
         <app-game-card
           [game]="game"
-          [initialBookmarked]="false"
+          [initialBookmarked]="game.isBookmarked"
           (cardClicked)="seeGameDetail($event)"
         ></app-game-card>
       }

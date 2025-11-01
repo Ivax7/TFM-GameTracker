@@ -1,5 +1,5 @@
 <div class="wishlist-container">
-  <h2>Wishlist</h2>
+  <h2>{{ userName }}'s Wishlist</h2>
 
   @if (loading) {
     <p>Cargando tus juegos guardados...</p>
@@ -24,6 +24,7 @@
           }"
           [initialBookmarked]="true"
           (bookmarkToggled)="removeFromWishlist($event)"
+          (cardClicked)="seeGameDetail($event)"
         ></app-game-card>
       }
     </div>

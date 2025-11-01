@@ -1,0 +1,18 @@
+.icons {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  gap: 15px;
+  cursor: pointer;
+}
+
+.icons img {
+  width: 24px;
+  height: 24px;
+  filter: invert(1);
+  transition: all 0.2s ease;
+}
+
+.icons img:hover {
+  transform: scale(1.1);
+}

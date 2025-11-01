@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { WishlistService } from '../../../services/wishlist.service';
 import { GameCardComponent } from '../../game-card/game-card.component';
 import { AuthService } from '../../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-wishlist',
@@ -20,11 +21,12 @@ export class WishlistComponent implements OnInit {
   constructor(
     private wishlistService: WishlistService,
     private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
     const user = this.authService.getUser();
-    this.userName = user.username;
+    this.userName = user?.name || user?.displayName || 'Usuario';
     this.loadWishlist();
   }
 
@@ -50,5 +52,9 @@ export class WishlistComponent implements OnInit {
       },
       error: (err) => console.error(err)
     });
+  }
+
+  seeGameDetail(gameId: number) {
+    this.router.navigate(['/detail', gameId]);
   }
 }

@@ -1,0 +1,95 @@
+@if (game) {
+  <div class="game-detail">
+    <!-- CABECERA: solo la imagen -->
+    <div class="header">
+      <img [src]="game.background_image" [alt]="game.name" class="cover" />
+    </div>
+
+    <!-- INFO DEL JUEGO -->
+    <div class="info">
+      <h1>{{ game.name }}</h1>
+    
+      <div class="icons">
+        <!-- RATING -->
+        <p class="rating">{{ game.rating }} ⭐</p>
+      
+        <app-game-actions
+        class="icons"
+        [game]="game"
+        [isBookmarked]="isBookmarked"
+        (bookmarkToggled)="onBookmarkToggled($event)"
+        ></app-game-actions>
+
+      </div>
+    </div>
+
+    <!-- DESCRIPCIÓN -->
+    <div class="description">
+      <div class="description-content">
+        <div class="text">
+          <p [innerHTML]="game.description"></p>
+        </div>
+        <div class="image">
+          <img [src]="game.background_image" [alt]="game.name" />
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ADDITIONAL INFO -->
+    <div class="additional-info">
+      <div class="info-item">
+        <h3>Release Date</h3>
+        <p>{{ game.released || 'N/A' }}</p>
+      </div>
+
+      <div class="info-item">
+        <h3>Genres</h3>
+        <p>
+          @for (g of game.genres; track g) {
+            {{ g.name }}@if (!$last) {, }
+          }
+        </p>
+      </div>
+
+      <div class="info-item">
+        <h3>Developers</h3>
+        <p>
+          @for (d of game.developers; track d) {
+            {{ d.name }}@if (!$last) {, }
+          }
+        </p>
+      </div>
+
+      <div class="info-item">
+        <h3>Publishers</h3>
+        <p>
+          @for (p of game.publishers; track p) {
+            {{ p.name }}@if (!$last) {, }
+          }
+        </p>
+      </div>
+
+      @if (game.website) {
+        <div class="info-item">
+          <h3>Official Site</h3>
+          <p><a [href]="game.website" target="_blank">{{ game.website }}</a></p>
+        </div>
+      }
+
+      @if (game.stores && game.stores.length > 0) {
+        <div class="info-item">
+          <h3>Buy On</h3>
+          <p>
+            @for (store of game.stores; track store) {
+              <a [href]="store.url" target="_blank">{{ store.store.name }}</a>
+              @if (!$last) {, }
+            }
+          </p>
+        </div>
+      }
+    </div>
+  </div>
+} @else {
+  <p>Loading game details...</p>
+}
