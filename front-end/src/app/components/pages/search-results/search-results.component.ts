@@ -7,7 +7,7 @@ import { GameCardComponent } from '../../game-card/game-card.component'; // impo
 @Component({
   selector: 'app-search-results',
   standalone: true,
-  imports: [CommonModule, GameCardComponent], // lo añadimos aquí
+  imports: [CommonModule, GameCardComponent],
   templateUrl: './search-results.component.html',
   styleUrls: ['./search-results.component.css'],
 })

@@ -48,7 +48,6 @@ export class NavComponent implements OnInit {
     this.isDropdownOpen = !this.isDropdownOpen;
   }
 
-  // 🧠 Este decorador escucha clicks en todo el documento
   @HostListener('document:click', ['$event'])
   onClickOutside(event: MouseEvent) {
     const dropdown = this.elementRef.nativeElement.querySelector('.dropdown');
