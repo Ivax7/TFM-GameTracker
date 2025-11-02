@@ -1,5 +1,5 @@
 /* CONTENEDOR PRINCIPAL */
-.container {
+.main-container {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -13,11 +13,11 @@
   transition: opacity 0.8s ease;
 }
 
-.container::before {
+.main-container::before {
   content: '';
   position: absolute;
   inset: 0;
-  background-image: url('../../assets/images/ps2-background.png');
+  background-image: url('../../assets/images/ps2-background.png') !important;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -29,7 +29,7 @@
 .square {
   width: 700px;
   height: 700px;
-  background-image: url('../../assets/images/ps2-background.png');
+  background-image: url('../../assets/images/ps2-background.png') !important;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
