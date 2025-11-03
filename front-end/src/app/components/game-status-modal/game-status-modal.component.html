@@ -1,0 +1,12 @@
+@if (show) {
+  <div class="modal-backdrop" (click)="close.emit()"></div>
+  <div class="modal" (click)="$event.stopPropagation()">
+    <h3>Select game status</h3>
+    <ul>
+      @for (status of statuses; track status) {
+        <li (click)="onSelect(status, $event)">{{ status }}</li>
+      }
+    </ul>
+    <button class="close-btn" (click)="close.emit()">Cancel</button>
+  </div>
+}

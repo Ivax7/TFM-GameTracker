@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from '../../auth/auth.service';
 import { WishlistService } from '../../services/wishlist.service';
 import { Router } from '@angular/router';
+import { GameStatusModalComponent } from '../game-status-modal/game-status-modal.component';
+import { UserGameService } from '../../services/user-game.service';
 
 @Component({
   selector: 'app-game-actions',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, GameStatusModalComponent],
   templateUrl: './game-actions.component.html',
   styleUrl: './game-actions.component.css'
 })
@@ -18,12 +20,16 @@ export class GameActionsComponent {
 
   @Output() bookmarkToggled = new EventEmitter<boolean>();
 
+  showStatusModal = false;
+
   constructor(
     private authService: AuthService,
     private wishlistService: WishlistService,
+    private userGameService: UserGameService,
     private router: Router
   ) {}
 
+  // ADD WISHLIST
   toggleBookmark(event: MouseEvent) {
     event.stopPropagation();
 
@@ -55,4 +61,26 @@ export class GameActionsComponent {
       console.error(err);
     }
   }
+
+
+  // STATUS
+  
+  openStatusModal(event: MouseEvent) {
+    event.stopPropagation();
+    if (!this.authService.isLoggedIn()) {
+      alert('Please log in to update game status');
+      this.router.navigate(['/login']);
+      return;
+    }
+    this.showStatusModal = true;
+  }
+
+  onStatusSelected(status: string) {
+    this.userGameService.setGameStatus(this.game.id, status).subscribe({
+      next: () => console.log(`Game status set to ${status}`),
+      error: (err) => this.handleAuthError(err)
+    });
+  }
+
+
 }

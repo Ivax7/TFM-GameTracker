@@ -1,7 +1,16 @@
 <div class="icons">
 
-  <img src="assets/images/icons/controller.svg" alt="Controller" width="16" height="16"/>
+  <!-- Status -->
+  <img 
+    src="assets/images/icons/controller.svg" 
+    alt="Controller" 
+    width="16" 
+    height="16"
+    (click)="openStatusModal($event)"
+    title="Set collection status"
+  />
 
+  <!-- Wishlist -->
   <img
   (click)="toggleBookmark($event)"
   [src]="isBookmarked ? 'assets/images/icons/bookmark-filled.svg' : 'assets/images/icons/bookmark.svg'"
@@ -13,4 +22,11 @@
 
   <img src="assets/images/icons/list.svg" alt="List" width="16" height="16"/>
   
+
+  <app-game-status-modal
+    class="status-modal"
+    [show]="showStatusModal"
+    (close)="showStatusModal = false"
+    (selectStatus)="onStatusSelected($event)" 
+  ></app-game-status-modal>
 </div>
