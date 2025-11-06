@@ -1,1 +1,23 @@
-<p>collection-status works!</p>
+<div class="collection-status">
+  <h2>My Collection</h2>
+
+  @for (status of statuses; track status) {
+    <section class="status-section">
+      <h3>{{ status }}</h3>
+
+      @if (gamesByStatus[status]?.length) {
+        <div class="games-grid">
+          @for (item of gamesByStatus[status]; track item.id) {
+            <div class="game-card">
+              <img [src]="item.backgroundImage" alt="{{ item.name }}" />
+              <p>{{ item.name }}</p>
+              <p>ID: {{ item.id }}</p>
+            </div>
+          }
+        </div>
+      } @else {
+        <p class="empty">No games marked as {{ status.toLowerCase() }}</p>
+      }
+    </section>
+  }
+</div>

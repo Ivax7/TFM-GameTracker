@@ -8,7 +8,7 @@ export class Wishlist {
   id: number;
 
   @Column()
-  gameId: number; // ID del juego (por ejemplo, el de RAWG)
+  gameId: number;
 
   @Column()
   gameName: string;
@@ -16,6 +16,6 @@ export class Wishlist {
   @Column({ nullable: true })
   backgroundImage: string;
 
-  @ManyToOne(() => User, user => user.wishlist, { onDelete: 'CASCADE' })
+  @ManyToOne(() => User, (user) => user.wishlist, { onDelete: 'CASCADE' })
   user: User;
 }

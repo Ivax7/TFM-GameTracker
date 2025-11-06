@@ -1,5 +1,5 @@
 @if (show) {
-  <div class="modal-backdrop" (click)="close.emit()"></div>
+  <div class="modal-backdrop" (click)="onBackdropClick($event)"></div>
   <div class="modal" (click)="$event.stopPropagation()">
     <h3>Select game status</h3>
     <ul>
@@ -7,6 +7,6 @@
         <li (click)="onSelect(status, $event)">{{ status }}</li>
       }
     </ul>
-    <button class="close-btn" (click)="close.emit()">Cancel</button>
+    <button class="close-btn" (click)="onCloseClick($event)">Cancel</button>
   </div>
 }

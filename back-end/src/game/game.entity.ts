@@ -1,17 +1,23 @@
 // src/game/game.entity.ts
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { UserGame } from 'src/user-game/user-game.entity';
+import { Entity, Column, PrimaryColumn, OneToMany } from 'typeorm';
+import { UserGame } from '../user-game/user-game.entity';
 
 @Entity()
 export class Game {
-  @PrimaryGeneratedColumn()
+  @PrimaryColumn()
   id: number;
 
-  @Column()
-  title: string;
+  @Column('varchar', { nullable: false })
+  name: string;
 
-  @Column({ nullable: true })
-  platform: string;
+  @Column('varchar', { nullable: true })
+  backgroundImage: string | null;
+
+  @Column('varchar', { nullable: true })
+  released: string | null;
+
+  @Column('float', { nullable: true })
+  rating: number | null;
 
   @OneToMany(() => UserGame, (userGame) => userGame.game)
   userGames: UserGame[];

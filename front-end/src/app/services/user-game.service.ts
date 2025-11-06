@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
@@ -8,7 +8,39 @@ export class UserGameService {
 
   constructor(private http: HttpClient) {}
 
-  setGameStatus(gameId: number, status: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/status`, { gameId, status });
+  private getAuthHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token');
+    return new HttpHeaders({
+      Authorization: token ? `Bearer ${token}` : ''
+    });
+  }
+
+  setGameStatus(
+    gameId: number,
+    status: string,
+    name?: string,
+    backgroundImage?: string,
+    released?: string,
+    rating?: number
+  ): Observable<any> {
+    const headers = this.getAuthHeaders();
+
+    return this.http.post(
+      `${this.apiUrl}/status`,
+      {
+        gameId,
+        status,
+        name,
+        backgroundImage,
+        released,
+        rating
+      },
+      { headers }
+    );
+  }
+
+  getGamesByStatus(status: string): Observable<any[]> {
+    const headers = this.getAuthHeaders();
+    return this.http.get<any[]>(`${this.apiUrl}/${status}`, { headers });
   }
 }

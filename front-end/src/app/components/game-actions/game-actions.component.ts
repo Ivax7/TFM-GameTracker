@@ -54,6 +54,7 @@ export class GameActionsComponent {
   } 
   private handleAuthError(err: any) {
     if (err.status === 401) {
+      console.log(err)
       alert('Tu sesión ha expirado. Por favor, inicia sesión nuevamente.');
       this.authService.logout();
       this.router.navigate(['/login']);
@@ -76,11 +77,18 @@ export class GameActionsComponent {
   }
 
   onStatusSelected(status: string) {
-    this.userGameService.setGameStatus(this.game.id, status).subscribe({
-      next: () => console.log(`Game status set to ${status}`),
-      error: (err) => this.handleAuthError(err)
-    });
+    this.userGameService
+      .setGameStatus(this.game.id, status, this.game.name, this.game.background_image)
+      .subscribe({
+        next: () => {
+          console.log(`Game "${this.game.name}" status set to ${status}`);
+          this.showStatusModal = false;
+          alert(`Game status set to "${status}"`);
+        },
+        error: (err) => this.handleAuthError(err),
+      });
   }
+
 
 
 }

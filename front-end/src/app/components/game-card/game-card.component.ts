@@ -40,5 +40,4 @@ export class GameCardComponent {
     this.bookmarkToggled.emit(newState);
   }
 
-
 }

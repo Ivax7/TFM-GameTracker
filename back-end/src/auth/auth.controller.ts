@@ -1,13 +1,13 @@
 import { Controller, Post, Body, UseGuards, Get } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
-import { UserService } from '../user/user.service'; // usa ruta relativa
+import { UserService } from '../user/user.service';
 
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
-    private readonly userService: UserService, // 👈 inyectamos correctamente
+    private readonly userService: UserService,
   ) {}
 
   @Post('register')
@@ -20,8 +20,6 @@ export class AuthController {
     return this.authService.login(body.email, body.password);
   }
 
-
-  // 👇 ejemplo de ruta protegida (requiere token)
   @UseGuards(AuthGuard('jwt'))
   @Get('users')
   async findAll() {

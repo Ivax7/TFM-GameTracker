@@ -1,15 +1,47 @@
-import { Controller, Patch, Body, Req, UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { Request } from 'express';
+import { Controller, Post, Body, UseGuards, Req, Get, Param } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { UserGameService } from './user-game.service';
 
-@Controller('user-game')
-export class UserGameController {
-  constructor(private readonly service: UserGameService) {}
+interface AuthRequest extends Request {
+  user: {
+    id: number;
+    email?: string;
+    username?: string;
+  };
+}
 
-  @UseGuards(JwtAuthGuard)
-  @Patch('status')
-  async updateStatus(@Req() req, @Body() body: { gameId: number; status: 'Playing' | 'Played' | 'Completed' | 'Abandoned' }) {
+@Controller('user-games')
+@UseGuards(AuthGuard('jwt'))
+export class UserGameController {
+  constructor(private readonly userGameService: UserGameService) {}
+
+  @Post('status')
+  async setStatus(
+    @Req() req: AuthRequest,
+    @Body() body: { 
+      gameId: number; 
+      name?: string; 
+      backgroundImage?: string; 
+      status: string 
+    },
+  ) {
     const userId = req.user.id;
-    return this.service.setStatus(userId, body.gameId, body.status);
+    return this.userGameService.setStatus(
+      userId,
+      body.gameId,
+      body.status as 'Playing' | 'Played' | 'Completed' | 'Abandoned',
+      body.name,
+      body.backgroundImage, // ✅ añadimos esto
+    );
+  }
+
+  @Get(':status')
+  async getGamesByStatus(@Req() req: AuthRequest, @Param('status') status: string) {
+    const userId = req.user.id;
+    return this.userGameService.findByStatus(
+      userId,
+      status as 'Playing' | 'Played' | 'Completed' | 'Abandoned',
+    );
   }
 }
