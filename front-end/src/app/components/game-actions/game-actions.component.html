@@ -24,9 +24,11 @@
   
 
   <app-game-status-modal
-    class="status-modal"
-    [show]="showStatusModal"
-    (close)="showStatusModal = false"
-    (selectStatus)="onStatusSelected($event)" 
+  class="status-modal"
+  [show]="showStatusModal"
+  [currentStatus]="currentStatus"
+  (close)="showStatusModal = false"
+  (selectStatus)="onStatusSelected($event)"
   ></app-game-status-modal>
+
 </div>

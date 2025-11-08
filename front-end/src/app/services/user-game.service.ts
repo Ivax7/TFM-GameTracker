@@ -43,4 +43,11 @@ export class UserGameService {
     const headers = this.getAuthHeaders();
     return this.http.get<any[]>(`${this.apiUrl}/${status}`, { headers });
   }
+
+  getGameStatus(gameId: number): Observable<{ status: string }> {
+    console.log('🔍 Solicitando status para gameId:', gameId);
+    const headers = this.getAuthHeaders();
+    return this.http.get<{ status: string }>(`${this.apiUrl}/status/${gameId}`, { headers });
+  }
+
 }

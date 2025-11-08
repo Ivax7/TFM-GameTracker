@@ -10,22 +10,28 @@ import { CommonModule } from '@angular/common';
 })
 export class GameStatusModalComponent {
   @Input() show = false;
+  @Input() currentStatus: string | null = null;
   @Output() close = new EventEmitter<void>();
   @Output() selectStatus = new EventEmitter<string>();
 
-  statuses = ['Playing', 'Played', 'Completed 100%', 'Abandoned'];
+  statuses = [
+    { key: 'Playing', label: 'Playing' },
+    { key: 'Played', label: 'Played' },
+    { key: 'Completed', label: 'Completed 100%' },
+    { key: 'Abandoned', label: 'Abandoned' },
+  ];
 
   onSelect(status: string, event: MouseEvent) {
     event.stopPropagation();
     this.selectStatus.emit(status);
     this.close.emit();
   }
-  
+
   onBackdropClick(event: MouseEvent) {
     event.stopPropagation();
     this.close.emit();
   }
-  
+
   onCloseClick(event: MouseEvent) {
     event.stopPropagation();
     this.close.emit();

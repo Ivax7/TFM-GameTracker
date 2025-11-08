@@ -41,6 +41,12 @@
   background: #00bcd4;
 }
 
+li.selected {
+  background: #4caf50 !important;
+  color: white;
+  font-weight: bold;
+}
+
 .close-btn {
   margin-top: 1rem;
   background: none;

@@ -1,17 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserGameService } from '../../../services/user-game.service';
+import { GameActionsComponent } from "../../game-actions/game-actions.component";
+import { GameCardComponent } from '../../game-card/game-card.component';
 
 @Component({
   selector: 'app-collection-status',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, GameActionsComponent, GameCardComponent],
   templateUrl: './collection-status.component.html',
   styleUrls: ['./collection-status.component.css']
 })
 export class CollectionStatusComponent implements OnInit {
-  statuses = ['Playing', 'Played', 'Completed', 'Abandoned'];
+  
+  statuses = [
+    { key: 'Playing', label: 'Playing' },
+    { key: 'Played', label: 'Played' },
+    { key: 'Completed', label: 'Completed 100%' },
+    { key: 'Abandoned', label: 'Abandoned' },
+  ];
+
+  @Input() game!: any;
   gamesByStatus: Record<string, any[]> = {};
+
+  // Pestañas
+  selectedTab: string = 'Playing';
 
   constructor(private userGameService: UserGameService) {}
 
@@ -19,23 +32,26 @@ export class CollectionStatusComponent implements OnInit {
     this.loadGames();
   }
 
-loadGames() {
-  for (const status of this.statuses) {
-    this.userGameService.getGamesByStatus(status).subscribe({
-      next: (games) => {
-        console.log(`✅ Data received for status "${status}":`, games);
-        // Aplanamos para que el HTML sea más limpio:
-        this.gamesByStatus[status] = games.map((g: any) => ({
-          id: g.game?.id,
-          name: g.game?.name,
-          backgroundImage: g.game?.backgroundImage,
-          status: g.status,
-        }));
-      },
-      error: (err) => console.error(`❌ Error loading ${status} games:`, err),
-    });
+  loadGames() {
+    for (const status of this.statuses) {
+      this.userGameService.getGamesByStatus(status.key).subscribe({
+        next: (games) => {
+          console.log(`✅ Data received for status "${status}":`, games);
+          this.gamesByStatus[status.key] = games.map((g: any) => ({
+            id: g.game?.id,
+            name: g.game?.name,
+            background_image: g.game?.backgroundImage,
+            status: g.status,
+          }));
+        },
+        error: (err) => console.error(`Error loading ${status} games:`, err),
+      });
+    }
   }
-}
+  
+  selectTab(statusKey: string) {
+    this.selectedTab = statusKey;
+  }
 
 
 }

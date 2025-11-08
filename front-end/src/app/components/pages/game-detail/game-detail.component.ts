@@ -3,7 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 import { RawgService } from '../../../services/rawg.service';
 import { GameActionsComponent } from '../../game-actions/game-actions.component';
 import { CommonModule } from '@angular/common';
-import { WishlistService } from '../../../services/wishlist.service';
 
 @Component({
   selector: 'app-game-detail',
@@ -13,16 +12,13 @@ import { WishlistService } from '../../../services/wishlist.service';
   styleUrls: ['./game-detail.component.css']
 })
 export class GameDetailComponent implements OnInit {
-
   gameId!: number;
   game: any;
-  isBookmarked = false;
   loading = true;
 
   constructor(
     private route: ActivatedRoute,
-    private rawgService: RawgService,
-    private wishlistService: WishlistService,
+    private rawgService: RawgService
   ) {}
 
   ngOnInit() {
@@ -37,8 +33,6 @@ export class GameDetailComponent implements OnInit {
       next: (data: any) => {
         this.game = data;
         this.loading = false;
-
-        this.checkIfBookmarked();
       },
       error: (err) => {
         console.error('Error cargando el juego:', err);
@@ -46,19 +40,4 @@ export class GameDetailComponent implements OnInit {
       }
     });
   }
-
-  checkIfBookmarked() {
-    this.wishlistService.getWishlist().subscribe({
-      next: (wishlist) => {
-        const safeWishlist = Array.isArray(wishlist) ? wishlist : [];
-        this.isBookmarked = safeWishlist.some((g: any) => g.gameId === this.game.id);
-      },
-      error: (err) => console.error('Error al comprobar wishlist:', err)
-    });
-  }
-  
-  onBookmarkToggled(isBookmarked: boolean) {
-    this.isBookmarked = isBookmarked;
-  }
-
 }

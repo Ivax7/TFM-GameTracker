@@ -44,4 +44,14 @@ export class UserGameController {
       status as 'Playing' | 'Played' | 'Completed' | 'Abandoned',
     );
   }
+
+  @Get('status/:gameId')
+  async getGameStatus(@Req() req: AuthRequest, @Param('gameId') gameId: number) {
+    const userId = req.user.id;
+    const userGame = await this.userGameService.repo.findOne({
+      where: { user: { id: userId }, game: { id: gameId } },
+    });
+    return { status: userGame?.status || null };
+  }
+
 }

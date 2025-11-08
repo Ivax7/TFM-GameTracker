@@ -1,23 +1,27 @@
 <div class="collection-status">
   <h2>My Collection</h2>
 
-  @for (status of statuses; track status) {
-    <section class="status-section">
-      <h3>{{ status }}</h3>
+  <ul class="tabs">
+    @for (status of statuses; track status.key) {
+      <li 
+        (click)="selectTab(status.key)"
+        [class.active]="selectedTab === status.key"
+      >
+        {{ status.label }}
+      </li>
+    }
+  </ul>
 
-      @if (gamesByStatus[status]?.length) {
-        <div class="games-grid">
-          @for (item of gamesByStatus[status]; track item.id) {
-            <div class="game-card">
-              <img [src]="item.backgroundImage" alt="{{ item.name }}" />
-              <p>{{ item.name }}</p>
-              <p>ID: {{ item.id }}</p>
-            </div>
-          }
-        </div>
-      } @else {
-        <p class="empty">No games marked as {{ status.toLowerCase() }}</p>
-      }
-    </section>
-  }
+<!-- Juegos de la pestaña seleccionada -->
+  <section class="status-section">
+    @if (gamesByStatus[selectedTab].length) {
+      <div class="games-grid">
+        @for (item of gamesByStatus[selectedTab]; track item.id) {
+          <app-game-card [game]="item"></app-game-card>
+        }
+      </div>
+    } @else {
+      <p class="empty">No games marked as {{ selectedTab.toLowerCase() }}</p>
+    }
+  </section>
 </div>
