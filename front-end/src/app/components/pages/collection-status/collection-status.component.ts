@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { UserGameService } from '../../../services/user-game.service';
 import { GameActionsComponent } from "../../game-actions/game-actions.component";
 import { GameCardComponent } from '../../game-card/game-card.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-collection-status',
@@ -26,7 +27,10 @@ export class CollectionStatusComponent implements OnInit {
   // Pestañas
   selectedTab: string = 'Playing';
 
-  constructor(private userGameService: UserGameService) {}
+  constructor(
+    private userGameService: UserGameService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.loadGames();
@@ -53,5 +57,8 @@ export class CollectionStatusComponent implements OnInit {
     this.selectedTab = statusKey;
   }
 
+  seeGameDetail(gameId: number) {
+    this.router.navigate(['/detail', gameId]);
+  }
 
 }

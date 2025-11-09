@@ -1,0 +1,27 @@
+<div *ngIf="showRating">
+  <div class="modal-backdrop" (click)="onBackdropClick($event)"></div>
+  <div class="modal" (click)="$event.stopPropagation()">
+    <h3>Rate this game</h3>
+    
+    <div class="stars">
+      <ng-container *ngFor="let i of [1,2,3,4,5]">
+        <img
+          src="../../../assets/images/icons/star.svg"
+          height="26px" 
+          width="26px"
+          [class.filled]="i <= (hover || rating)"
+          (mouseenter)="setHover(i)"
+          (mouseleave)="clearHover()"
+          (click)="selectRating(i); $event.stopPropagation()"
+          alt="{{ i }} stars"
+        />
+      </ng-container>
+    </div>
+
+    <p>Your rating: {{ rating }} ⭐</p>
+
+    <button (click)="onConfirm(); $event.stopPropagation()">Save</button>
+    <button (click)="onClose(); $event.stopPropagation()">Cancel</button>
+
+  </div>
+</div>

@@ -19,11 +19,11 @@ export class UserGameController {
   @Post('status')
   async setStatus(
     @Req() req: AuthRequest,
-    @Body() body: { 
-      gameId: number; 
-      name?: string; 
-      backgroundImage?: string; 
-      status: string 
+    @Body() body: {
+      gameId: number;
+      name: string;
+      backgroundImage?: string;
+      status: string;
     },
   ) {
     const userId = req.user.id;
@@ -32,10 +32,11 @@ export class UserGameController {
       body.gameId,
       body.status as 'Playing' | 'Played' | 'Completed' | 'Abandoned',
       body.name,
-      body.backgroundImage, // ✅ añadimos esto
+      body.backgroundImage,
     );
   }
 
+  // Obtener juegos filtrados por estado
   @Get(':status')
   async getGamesByStatus(@Req() req: AuthRequest, @Param('status') status: string) {
     const userId = req.user.id;
@@ -45,13 +46,25 @@ export class UserGameController {
     );
   }
 
+  // Obtener el status de un juego concreto
   @Get('status/:gameId')
   async getGameStatus(@Req() req: AuthRequest, @Param('gameId') gameId: number) {
     const userId = req.user.id;
-    const userGame = await this.userGameService.repo.findOne({
-      where: { user: { id: userId }, game: { id: gameId } },
-    });
-    return { status: userGame?.status || null };
+    const userGame = await this.userGameService.findUserGameById(userId, gameId);
+
+    return {
+      status: userGame?.status || null,
+      rating: userGame?.rating ?? null,
+    };
   }
 
+  // Endpoint para guardar el rating
+  @Post('rating')
+  async setRating(
+    @Req() req: AuthRequest,
+    @Body() body: { gameId: number; rating: number },
+  ) {
+    const userId = req.user.id;
+    return this.userGameService.setRating(userId, body.gameId, body.rating);
+  }
 }

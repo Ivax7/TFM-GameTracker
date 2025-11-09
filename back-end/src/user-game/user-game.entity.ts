@@ -16,6 +16,12 @@ export class UserGame {
   @JoinColumn({ name: 'gameId' })
   game: Game;
 
+  @Column('varchar', { nullable: true })
+  gameName: string;
+
   @Column()
   status: string;
+
+  @Column({ type: 'float', nullable: true })
+  rating?: number;
 }

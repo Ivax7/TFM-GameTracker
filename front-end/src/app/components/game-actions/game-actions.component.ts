@@ -5,11 +5,12 @@ import { WishlistService } from '../../services/wishlist.service';
 import { Router } from '@angular/router';
 import { GameStatusModalComponent } from '../game-status-modal/game-status-modal.component';
 import { UserGameService } from '../../services/user-game.service';
+import { RatingModalComponent } from '../rating-modal/rating-modal.component';
 
 @Component({
   selector: 'app-game-actions',
   standalone: true,
-  imports: [CommonModule, GameStatusModalComponent],
+  imports: [CommonModule, GameStatusModalComponent, RatingModalComponent],
   templateUrl: './game-actions.component.html',
   styleUrl: './game-actions.component.css'
 })
@@ -22,6 +23,9 @@ export class GameActionsComponent implements OnInit {
   currentStatus: string | null = null;
   showStatusModal = false;
   isLoadingStatus = false;
+  
+  currentRating: number | null = null;
+  showRatingModal = false;
 
   constructor(
     private authService: AuthService,
@@ -42,12 +46,15 @@ export class GameActionsComponent implements OnInit {
     this.userGameService.getGameStatus(this.game.id).subscribe({
       next: (res) => {
         this.currentStatus = res.status || null;
+        this.currentRating = res.rating ?? 0;
+        console.log(this.currentRating)
         this.isLoadingStatus = false;
-        console.log('📊 Status cargado desde backend:', this.currentStatus);
+        console.log('Status cargado desde backend:', this.currentStatus);
       },
       error: (err) => {
         console.log('Error cargando status del juego:', err);
         this.currentStatus = null;
+        this.currentRating = 0;
         this.isLoadingStatus = false;
       }
     });
@@ -73,14 +80,18 @@ export class GameActionsComponent implements OnInit {
         next: () => {
           this.currentStatus = status;
           this.showStatusModal = false;
-          console.log(`✅ Status actualizado a: ${status}`);
+          console.log(`Status actualizado a: ${status}`);
+          
+          if(['Playing','Played', 'Completed', 'Abandoned'].includes(status)) {
+            this.showRatingModal = true
+          }
         },
         error: (err) => this.handleAuthError(err),
       });
   }
 
   // BOOKMARK
-    toggleBookmark(event: MouseEvent) {
+  toggleBookmark(event: MouseEvent) {
     event.stopPropagation();
     if (!this.authService.isLoggedIn()) {
       alert('Please, login to save games in your wishlist');
@@ -117,6 +128,21 @@ export class GameActionsComponent implements OnInit {
     });
   }
 
+  onSaveRating(value: number) {
+    console.log(`🎮 User rated "${this.game.name}" with ${value} stars`);
+
+    this.userGameService.setGameRating(this.game.id, value).subscribe({
+      next: (res) => {
+        this.showRatingModal = false;
+        this.currentRating = value;
+        console.log(`✅ Rating saved correctly: ${this.game.name} - ${value}`);
+        console.log('Response from backend:', res); // Esto muestra la fila guardada en la tabla user_game
+      },
+      error: (err) => console.error('Error saving rating:', err)
+    });
+  }
+
+
   private handleAuthError(err: any) {
     if (err.status === 401) {
       alert('Tu sesión ha expirado. Por favor, inicia sesión nuevamente.');
@@ -126,4 +152,6 @@ export class GameActionsComponent implements OnInit {
       console.error(err);
     }
   }
+
+
 }

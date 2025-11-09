@@ -17,7 +17,10 @@
     @if (gamesByStatus[selectedTab].length) {
       <div class="games-grid">
         @for (item of gamesByStatus[selectedTab]; track item.id) {
-          <app-game-card [game]="item"></app-game-card>
+          <app-game-card
+            [game]="item"
+            (cardClicked)="seeGameDetail($event)"
+            ></app-game-card>
         }
       </div>
     } @else {

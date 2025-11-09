@@ -1,0 +1,52 @@
+.stars {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  margin: 1rem 0;
+}
+
+.stars img {
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  filter: grayscale(100%);
+  transition: filter 0.2s;
+}
+
+.stars img.filled {
+  filter: none; /* estrella dorada si quieres, puedes usar un SVG dorado */
+}
+
+/* resto del modal */
+.modal-backdrop {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.6);
+  z-index: 1000;
+}
+
+.modal {
+  position: fixed;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  background: #222;
+  color: #fff;
+  padding: 2rem;
+  border-radius: 10px;
+  z-index: 1001;
+  width: 300px;
+  text-align: center;
+}
+
+button {
+  margin: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: #00bfff;
+  border: none;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover { background: #009acd; }

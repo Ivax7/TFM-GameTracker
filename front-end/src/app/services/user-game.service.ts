@@ -44,10 +44,21 @@ export class UserGameService {
     return this.http.get<any[]>(`${this.apiUrl}/${status}`, { headers });
   }
 
-  getGameStatus(gameId: number): Observable<{ status: string }> {
-    console.log('🔍 Solicitando status para gameId:', gameId);
+  getGameStatus(gameId: number): Observable<{ status: string; rating: number | null }> {
     const headers = this.getAuthHeaders();
-    return this.http.get<{ status: string }>(`${this.apiUrl}/status/${gameId}`, { headers });
+      return this.http.get<{ status: string; rating: number | null }>(
+      `${this.apiUrl}/status/${gameId}`,
+      { headers }
+      );
   }
 
+  // Rating
+  setGameRating(gameId: number, rating: number): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.http.post(
+      `${this.apiUrl}/rating`,
+      { gameId, rating },
+      { headers }
+    );
+  }
 }

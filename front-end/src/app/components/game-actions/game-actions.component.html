@@ -20,6 +20,7 @@
   title="Guardar en wishlist"
   />
 
+  <!-- Personalized Lists -->
   <img src="assets/images/icons/list.svg" alt="List" width="16" height="16"/>
   
 
@@ -28,7 +29,17 @@
   [show]="showStatusModal"
   [currentStatus]="currentStatus"
   (close)="showStatusModal = false"
-  (selectStatus)="onStatusSelected($event)"
-  ></app-game-status-modal>
+  (selectStatus)="onStatusSelected($event)">
+  </app-game-status-modal>
+
+  <!-- Rating Modal -->
+  <app-rating-modal
+    class="rating-modal"
+    [showRating]="showRatingModal"
+    [initialRating]="currentRating || 0"
+    (close)="showRatingModal = false"
+    (save)="onSaveRating($event)">
+  </app-rating-modal>
+
 
 </div>
