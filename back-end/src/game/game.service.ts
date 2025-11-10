@@ -1,4 +1,3 @@
-// src/game/game.service.ts
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -17,34 +16,46 @@ export class GameService {
     let game = await this.repo.findOne({ where: { id: data.id } });
 
     if (!game) {
-      // No existe → lo creamos
-      game = this.repo.create({
+      const newGame = this.repo.create({
         id: data.id,
         name: data.name || 'Unknown Game',
         backgroundImage: data.backgroundImage || null,
         released: data.released || null,
-        rating: data.rating || null,
+        rating: data.rating ?? null,
       });
-    } else {
-      // Existe → actualizamos si el nombre está vacío o es "Unknown Game"
-      if (
-        (!game.name || game.name === 'Unknown Game') &&
-        data.name &&
-        data.name !== 'Unknown Game'
-      ) {
-        game.name = data.name;
-      }
-      if (!game.backgroundImage && data.backgroundImage) {
-        game.backgroundImage = data.backgroundImage;
-      }
-      if (!game.released && data.released) {
-        game.released = data.released;
-      }
-      if (!game.rating && data.rating) {
-        game.rating = data.rating;
-      }
+      return await this.repo.save(newGame);
     }
 
-    return await this.repo.save(game);
+    const updatedFields: Partial<Game> = {};
+
+    if (
+      (!game.name || game.name === 'Unknown Game') &&
+      data.name &&
+      data.name !== 'Unknown Game'
+    ) {
+      updatedFields.name = data.name;
+    }
+
+    if (!game.backgroundImage && data.backgroundImage) {
+      updatedFields.backgroundImage = data.backgroundImage;
+    }
+
+    if (!game.released && data.released) {
+      updatedFields.released = data.released;
+    }
+
+    if (!game.rating && data.rating) {
+      updatedFields.rating = data.rating;
+    }
+
+    if (Object.keys(updatedFields).length === 0) {
+      return game;
+    }
+
+    await this.repo.update(game.id, updatedFields);
+
+    const updatedGame = await this.repo.findOne({ where: { id: game.id } });
+    if (!updatedGame) throw new Error('Game not found after update');
+    return updatedGame;
   }
 }

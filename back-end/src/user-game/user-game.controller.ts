@@ -23,6 +23,8 @@ export class UserGameController {
       gameId: number;
       name: string;
       backgroundImage?: string;
+      released?: string;
+      rating?: number;
       status: string;
     },
   ) {
@@ -33,6 +35,8 @@ export class UserGameController {
       body.status as 'Playing' | 'Played' | 'Completed' | 'Abandoned',
       body.name,
       body.backgroundImage,
+      body.released,
+      body.rating,
     );
   }
 

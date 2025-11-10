@@ -18,44 +18,81 @@ export class UserGameService {
   ) {}
 
   // Crear o actualizar status y gameName
-  async setStatus(
-    userId: number,
-    gameId: number,
-    status: GameStatus,
-    gameName?: string,
-    backgroundImage?: string,
-  ) {
-    let userGame = await this.repo.findOne({
-      where: { user: { id: userId }, game: { id: gameId } },
+async setStatus(
+  userId: number,
+  gameId: number,
+  status: GameStatus,
+  gameName?: string,
+  backgroundImage?: string,
+  released?: string,
+  rating?: number
+) {
+  const game = await this.gameService.findOrCreate({
+    id: gameId,
+    name: gameName,
+    backgroundImage,
+    released,
+    rating,
+  });
+
+  let userGame = await this.repo.findOne({
+    where: { user: { id: userId }, game: { id: gameId } },
+    relations: ['user', 'game'],
+  });
+
+  const user = await this.userRepo.findOne({ where: { id: userId } });
+  if (!user) throw new Error('User not found');
+  
+    userGame = this.repo.create({
+      user,
+      game,
+      status,
+      gameName: game.name || 'Unknown Game',
     });
 
-    if (!userGame) {
-      userGame = this.repo.create({
-        user: { id: userId } as any,
-        game: { id: gameId } as any,
-        status,
-        gameName: gameName || 'Unknown Game',
-      });
-    } else {
-      userGame.status = status;
-      if (gameName) userGame.gameName = gameName;
-    }
 
+  const hasChanges =
+    userGame.status !== status || userGame.gameName !== game.name;
+
+  if (hasChanges) {
+    userGame.status = status;
+    userGame.gameName = game.name;
     return this.repo.save(userGame);
   }
+
+  return userGame;
+}
+
 
   // Guardar rating
   async setRating(userId: number, gameId: number, rating: number) {
-    const userGame = await this.repo.findOne({
+    let userGame = await this.repo.findOne({
       where: { user: { id: userId }, game: { id: gameId } },
+      relations: ['user', 'game'],
     });
 
-    if (!userGame) throw new Error('UserGame relation not found');
+    const user = await this.userRepo.findOne({ where: { id: userId } });
+    if (!user) throw new Error('User not found');
 
+    const game = await this.gameService.findOrCreate({ id: gameId });
+
+    if (!userGame) {
+      // crear relación si no existe
+      userGame = this.repo.create({
+        user,
+        game,
+        status: 'Playing', // o algún valor por defecto
+        gameName: game.name || 'Unknown Game',
+        rating,
+      });
+      return this.repo.save(userGame);
+    }
+
+    // actualizar rating si ya existe
     userGame.rating = rating;
     return this.repo.save(userGame);
   }
-
+  
   // Obtener juegos por status
   async findByStatus(userId: number, status: GameStatus) {
     return this.repo.find({

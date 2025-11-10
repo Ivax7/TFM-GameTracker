@@ -8,11 +8,11 @@ export class UserGame {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => User, (user) => user.userGames, { eager: true, onDelete: 'CASCADE' })
+  @ManyToOne(() => User, (user) => user.userGames, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'userId' })
   user: User;
 
-  @ManyToOne(() => Game, (game) => game.userGames, { eager: true, onDelete: 'CASCADE' })
+  @ManyToOne(() => Game, (game) => game.userGames, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'gameId' })
   game: Game;
 
