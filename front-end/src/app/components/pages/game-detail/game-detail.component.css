@@ -62,11 +62,23 @@
 
 /* Rating */
 .rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   margin-right: 2rem;
   font-size: 1.2rem;
   color: #ffcc00;
   font-weight: 500;
+  line-height: 1;
 }
+
+.rating .star {
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+  filter: drop-shadow(0 0 3px rgba(255, 215, 0, 0.3)); /* sutil brillo */
+}
+
 
 
 /* Descripción */
@@ -163,6 +175,7 @@
 .info-item a:hover {
   text-decoration: underline;
 }
+
 
 /* 📱 Responsive */
 @media (max-width: 1200px) {

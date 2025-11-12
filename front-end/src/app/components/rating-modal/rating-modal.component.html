@@ -6,10 +6,11 @@
     <div class="stars">
       <ng-container *ngFor="let i of [1,2,3,4,5]">
         <img
-          src="../../../assets/images/icons/star.svg"
+          class="star"
+          [src]="i <= (hover > 0 ? hover : rating) ? '../../../assets/images/icons/star-filled.svg' : '../../../assets/images/icons/star.svg'"
+          [class.filled]="i <= (hover > 0 ? hover : rating)"
           height="26px" 
           width="26px"
-          [class.filled]="i <= (hover || rating)"
           (mouseenter)="setHover(i)"
           (mouseleave)="clearHover()"
           (click)="selectRating(i); $event.stopPropagation()"
@@ -18,10 +19,16 @@
       </ng-container>
     </div>
 
-    <p>Your rating: {{ rating }} ⭐</p>
+    <p class="user-rating">
+      Your rating: <span class="rating-value">{{ rating }}</span>
+      <img class="star" src="../../../assets/images/icons/star-filled.svg" alt="⭐">
+    </p>
 
-    <button (click)="onConfirm(); $event.stopPropagation()">Save</button>
-    <button (click)="onClose(); $event.stopPropagation()">Cancel</button>
+
+    <div class="modal-buttons">
+      <button (click)="onConfirm(); $event.stopPropagation()">Save</button>
+      <button (click)="onClose(); $event.stopPropagation()">Cancel</button>
+    </div>
 
   </div>
 </div>
