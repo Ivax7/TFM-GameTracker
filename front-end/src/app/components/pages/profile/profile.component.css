@@ -1,0 +1,40 @@
+.profile-container {
+  display: flex;
+  gap: 2rem;
+  padding: 2rem;
+  font-family: 'Poppins', sans-serif;
+  color: #f0f0f0;
+  background-color: #111;
+  min-height: 100vh;
+}
+
+.profile-sidebar {
+  flex: 1;
+  background-color: #1a1a1a;
+  padding: 1.5rem;
+}
+
+.profile-sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.profile-sidebar li {
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.profile-sidebar li:hover {
+  color: #00bfff;
+}
+
+.profile-sidebar li.active {
+  color: #00bfff;
+  font-weight: 600;
+}
+
+.profile-content {
+  flex: 3;
+}

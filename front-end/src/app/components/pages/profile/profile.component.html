@@ -1,0 +1,32 @@
+<div class="profile-container">
+  <!-- Sidebar -->
+  <div class="profile-sidebar">
+    <ul>
+      <li 
+        [class.active]="selectedTab === 'profile'" 
+        (click)="selectTab('profile')">
+        Profile
+      </li>
+      <li 
+        [class.active]="selectedTab === 'account'" 
+        (click)="selectTab('account')">
+        Account
+      </li>
+      <li 
+        [class.active]="selectedTab === 'email'" 
+        (click)="selectTab('email')">
+        Email
+      </li>
+    </ul>
+  </div>
+
+  <!-- Content -->
+  <div class="profile-content">
+    <ng-container [ngSwitch]="selectedTab">
+      <p *ngSwitchCase="'profile'">Profile</p>
+      <p *ngSwitchCase="'account'">Account</p>
+      <p *ngSwitchCase="'email'">Email</p>
+      <p *ngSwitchDefault>Selecciona una sección</p>
+    </ng-container>
+  </div>
+</div>
