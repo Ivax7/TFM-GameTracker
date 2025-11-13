@@ -1,14 +1,13 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserGameService } from '../../../services/user-game.service';
-import { GameActionsComponent } from "../../game-actions/game-actions.component";
 import { GameCardComponent } from '../../game-card/game-card.component';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-collection-status',
   standalone: true,
-  imports: [CommonModule, GameActionsComponent, GameCardComponent],
+  imports: [CommonModule, GameCardComponent],
   templateUrl: './collection-status.component.html',
   styleUrls: ['./collection-status.component.css']
 })

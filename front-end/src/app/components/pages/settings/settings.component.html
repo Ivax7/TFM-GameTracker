@@ -5,7 +5,7 @@
       <li 
         [class.active]="selectedTab === 'profile'" 
         (click)="selectTab('profile')">
-        Profile
+        User Profile
       </li>
       <li 
         [class.active]="selectedTab === 'account'" 
@@ -23,10 +23,11 @@
   <!-- Content -->
   <div class="profile-content">
     <ng-container [ngSwitch]="selectedTab">
-      <p *ngSwitchCase="'profile'">Profile</p>
-      <p *ngSwitchCase="'account'">Account</p>
-      <p *ngSwitchCase="'email'">Email</p>
-      <p *ngSwitchDefault>Selecciona una sección</p>
+      <app-user-profile *ngSwitchCase="'profile'"></app-user-profile>
+      <app-account *ngSwitchCase="'account'"></app-account>
+      <app-email *ngSwitchCase="'email'"></app-email>
+      <p *ngSwitchDefault>Select a section</p>
     </ng-container>
   </div>
+
 </div>

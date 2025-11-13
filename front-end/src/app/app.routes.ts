@@ -5,7 +5,7 @@ import { TrendingGamesComponent } from './components/pages/trending-games/trendi
 import { WishlistComponent } from './components/pages/wishlist/wishlist.component';
 import { MainPageComponent } from './main-page/main-page.component';
 import { CollectionStatusComponent } from './components/pages/collection-status/collection-status.component';
-import { ProfileComponent } from './components/pages/profile/profile.component';
+import { SettingsComponent } from './components/pages/settings/settings.component';
 
 export const routes: Routes = [
   { path: '', component: MainPageComponent },
@@ -14,6 +14,6 @@ export const routes: Routes = [
   { path: 'detail/:id', component: GameDetailComponent },
   { path: 'wishlist', component: WishlistComponent },
   { path: 'collection', component: CollectionStatusComponent },
-  { path: 'profile', component: ProfileComponent },
+  { path: 'settings', component: SettingsComponent },
   { path: '**', redirectTo: '' },
 ];

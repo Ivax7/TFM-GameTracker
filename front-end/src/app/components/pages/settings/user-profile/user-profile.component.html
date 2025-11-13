@@ -1,0 +1,35 @@
+<div class="user-profile" *ngIf="!loading; else loadingTpl">
+  <div class="profile-picture">
+    <img src="../../../../../assets/images/icons/profile.svg" alt="User avatar">
+  </div>
+
+  <form class="profile-form" (ngSubmit)="saveProfile()">
+    <div class="form-group">
+      <label for="displayName">Display Name</label>
+      <input
+        id="displayName"
+        type="text"
+        placeholder="Enter your name"
+        [(ngModel)]="displayName"
+        name="displayName"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="bio">Bio</label>
+      <textarea
+        id="bio"
+        rows="3"
+        placeholder="Tell something about yourself"
+        [(ngModel)]="bio"
+        name="bio"
+      ></textarea>
+    </div>
+
+    <button type="submit">Save</button>
+  </form>
+</div>
+
+<ng-template #loadingTpl>
+  <p>Loading profile...</p>
+</ng-template>

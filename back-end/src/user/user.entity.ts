@@ -11,16 +11,22 @@ export class User {
 
   @Column({ unique: true })
   username: string;
-
+  
   @Column()
   password: string;
-
+  
   @OneToMany(() => Wishlist, (wishlist) => wishlist.user)
   wishlist: Wishlist[];
-
+  
   @OneToMany(() => UserGame, (userGame) => userGame.user)
   userGames: UserGame[];
-
+  
   @Column({ default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
+  
+  @Column({ default: '' })
+  displayName: string;
+
+  @Column({ default: '' })
+  bio: string;
 }
