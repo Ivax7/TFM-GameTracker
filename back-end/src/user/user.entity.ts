@@ -29,4 +29,7 @@ export class User {
 
   @Column({ default: '' })
   bio: string;
+
+  @Column({ nullable: true })
+  profileImage: string;
 }

@@ -25,7 +25,7 @@ export class UserService {
     return this.userRepo.findOne({ where: { id: userId } });
   }
 
-  async updateProfile(userId: number, data: { displayName?: string; bio?: string }) {
+  async updateProfile(userId: number, data: Partial<User>) {
     await this.userRepo.update(userId, data);
     return this.findById(userId);
   }

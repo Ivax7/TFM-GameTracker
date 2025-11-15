@@ -1,6 +1,19 @@
-<div class="user-profile" *ngIf="!loading; else loadingTpl">
+<div class="user-profile">
   <div class="profile-picture">
-    <img src="../../../../../assets/images/icons/profile.svg" alt="User avatar">
+    <img [src]="profileImageUrl" alt="User avatar">
+
+    <!-- Botón para cambiar imagen -->
+    <label for="imageUpload" class="change-photo-btn">
+      <img src="../../../../../assets/images/icons/camera.svg" alt="Change photo">
+    </label>
+
+    <input
+      type="file"
+      id="imageUpload"
+      accept="image/*"
+      (change)="onImageSelected($event)"
+      hidden
+    />
   </div>
 
   <form class="profile-form" (ngSubmit)="saveProfile()">
@@ -29,7 +42,3 @@
     <button type="submit">Save</button>
   </form>
 </div>
-
-<ng-template #loadingTpl>
-  <p>Loading profile...</p>
-</ng-template>

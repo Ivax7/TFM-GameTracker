@@ -17,7 +17,8 @@ export class UserService {
     return this.http.get(`${this.apiUrl}/user/profile`, { headers: this.getAuthHeaders() });
   }
 
-  updateProfile(displayName: string, bio: string): Observable<any> {
-    return this.http.patch(`${this.apiUrl}/user/profile`, { displayName, bio }, { headers: this.getAuthHeaders() });
+  updateProfileFormData(formData: FormData) {
+    return this.http.patch(`${this.apiUrl}/user/profile`, formData, { headers: this.getAuthHeaders() });
   }
+
 }
