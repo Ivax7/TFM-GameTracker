@@ -29,4 +29,10 @@ export class UserService {
     await this.userRepo.update(userId, data);
     return this.findById(userId);
   }
+  
+  async deleteUser(userId: number) {
+    const result = await this.userRepo.delete(userId);
+    return (result.affected ?? 0) > 0;
+  }
+
 }

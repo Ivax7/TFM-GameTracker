@@ -1,1 +1,48 @@
-<p>account works!</p>
+<div class="user-account">
+  <div class="account-container">
+    <!-- Username section -->
+    <div class="username-section">
+      <label for="username">Username</label>
+      <div class="username-actions">
+        <input id="username" type="text" [value]="userName" disabled />
+        <img src="../../../../../assets/images/icons/review.svg" alt="Change Username" (click)="openModal()">
+      </div>
+    </div>
+
+    <!-- Delete account section -->
+    <div class="delete-section">
+      <h3>Delete Account</h3>
+      <p>Delete your account and account data</p>
+      <button type="button" (click)="openDeleteModal()">Delete Account</button>
+    </div>
+  </div>
+
+  <!-- Modal para cambiar username -->
+  <div class="modal" [class.show]="isModalOpen">
+    <div class="modal-content">
+      <div class="modal-top">
+        <h2>Change your username</h2>
+        <span class="close" (click)="closeModal()">&times;</span>
+      </div>
+      <p>You can change your username as often as you'd like. Changes will take place immediately.</p>
+      <label for="newUsername">Username</label>
+      <input id="newUsername" type="text" [(ngModel)]="userName" />
+      <button (click)="submitUsername()">Submit</button>
+    </div>
+  </div>
+
+  <!-- Modal para eliminar cuenta -->
+  <div class="modal" [class.show]="isDeleteModalOpen">
+    <div class="modal-content">
+      <div class="modal-top">
+        <h2>Delete your account</h2>
+        <span class="close" (click)="closeDeleteModal()">&times;</span>
+      </div>
+      <p>Are you sure you want to delete your account? This action cannot be undone.</p>
+      <div class="modal-actions">
+        <button (click)="confirmDeleteAccount()">Yes, delete</button>
+        <button (click)="closeDeleteModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>

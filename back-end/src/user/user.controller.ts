@@ -1,4 +1,4 @@
-import { Controller, Get, Patch, Body, Req, UseGuards, UnauthorizedException, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Controller, Get, Patch, Delete,  Body, Req, UseGuards, UnauthorizedException, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { UserService } from './user.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -53,6 +53,8 @@ export class UserController {
       limits: { fileSize: 5 * 1024 * 1024 }, // peso máximo
     }),
   )
+
+  // Actualizar perfil
   @Patch('profile')
   async updateProfile(
     @Req() req,
@@ -66,6 +68,7 @@ export class UserController {
     const updateData: any = {
       displayName: body.displayName,
       bio: body.bio,
+      username: body.username,
     };
 
     if (file) {
@@ -86,4 +89,20 @@ export class UserController {
       profileImage: updated.profileImage || null,
     };
   }
+
+  // Borrar Perfil
+  @UseGuards(JwtAuthGuard)
+  @Delete('profile')
+  async deleteProfile(@Req() req) {
+    if (!req.user) throw new UnauthorizedException('User not authenticated');
+    const userId = req.user.userId;
+    const deleted = await this.userService.deleteUser(userId);
+
+    if (!deleted) {
+      throw new UnauthorizedException('User not found');
+    }
+
+    return { message: 'User deleted successfully' };
+  }
+
 }

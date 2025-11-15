@@ -45,20 +45,20 @@ export class UserProfileComponent implements OnInit {
 
 
   // Envio de datos al backend
-saveProfile() {
-  const formData = new FormData();
-  formData.append('displayName', this.displayName);
-  formData.append('bio', this.bio);
-
-  if (this.selectedImageFile) {
-    formData.append('profileImage', this.selectedImageFile);
+  saveProfile() {
+    const formData = new FormData();
+    formData.append('displayName', this.displayName);
+    formData.append('bio', this.bio);
+  
+    if (this.selectedImageFile) {
+      formData.append('profileImage', this.selectedImageFile);
+    }
+  
+    this.userService.updateProfileFormData(formData).subscribe({
+      next: () => alert('Profile updated successfully'),
+      error: (err) => console.log('There was a problem updating your profile', err)
+    });
   }
-
-  this.userService.updateProfileFormData(formData).subscribe({
-    next: () => alert('Profile updated successfully'),
-    error: (err) => console.log('There was a problem updating your profile', err)
-  });
-}
 
 
   // Profiele pic

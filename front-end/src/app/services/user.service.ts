@@ -21,4 +21,13 @@ export class UserService {
     return this.http.patch(`${this.apiUrl}/user/profile`, formData, { headers: this.getAuthHeaders() });
   }
 
+  updateUsernameProfile(username: string) {
+    const body = { username }
+    return this.http.patch(`${this.apiUrl}/user/profile`, body, {headers: this.getAuthHeaders() })
+  }
+
+  deleteAccount(): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/user/profile`, {headers: this.getAuthHeaders() })
+  }
+
 }

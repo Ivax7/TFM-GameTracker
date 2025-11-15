@@ -63,7 +63,6 @@ async setStatus(
   return userGame;
 }
 
-
   // Guardar rating
   async setRating(userId: number, gameId: number, rating: number) {
     let userGame = await this.repo.findOne({
