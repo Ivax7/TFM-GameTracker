@@ -86,7 +86,7 @@
 
 .tabs li.active {
   font-weight: bold;
-  border-color: #007bff;
+  border-color: var(--secondary-color);
 }
 
 .games-grid {

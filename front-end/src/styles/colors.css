@@ -2,12 +2,14 @@
 /* Paleta de colores*/
 :root {
   --background: #0a121f; /* Fondo Principal */
-  --background-secondary: #222222; /* Fondo Principal */
+  --background-secondary: #222222; /* Fondo Secundario */
   --hover-color: #05647a;     /* Hover / Interacción */
   --primary-color: #06829d;   /* Color Primario */
   --text-main: #f0f0f0;       /* Texto Principal */
   --text-secondary: #a0a0a0;  /* Texto Secundario / Detalles */
   --secondary-color: #f4a261; /* Color Secundario */
   --success-color: #2ecc71;   /* Color de Éxito */
+  --success-color-hover: #2ecc71;   /* Color de Éxito */
   --error-color: #e74c3c;     /* Color de Error */
+  --error-color-strong: #d60000;     /* Color de Error */
 }

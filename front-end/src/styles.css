@@ -16,6 +16,8 @@ html, body {
   padding: 0;
   height: 100%;
   box-sizing: border-box;
+  background-color: var(--background);
+  z-index: 1;
 }
 
 /* Oculta la barra de scroll pero mantiene el scroll funcional */
@@ -32,8 +34,4 @@ body::-webkit-scrollbar {
 
 * {
   box-sizing: border-box
-}
-
-.container {
-  background-color: var(--background);
 }

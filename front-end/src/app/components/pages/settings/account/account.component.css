@@ -3,7 +3,7 @@
   grid-template-columns: 1fr 2fr;
   gap: 3rem;
   width: 100%;
-  padding: 2rem;
+  padding: 1.2rem;
 }
 
 .account-container {
@@ -35,15 +35,42 @@
   border: 1px solid #333;
   border-radius: 6px;
   background-color: #1a1a1a;
-  color: #f0f0f0;
+  color: var(--text-main);
 }
 
 .username-actions {
   display: flex;
-  flex-direction: row;
-  justify-content: center;
   align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border: 1px solid #333;
+  border-radius: 6px;
+  background-color: #1a1a1a;
+  color: var(--text-main);
+  width: 50%;
+  transition: all 0.2s, border-color 0.2s;
 }
+
+.username-actions p {
+  color: var(--text-secondary);
+  font-size: 14px;
+  margin: 0;
+}
+
+.username-actions img {
+  width: 22px;
+  height: 22px;
+  opacity: 0.3;
+  transition: opacity 0.2s;
+  filter: invert(1);
+}
+
+.username-actions img:hover {
+  opacity: 1;
+}
+
+
+/* DELETE SECTION */
 
 .delete-section {
   display: flex;
@@ -54,7 +81,7 @@
 
 .delete-section h3 {
   margin: 0;
-  color: #ff2600;
+  color: var(--error-color-strong);
 }
 
 .delete-section p {
@@ -65,7 +92,7 @@
 
 .delete-section button {
   padding: 0.6rem 1.5rem;
-  background-color: #ff2600;
+  background-color: var(--error-color);
   color: #ffffff;
   border: none;
   border-radius: 6px;
@@ -75,7 +102,7 @@
 }
 
 .delete-section button:hover {
-  background-color: #d60000;
+  background-color: var(--error-color-strong);
 }
 
 /* Modal */
@@ -98,7 +125,7 @@
 }
 
 .modal-content {
-  background-color: #1a1a1a;
+  background-color: var(--background-secondary);
   color: #f0f0f0;
   padding: 2rem;
   border-radius: 10px;
@@ -131,12 +158,14 @@
   border: 1px solid #333;
   background-color: #2a2a2a;
   color: #fff;
+  outline: none;
 }
 
 .modal-content button {
   padding: 0.6rem 1.5rem;
   background-color: var(--primary-color);
   color: #fff;
+  font-weight: bold;
   border: none;
   border-radius: 6px;
   cursor: pointer;

@@ -17,19 +17,19 @@
   content: '';
   position: absolute;
   inset: 0;
-  background-image: url('../../assets/images/ps2-background.png') !important;
+  background-image: url('../../assets/images/ps2-background.png');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
   filter: blur(10px);
-  z-index: -1;
+  z-index: 2;
 }
 
 /* CUADRADO CON IMAGEN */
 .square {
   width: 700px;
   height: 700px;
-  background-image: url('../../assets/images/ps2-background.png') !important;
+  background-image: url('../../assets/images/ps2-background.png');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -37,13 +37,14 @@
   align-items: center;
   justify-content: center;
   position: relative;
+  z-index: 3;
 }
 
 .square img {
   width: auto;
   height: 700px;
   display: block;
-  z-index: 2;
+  z-index: 3;
 }
 
 /* TÍTULO */
@@ -54,7 +55,7 @@
   color: var(--text-secondary);
   text-shadow: 0 0 25px rgba(0, 0, 0, 1);
   font-family: 'Jersey 10', sans-serif;
-  z-index: 1;
+  z-index: 3;
 }
 
 /* ICONO DE USUARIO */
@@ -65,7 +66,7 @@
   cursor: pointer;
   color: var(--primary-color);
   transition: transform 0.2s ease, color 0.3s ease;
-  z-index: 10;
+  z-index: 3;
 }
 
 .user-icon:hover {
@@ -88,7 +89,7 @@
   transition: all 0.3s ease;
 
   opacity: 0.5;
-  z-index: 2;
+  z-index: 3;
 }
 
 .start-btn:hover {

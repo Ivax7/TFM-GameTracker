@@ -1,16 +1,15 @@
 .profile-container {
   display: flex;
   gap: 2rem;
-  padding: 2rem;
+  padding: 1.2rem;
   font-family: 'Poppins', sans-serif;
-  color: #f0f0f0;
-  background-color: #111;
+  color: var(--text-main);
   min-height: 90vh;
 }
 
 .profile-sidebar {
   flex: 1;
-  background-color: #1a1a1a;
+  background-color: var(--background-secondary);
   padding: 1.5rem;
 }
 
@@ -27,11 +26,11 @@
 }
 
 .profile-sidebar li:hover {
-  color: #00bfff;
+  color: var(--hover-color);
 }
 
 .profile-sidebar li.active {
-  color: #00bfff;
+  color: var(--primary-color);
   font-weight: 600;
 }
 

@@ -1,0 +1,60 @@
+p {
+  font-size: 16px;
+}
+
+span {
+  color: var(--success-color);
+}
+
+.email-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border: 1px solid #333;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  background-color: #1a1a1a;
+  color: var(--text-main);
+  width: 50%;
+  transition: all 0.2s, border-color 0.2s;
+}
+
+.email-actions input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-secondary);
+  font-size: 14px;
+  width: 100%;
+}
+
+.email-actions img {
+  width: 22px;
+  height: 22px;
+  opacity: 0.3;
+  transition: opacity 0.2s;
+  filter: invert(1);
+  cursor: pointer;
+}
+
+.email-actions img:hover {
+  opacity: 1;
+}
+
+.update-btn {
+  align-self: flex-end;
+  padding: 0.6rem 1.5rem;
+  background-color: var(--primary-color);
+  color: var(--text-main);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.update-btn:hover {
+  background-color: var(--hover-color);
+}
+

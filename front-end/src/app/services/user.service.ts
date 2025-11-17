@@ -30,4 +30,9 @@ export class UserService {
     return this.http.delete(`${this.apiUrl}/user/profile`, {headers: this.getAuthHeaders() })
   }
 
+  updateEmail(email: string) {
+    const body = { email }
+    return this.http.patch(`${this.apiUrl}/user/profile`, body, {headers: this.getAuthHeaders() })
+  }
+
 }

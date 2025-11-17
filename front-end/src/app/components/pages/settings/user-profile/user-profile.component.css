@@ -66,15 +66,15 @@
   padding: 0.6rem;
   border: 1px solid #333;
   border-radius: 6px;
-  background-color: #1a1a1a;
-  color: #f0f0f0;
+  background-color: var(--background-secondary);
+  color: var(--text-main);
 }
 
 .profile-form button {
   align-self: flex-end;
   padding: 0.6rem 1.5rem;
-  background-color: #00bfff;
-  color: #111;
+  background-color: var(--primary-color);
+  color: var(--text-main);
   border: none;
   border-radius: 6px;
   cursor: pointer;
@@ -83,7 +83,7 @@
 }
 
 .profile-form button:hover {
-  background-color: #00a6d6;
+  background-color: var(--hover-color);
 }
 
 /* Responsivo */
