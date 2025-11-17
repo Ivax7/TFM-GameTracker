@@ -16,6 +16,12 @@ export class UserProfileComponent implements OnInit {
   loading = true;
 
 
+  // Original Values
+  originalDisplayName = '';
+  originalBio = '';
+  originalImage = '';
+
+
   profileImageUrl = '../../../../../assets/images/icons/profile.svg'; // default image
   selectedImageFile: File | null = null;
 
@@ -27,13 +33,18 @@ export class UserProfileComponent implements OnInit {
 
   // Carga de datos
   loadProfile() {
-  this.loading = true;
+    this.loading = true;
     this.userService.getProfile().subscribe({
       next: (user) => {
-        console.log('Profile from backend:', user);
         this.displayName = user.displayName;
         this.bio = user.bio;
         this.profileImageUrl = user.profileImage || '../../../../../assets/images/icons/profile.svg';
+
+        // Guardamos originales
+        this.originalDisplayName = user.displayName;
+        this.originalBio = user.bio;
+        this.originalImage = this.profileImageUrl;
+
         this.loading = false;
       },
       error: (err) => {
@@ -60,7 +71,6 @@ export class UserProfileComponent implements OnInit {
     });
   }
 
-
   // Profiele pic
   onImageSelected(event: any) {
     const file = event.target.files[0];
@@ -75,4 +85,14 @@ export class UserProfileComponent implements OnInit {
 
     reader.readAsDataURL(file);
   }
+
+  // Detect changes
+  hasChanges(): boolean {
+    return (
+      this.displayName !== this.originalDisplayName ||
+      this.bio !== this.originalBio ||
+      this.profileImageUrl !== this.originalImage
+    );
+  }
+
 }

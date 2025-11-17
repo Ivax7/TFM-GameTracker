@@ -37,9 +37,17 @@ export class EmailComponent implements OnInit {
     this.userService.updateEmail(this.newEmail).subscribe({
       next: () => {
         this.email = this.newEmail
+        alert('Email updated successfully:')
       },
-      error: (err) => console.log('Email updated')
+      error: (err) => console.log('Email cannot be updated:', err)
     });
+  }
+
+  /* Detect changes */
+  hasChanges(): boolean {
+    return (
+      this.email !== this.newEmail
+    );
   }
 
 }

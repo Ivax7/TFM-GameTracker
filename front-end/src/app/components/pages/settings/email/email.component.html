@@ -11,10 +11,12 @@
     <input
       id="newEmail"
       type="email"
+      name="newEmail"
       placeholder="name@example.com"
-    />
+      [(ngModel)]="newEmail"
+      />
 </div>
 
 
-  <button class="update-btn" (click)="updateEmail()">Update</button>
+  <button class="update-btn" (click)="updateEmail()" [disabled]="!hasChanges()">Update</button>
 </section>

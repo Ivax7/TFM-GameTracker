@@ -69,6 +69,7 @@ export class UserController {
       displayName: body.displayName,
       bio: body.bio,
       username: body.username,
+      email: body.email,
     };
 
     if (file) {

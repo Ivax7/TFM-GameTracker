@@ -16,7 +16,7 @@ span {
   margin-bottom: 10px;
   background-color: #1a1a1a;
   color: var(--text-main);
-  width: 50%;
+  width: 25%;
   transition: all 0.2s, border-color 0.2s;
 }
 
@@ -40,6 +40,11 @@ span {
 
 .email-actions img:hover {
   opacity: 1;
+}
+
+.update-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .update-btn {

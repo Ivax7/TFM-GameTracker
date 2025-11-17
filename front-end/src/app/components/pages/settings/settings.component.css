@@ -9,7 +9,7 @@
 
 .profile-sidebar {
   flex: 1;
-  background-color: var(--background-secondary);
+  /* background-color: var(--background-secondary); */
   padding: 1.5rem;
 }
 
@@ -19,10 +19,13 @@
 }
 
 .profile-sidebar li {
+  position: relative;
   margin-bottom: 1rem;
+  padding: 10px;
+  padding-left: 20px;
   font-size: 1.1rem;
   cursor: pointer;
-  transition: color 0.2s;
+  transition: all 0.2s;
 }
 
 .profile-sidebar li:hover {
@@ -31,7 +34,19 @@
 
 .profile-sidebar li.active {
   color: var(--primary-color);
+  background-color: var(--background-secondary);
+
   font-weight: 600;
+}
+
+.profile-sidebar li.active::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 4px;
+  height: 100%;
+  background-color: var(--primary-color);
 }
 
 .profile-content {

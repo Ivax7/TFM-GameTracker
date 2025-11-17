@@ -12,7 +12,7 @@ import { EmailComponent } from "./email/email.component";
   styleUrls: ['./settings.component.css']
 })
 export class SettingsComponent {
-  selectedTab: 'profile' | 'account' | 'email' = 'email';
+  selectedTab: 'profile' | 'account' | 'email' = 'profile';
 
   selectTab(tab: 'profile' | 'account' | 'email') {
     this.selectedTab = tab;

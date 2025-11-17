@@ -1,3 +1,4 @@
+<h2>Public profile</h2>
 <div class="user-profile">
   <div class="profile-picture">
     <img [src]="profileImageUrl" alt="User avatar">
@@ -39,6 +40,6 @@
       ></textarea>
     </div>
 
-    <button type="submit">Save</button>
+    <button type="submit" [disabled]="!hasChanges()">Save</button>
   </form>
 </div>
