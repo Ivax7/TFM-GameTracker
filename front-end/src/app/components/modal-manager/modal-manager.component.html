@@ -1,0 +1,16 @@
+<app-game-status-modal
+  [show]="showStatus"
+  [currentStatus]="currentGame?.status || null"
+  (selectStatus)="onSelectStatus($event)"
+  >
+</app-game-status-modal>
+
+
+<!-- 
+  <app-rating-modal
+    class="rating-modal"
+    [showRating]="showRatingModal"
+    [initialRating]="currentRating || 0"
+    (close)="showRatingModal = false"
+    (save)="onSaveRating($event)">
+  </app-rating-modal> -->

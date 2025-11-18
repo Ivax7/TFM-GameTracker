@@ -61,12 +61,13 @@
   color: #ccc;
 }
 
-.profile-form input, .profile-form textarea{
+.profile-form input, .profile-form textarea {
   padding: 0.6rem;
   border: 1px solid #333;
   border-radius: 6px;
   background-color: var(--background-secondary);
   color: var(--text-main);
+  font-family: 'Noto Sans', sans-serif
 }
 
 #bio {

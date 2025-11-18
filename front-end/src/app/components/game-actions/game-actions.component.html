@@ -1,36 +1,34 @@
 <div class="icons">
 
-  <!-- Status -->
+  <!-- Open status -->
+  
   <img 
     src="assets/images/icons/controller.svg" 
-    alt="Controller" 
+    alt="Controller"
+    width="16"
+    height="16"
+    title="Set collection status"
+    (click)="openStatusModal(game, $event)" />
+  
+    <!-- Add to wishlist -->
+  <img
+    (click)="toggleBookmark($event)"
+    [src]="isBookmarked 
+      ? 'assets/images/icons/bookmark-filled.svg' 
+      : 'assets/images/icons/bookmark.svg'"
+    alt="Bookmark"
+    width="16"
+    height="16"
+    title="Guardar en wishlist"
+  />
+
+  <!-- Custom Lists icon -->
+  <img 
+    src="assets/images/icons/list.svg" 
+    alt="List" 
     width="16" 
     height="16"
-    (click)="openStatusModal($event)"
-    title="Set collection status"
   />
-
-  <!-- Wishlist -->
-  <img
-  (click)="toggleBookmark($event)"
-  [src]="isBookmarked ? 'assets/images/icons/bookmark-filled.svg' : 'assets/images/icons/bookmark.svg'"
-  alt="Bookmark"
-  width="16"
-  height="16"
-  title="Guardar en wishlist"
-  />
-
-  <!-- Personalized Lists -->
-  <img src="assets/images/icons/list.svg" alt="List" width="16" height="16"/>
-  
-
-  <app-game-status-modal
-  class="status-modal"
-  [show]="showStatusModal"
-  [currentStatus]="currentStatus"
-  (close)="showStatusModal = false"
-  (selectStatus)="onStatusSelected($event)">
-  </app-game-status-modal>
 
   <!-- Rating Modal -->
   <app-rating-modal
@@ -40,6 +38,5 @@
     (close)="showRatingModal = false"
     (save)="onSaveRating($event)">
   </app-rating-modal>
-
 
 </div>

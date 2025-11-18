@@ -35,33 +35,31 @@ async setStatus(
     rating,
   });
 
+  const user = await this.userRepo.findOne({ where: { id: userId } });
+  if (!user) throw new Error('User not found');
+
   let userGame = await this.repo.findOne({
     where: { user: { id: userId }, game: { id: gameId } },
     relations: ['user', 'game'],
   });
 
-  const user = await this.userRepo.findOne({ where: { id: userId } });
-  if (!user) throw new Error('User not found');
-  
+  if (!userGame) {
+    // Crear si no existía
     userGame = this.repo.create({
       user,
       game,
       status,
       gameName: game.name || 'Unknown Game',
     });
-
-
-  const hasChanges =
-    userGame.status !== status || userGame.gameName !== game.name;
-
-  if (hasChanges) {
+  } else {
+    // Actualizar si ya existía
     userGame.status = status;
-    userGame.gameName = game.name;
-    return this.repo.save(userGame);
+    userGame.gameName = game.name || 'Unknown Game';
   }
 
-  return userGame;
+  return this.repo.save(userGame); // Siempre guarda en BD
 }
+
 
   // Guardar rating
   async setRating(userId: number, gameId: number, rating: number) {
@@ -85,6 +83,9 @@ async setStatus(
         rating,
       });
       return this.repo.save(userGame);
+    } else {
+      userGame.status = status;
+      userGame.gameName = game.name || 'Unknown Game';
     }
 
     // actualizar rating si ya existe

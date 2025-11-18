@@ -3,35 +3,35 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from '../../auth/auth.service';
 import { WishlistService } from '../../services/wishlist.service';
 import { Router } from '@angular/router';
-import { GameStatusModalComponent } from '../game-status-modal/game-status-modal.component';
 import { UserGameService } from '../../services/user-game.service';
 import { RatingModalComponent } from '../rating-modal/rating-modal.component';
+import { ModalManagerService } from '../../services/modal-manager.service';
 
 @Component({
   selector: 'app-game-actions',
   standalone: true,
-  imports: [CommonModule, GameStatusModalComponent, RatingModalComponent],
+  imports: [CommonModule, RatingModalComponent],
   templateUrl: './game-actions.component.html',
   styleUrl: './game-actions.component.css'
 })
 export class GameActionsComponent implements OnInit {
+
   @Input() game!: any;
   @Input() isBookmarked = false;
 
   @Output() bookmarkToggled = new EventEmitter<boolean>();
 
   currentStatus: string | null = null;
-  showStatusModal = false;
-  isLoadingStatus = false;
-  
   currentRating: number | null = null;
+
   showRatingModal = false;
 
   constructor(
     private authService: AuthService,
     private wishlistService: WishlistService,
     private userGameService: UserGameService,
-    private router: Router
+    private router: Router,
+    private modalManager: ModalManagerService,
   ) {}
 
   ngOnInit() {
@@ -42,59 +42,23 @@ export class GameActionsComponent implements OnInit {
   }
 
   private loadGameStatus() {
-    this.isLoadingStatus = true;
     this.userGameService.getGameStatus(this.game.id).subscribe({
       next: (res) => {
         this.currentStatus = res.status || null;
         this.currentRating = res.rating ?? 0;
-        console.log(this.currentRating)
-        this.isLoadingStatus = false;
-        console.log('Status cargado desde backend:', this.currentStatus);
       },
-      error: (err) => {
-        console.log('Error cargando status del juego:', err);
+      error: () => {
         this.currentStatus = null;
         this.currentRating = 0;
-        this.isLoadingStatus = false;
       }
     });
-  }
-
-  // STATUS
-  openStatusModal(event: MouseEvent) {
-    event.stopPropagation();
-    if (!this.authService.isLoggedIn()) {
-      alert('Please log in to update game status');
-      this.router.navigate(['/login']);
-      return;
-    }
-    this.showStatusModal = true;
-  }
-
-  onStatusSelected(status: string) {
-    if (!this.game) return;
-
-    this.userGameService
-      .setGameStatus(this.game.id, status, this.game.name, this.game.background_image)
-      .subscribe({
-        next: () => {
-          this.currentStatus = status;
-          this.showStatusModal = false;
-          console.log(`Status actualizado a: ${status}`);
-          
-          if(['Playing','Played', 'Completed', 'Abandoned'].includes(status)) {
-            this.showRatingModal = true
-          }
-        },
-        error: (err) => this.handleAuthError(err),
-      });
   }
 
   // BOOKMARK
   toggleBookmark(event: MouseEvent) {
     event.stopPropagation();
+
     if (!this.authService.isLoggedIn()) {
-      alert('Please, login to save games in your wishlist');
       this.router.navigate(['/login']);
       return;
     }
@@ -111,7 +75,6 @@ export class GameActionsComponent implements OnInit {
       next: () => {
         this.isBookmarked = !this.isBookmarked;
         this.bookmarkToggled.emit(this.isBookmarked);
-        console.log('🔖 Bookmark actualizado:', this.isBookmarked);
       },
       error: (err) => this.handleAuthError(err),
     });
@@ -120,32 +83,36 @@ export class GameActionsComponent implements OnInit {
   private loadBookmarkStatus() {
     this.wishlistService.getWishlist().subscribe({
       next: (wishlist) => {
-        const safeWishlist = Array.isArray(wishlist) ? wishlist : [];
-        this.isBookmarked = safeWishlist.some(g => g.gameId === this.game.id);
-        console.log('🔖 Bookmark cargado:', this.isBookmarked);
-      },
-      error: (err) => console.error('Error cargando wishlist:', err)
+        const safe = Array.isArray(wishlist) ? wishlist : [];
+        this.isBookmarked = safe.some(g => g.gameId === this.game.id);
+      }
     });
   }
 
-  onSaveRating(value: number) {
-    console.log(`🎮 User rated "${this.game.name}" with ${value} stars`);
+  // RATING
+  openRatingModal(event: MouseEvent) {
+    event.stopPropagation();
 
+    if (!this.authService.isLoggedIn()) {
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    this.showRatingModal = true;
+  }
+
+  onSaveRating(value: number) {
     this.userGameService.setGameRating(this.game.id, value).subscribe({
-      next: (res) => {
-        this.showRatingModal = false;
+      next: () => {
         this.currentRating = value;
-        console.log(`✅ Rating saved correctly: ${this.game.name} - ${value}`);
-        console.log('Response from backend:', res); // Esto muestra la fila guardada en la tabla user_game
+        this.showRatingModal = false;
       },
       error: (err) => console.error('Error saving rating:', err)
     });
   }
 
-
   private handleAuthError(err: any) {
     if (err.status === 401) {
-      alert('Tu sesión ha expirado. Por favor, inicia sesión nuevamente.');
       this.authService.logout();
       this.router.navigate(['/login']);
     } else {
@@ -153,5 +120,10 @@ export class GameActionsComponent implements OnInit {
     }
   }
 
+
+  openStatusModal(game: any, event: Event) {
+    event.stopPropagation();
+    this.modalManager.openStatusModal(game);
+  }
 
 }
