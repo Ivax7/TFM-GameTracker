@@ -10,9 +10,10 @@
   height: 100vh;
   padding: 0;
   margin: 0;
-  transition: opacity 0.8s ease;
+  transition: all 0.8s ease;
 }
 
+/* FONDO BORROSO */
 .main-container::before {
   content: '';
   position: absolute;
@@ -22,7 +23,7 @@
   background-repeat: no-repeat;
   background-size: cover;
   filter: blur(10px);
-  z-index: 2;
+  z-index: 0; /* más bajo */
 }
 
 /* CUADRADO CON IMAGEN */
@@ -36,15 +37,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
-  z-index: 3;
+  z-index: 1; /* sobre el fondo, por debajo del texto */
 }
 
 .square img {
+  position: absolute;
   width: auto;
   height: 700px;
   display: block;
-  z-index: 3;
+  z-index: 6;
 }
 
 /* TÍTULO */
@@ -55,7 +56,7 @@
   color: var(--text-secondary);
   text-shadow: 0 0 25px rgba(0, 0, 0, 1);
   font-family: 'Jersey 10', sans-serif;
-  z-index: 3;
+  z-index: 2; /* por encima del square y de la imagen */
 }
 
 /* ICONO DE USUARIO */
@@ -66,7 +67,7 @@
   cursor: pointer;
   color: var(--primary-color);
   transition: transform 0.2s ease, color 0.3s ease;
-  z-index: 3;
+  z-index: 6;
 }
 
 .user-icon:hover {
@@ -87,9 +88,8 @@
   color: white;
   cursor: pointer;
   transition: all 0.3s ease;
-
   opacity: 0.5;
-  z-index: 3;
+  z-index: 6; /* por encima del square */
 }
 
 .start-btn:hover {
@@ -110,7 +110,8 @@
   text-align: center;
   color: white;
   background: radial-gradient(circle at center, rgba(0,0,0,0.85) 0%, rgba(0,0,0,1) 100%);
-  animation: fadeIn 0.8s ease;
+  animation: all 0.8s ease;
+  z-index: 10; /* por encima de todo */
 }
 
 @keyframes fadeIn {

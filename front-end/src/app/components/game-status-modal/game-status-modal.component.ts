@@ -24,12 +24,10 @@ export class GameStatusModalComponent {
   onSelect(status: string, event: MouseEvent) {
     event.stopPropagation();
     this.selectStatus.emit(status);
-    this.close.emit();
   }
 
   onBackdropClick(event: MouseEvent) {
     event.stopPropagation();
-    this.close.emit();
   }
 
   onCloseClick(event: MouseEvent) {
