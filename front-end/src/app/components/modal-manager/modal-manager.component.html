@@ -1,6 +1,7 @@
 <app-game-status-modal
   [show]="showStatus"
   [currentStatus]="currentGame?.status || null"
+  [game]="currentGame"
   (selectStatus)="onSelectStatus($event)"
   (close)="showStatus = false"
   >

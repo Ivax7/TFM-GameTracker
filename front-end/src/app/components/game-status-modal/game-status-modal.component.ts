@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Output, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'app-game-status-modal',
@@ -11,8 +12,12 @@ import { CommonModule } from '@angular/common';
 export class GameStatusModalComponent {
   @Input() show = false;
   @Input() currentStatus: string | null = null;
+  @Input() game: any = null;
+
   @Output() close = new EventEmitter<void>();
-  @Output() selectStatus = new EventEmitter<string>();
+  @Output() selectStatus = new EventEmitter<string | null>();
+
+  pendingStatus: string | null = null;
 
   statuses = [
     { key: 'Playing', label: 'Playing' },
@@ -21,9 +26,30 @@ export class GameStatusModalComponent {
     { key: 'Abandoned', label: 'Abandoned' },
   ];
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['show'] && this.show) {
+      this.pendingStatus = this.currentStatus;
+    }
+  }
+
   onSelect(status: string, event: MouseEvent) {
     event.stopPropagation();
-    this.selectStatus.emit(status);
+    this.pendingStatus = status;  // guardamos temporalmente
+  }
+
+  onSubmit(event: MouseEvent) {
+    event.stopPropagation();
+    if (this.pendingStatus) {
+      this.selectStatus.emit(this.pendingStatus);
+      this.currentStatus = this.pendingStatus;
+    }
+  }
+
+  onClear(event: MouseEvent) {
+    event.stopPropagation();
+    this.pendingStatus = null;
+    this.selectStatus.emit(null);
+    this.currentStatus = null;
   }
 
   onBackdropClick(event: MouseEvent) {

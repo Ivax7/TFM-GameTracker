@@ -19,7 +19,7 @@ export class UserGame {
   @Column('varchar', { nullable: true })
   gameName: string;
 
-  @Column()
+  @Column({ nullable: true })
   status: string;
 
   @Column({ type: 'float', nullable: true })
