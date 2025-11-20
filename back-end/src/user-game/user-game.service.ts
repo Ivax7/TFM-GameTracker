@@ -62,38 +62,34 @@ async setStatus(
 
 
   // Guardar rating
-  async setRating(userId: number, gameId: number, rating: number) {
-    let userGame = await this.repo.findOne({
-      where: { user: { id: userId }, game: { id: gameId } },
-      relations: ['user', 'game'],
+async setRating(userId: number, gameId: number, rating: number) {
+  const user = await this.userRepo.findOne({ where: { id: userId } });
+  if (!user) throw new Error('User not found');
+
+  const game = await this.gameService.findOrCreate({ id: gameId });
+
+  let userGame = await this.repo.findOne({
+    where: { user: { id: userId }, game: { id: gameId } },
+    relations: ['user', 'game'],
+  });
+
+  if (!userGame) {
+    userGame = this.repo.create({
+      user,
+      game,
+      status: 'Playing',
+      gameName: game.name || 'Unknown Game',
+      rating,
     });
-
-    const user = await this.userRepo.findOne({ where: { id: userId } });
-    if (!user) throw new Error('User not found');
-
-    const game = await this.gameService.findOrCreate({ id: gameId });
-
-    if (!userGame) {
-      // crear relación si no existe
-      userGame = this.repo.create({
-        user,
-        game,
-        status: 'Playing', // o algún valor por defecto
-        gameName: game.name || 'Unknown Game',
-        rating,
-      });
-      return this.repo.save(userGame);
-    } else {
-      userGame.status = status;
-      userGame.gameName = game.name || 'Unknown Game';
-    }
-
-    // actualizar rating si ya existe
-    userGame.rating = rating;
-    return this.repo.save(userGame);
-  }
+  } else {
   
-  // Obtener juegos por status
+    userGame.rating = rating;
+  }
+
+  return this.repo.save(userGame);
+}
+
+  
   async findByStatus(userId: number, status: GameStatus) {
     return this.repo.find({
       where: { user: { id: userId }, status },

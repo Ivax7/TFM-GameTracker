@@ -18,10 +18,11 @@ export class RatingModalComponent {
   hover = 0;
 
   ngOnChanges() {
-    if (this.initialRating) {
+    if (this.initialRating != null) {
       this.rating = this.initialRating;
     }
   }
+  
 
   setHover(value: number) {
     this.hover = value;
@@ -36,9 +37,11 @@ export class RatingModalComponent {
   }
 
   onConfirm() {
+    console.log('Rating a guardar:', this.rating);
     this.save.emit(this.rating);
     this.close.emit();
   }
+
 
   onClose() {
     this.close.emit();

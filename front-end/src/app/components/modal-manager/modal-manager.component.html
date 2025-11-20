@@ -4,14 +4,11 @@
   [game]="currentGame"
   (selectStatus)="onSelectStatus($event)"
   (close)="showStatus = false"
-  >
-</app-game-status-modal>
+></app-game-status-modal>
 
-<!-- 
-  <app-rating-modal
-    class="rating-modal"
-    [showRating]="showRatingModal"
-    [initialRating]="currentRating || 0"
-    (close)="showRatingModal = false"
-    (save)="onSaveRating($event)">
-  </app-rating-modal> -->
+<app-rating-modal
+  [showRating]="showRatingModal"
+  [initialRating]="currentGame?.rating || 0"
+  (close)="showRatingModal = false"
+  (save)="onSaveRating($event)"
+></app-rating-modal>

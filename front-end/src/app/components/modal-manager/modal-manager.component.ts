@@ -2,24 +2,26 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ModalManagerService } from '../../services/modal-manager.service';
 import { GameStatusModalComponent } from '../game-status-modal/game-status-modal.component';
+import { RatingModalComponent } from '../rating-modal/rating-modal.component';
 import { UserGameService } from '../../services/user-game.service';
 import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-modal-manager',
   standalone: true,
-  imports: [CommonModule, GameStatusModalComponent],
+  imports: [CommonModule, GameStatusModalComponent, RatingModalComponent],
   templateUrl: './modal-manager.component.html',
   styleUrls: ['./modal-manager.component.css']
 })
 export class ModalManagerController implements OnInit {
 
   showStatus = false;
+  showRatingModal = false;
   currentGame: any = null;
 
   constructor(
     private modalManager: ModalManagerService,
-    private userGameService: UserGameService
+    private userGameService: UserGameService,
   ) {}
 
 
@@ -28,7 +30,6 @@ export class ModalManagerController implements OnInit {
     this.modalManager.statusModal$.subscribe(async state => {
       if (!state.game) return;
 
-      // Traemos el estado del juego desde el backend
       try {
         const userGame = await firstValueFrom(this.userGameService.getGameStatus(state.game.id));
         this.currentGame = {
@@ -37,30 +38,49 @@ export class ModalManagerController implements OnInit {
           rating: userGame.rating ?? 0
         };
       } catch {
-        // Si no hay estado guardado, asignamos null
         this.currentGame = {
           ...state.game,
           status: null,
           rating: 0
         };
       }
-
-      // Mostrar modal
       this.showStatus = state.show;
     });
   }
 
-  onSelectStatus(status: string) {
+  // Set status
+  onSelectStatus(status: string | null) {
+    if (!this.currentGame) return;
+  
+    if (status !== null) {
+      this.userGameService.setGameStatus(
+        this.currentGame.id,
+        status, // seguro que es string
+        this.currentGame.name,
+        this.currentGame.background_image
+      ).subscribe((updated) => {
+        console.log('Status actualizado:', status);
+        this.currentGame.status = updated.status;
+        this.showStatus = false;
+        this.showRatingModal = true;
+      });
+    } else {
+      // Clear → solo actualizamos localmente
+      this.currentGame.status = null;
+      this.showStatus = false;
+    }
+  }
+
+
+    // Set rating
+  onSaveRating(rating: number) {
     if (!this.currentGame) return;
 
-    this.userGameService.setGameStatus(
-      this.currentGame.id,
-      status,
-      this.currentGame.name,
-      this.currentGame.background_image
-    ).subscribe((updated) => {
-      console.log('Status actualizado:', status);
-      this.currentGame.status = updated.status;
-    });
+    this.userGameService.setGameRating(this.currentGame.id, rating)
+      .subscribe(updated => {
+        console.log('Rating guardado:', rating);
+        this.currentGame.rating = updated.rating;
+        this.showRatingModal = false;
+      });
   }
 }

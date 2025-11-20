@@ -19,15 +19,9 @@
       </ng-container>
     </div>
 
-    <p class="user-rating">
-      Your rating: <span class="rating-value">{{ rating }}</span>
-      <img class="star" src="../../../assets/images/icons/star-filled.svg" alt="⭐">
-    </p>
-
-
     <div class="modal-buttons">
-      <button (click)="onConfirm(); $event.stopPropagation()">Save</button>
       <button (click)="onClose(); $event.stopPropagation()">Cancel</button>
+      <button (click)="onConfirm(); $event.stopPropagation()">Save</button>
     </div>
 
   </div>
