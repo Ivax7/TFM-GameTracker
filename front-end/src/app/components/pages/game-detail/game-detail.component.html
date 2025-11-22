@@ -12,13 +12,20 @@
       <div class="icons">
         <!-- RATING -->
         <p class="rating">{{ game.rating }} <img class="star" src="../../../assets/images/icons/star-filled.svg" alt="⭐"></p>
-      
+        
         <app-game-actions
         class="icons"
         [game]="game"
         ></app-game-actions>
-
+        
       </div>
+      <p class="duration">Average playtime: 
+          @if (game.playtime && game.playtime > 0) {
+            {{ game.playtime }} hours
+          } @else {
+            N/A
+          }
+      </p>
     </div>
 
     <!-- DESCRIPCIÓN -->

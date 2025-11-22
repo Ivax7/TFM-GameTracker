@@ -12,3 +12,10 @@
   (close)="showRatingModal = false"
   (save)="onSaveRating($event)"
 ></app-rating-modal>
+
+<app-playtime-modal
+  [showPlaytime]="showPlaytimeModal"
+  [initialPlaytime]="currentGame?.playtime || 0"
+  (save)="onSetPlaytime($event)"
+  (close)="showPlaytimeModal = false"
+></app-playtime-modal>

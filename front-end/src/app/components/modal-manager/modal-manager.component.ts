@@ -5,11 +5,12 @@ import { GameStatusModalComponent } from '../game-status-modal/game-status-modal
 import { RatingModalComponent } from '../rating-modal/rating-modal.component';
 import { UserGameService } from '../../services/user-game.service';
 import { firstValueFrom } from 'rxjs';
+import { PlaytimeModalComponent } from "../playtime-modal/playtime-modal.component";
 
 @Component({
   selector: 'app-modal-manager',
   standalone: true,
-  imports: [CommonModule, GameStatusModalComponent, RatingModalComponent],
+  imports: [CommonModule, GameStatusModalComponent, RatingModalComponent, PlaytimeModalComponent],
   templateUrl: './modal-manager.component.html',
   styleUrls: ['./modal-manager.component.css']
 })
@@ -17,7 +18,9 @@ export class ModalManagerController implements OnInit {
 
   showStatus = false;
   showRatingModal = false;
+  showPlaytimeModal = false;
   currentGame: any = null;
+
 
   constructor(
     private modalManager: ModalManagerService,
@@ -35,13 +38,15 @@ export class ModalManagerController implements OnInit {
         this.currentGame = {
           ...state.game,
           status: userGame.status || null,
-          rating: userGame.rating ?? 0
+          rating: userGame.rating ?? 0,
+          playtime: userGame.playtime ?? 0
         };
       } catch {
         this.currentGame = {
           ...state.game,
           status: null,
-          rating: 0
+          rating: 0,
+          playtime: 0,
         };
       }
       this.showStatus = state.show;
@@ -67,20 +72,31 @@ export class ModalManagerController implements OnInit {
     } else {
       // Clear → solo actualizamos localmente
       this.currentGame.status = null;
-      this.showStatus = false;
     }
   }
 
 
-    // Set rating
+  // Set rating
   onSaveRating(rating: number) {
     if (!this.currentGame) return;
 
     this.userGameService.setGameRating(this.currentGame.id, rating)
       .subscribe(updated => {
-        console.log('Rating guardado:', rating);
         this.currentGame.rating = updated.rating;
         this.showRatingModal = false;
+        this.showPlaytimeModal = true
+      });
+  }
+  
+  // Set playtime
+  onSetPlaytime(playtime: number) {
+    if (!this.currentGame) return;
+
+    this.userGameService.setGamePlaytime(this.currentGame.id, playtime)
+      .subscribe(updated => {
+        console.log('Playtime saved:', playtime);
+        this.currentGame.duration = updated.playitme;
+        this.showPlaytimeModal = false;
       });
   }
 }

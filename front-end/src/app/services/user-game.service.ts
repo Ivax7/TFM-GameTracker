@@ -44,9 +44,9 @@ export class UserGameService {
     return this.http.get<any[]>(`${this.apiUrl}/${status}`, { headers });
   }
 
-  getGameStatus(gameId: number): Observable<{ status: string; rating: number | null }> {
+  getGameStatus(gameId: number): Observable<{ status: string; rating: number | null; playtime: number }> {
     const headers = this.getAuthHeaders();
-      return this.http.get<{ status: string; rating: number | null }>(
+      return this.http.get<{ status: string; rating: number | null; playtime: number }>(
       `${this.apiUrl}/status/${gameId}`,
       { headers }
       );
@@ -58,6 +58,16 @@ export class UserGameService {
     return this.http.post(
       `${this.apiUrl}/rating`,
       { gameId, rating },
+      { headers }
+    );
+  }
+
+  // Rating
+  setGamePlaytime(gameId: number, playtime: number): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.http.post(
+      `${this.apiUrl}/playtime`,
+      { gameId, playtime },
       { headers }
     );
   }

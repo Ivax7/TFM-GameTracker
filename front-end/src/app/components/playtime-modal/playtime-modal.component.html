@@ -1,0 +1,27 @@
+@if (showPlaytime) {
+  <div class="modal-backdrop" (click)="onClose()"></div>
+
+  <div class="modal" (click)="$event.stopPropagation()">
+    <img 
+      src="assets/images/icons/cross.svg"
+      alt="Close"
+      class="close-btn"
+      (click)="onClose(); $event.stopPropagation()"
+    />
+
+    <div class="input-wrapper">
+      <label for="playtime">Hours played:</label>
+      <input
+        type="number"
+        id="playtime"
+        min="0"
+        [(ngModel)]="playtime"
+      />
+    </div>
+
+    <div class="modal-buttons">
+      <button class="action-btn cancel-btn" (click)="onClose()">Cancel</button>
+      <button class="action-btn save-btn" (click)="onConfirm()">Save</button>
+    </div>
+  </div>
+}

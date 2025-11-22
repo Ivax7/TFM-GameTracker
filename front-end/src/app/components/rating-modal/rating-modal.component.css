@@ -1,3 +1,7 @@
+h3 {
+  margin: 0;
+}
+
 .stars {
   display: flex;
   justify-content: center;
@@ -10,7 +14,6 @@
   height: 32px;
   cursor: pointer;
   filter: drop-shadow(0 0 3px rgba(255, 215, 0, 0.4));
-
 }
 
 .user-rating {
@@ -84,15 +87,19 @@
 }
 
 button {
-  margin: 0;
+  background: none;
+  color: var(--text-main);
+  border: 1px solid #666;
   padding: 0.5rem 1rem;
-  background: #00bfff;
-  border: none;
-  color: #fff;
-  border-radius: 5px;
+  border-radius: 6px;
   cursor: pointer;
+  transition: all .2s ease-in-out;
 }
 
-button:hover {
-  background: #009acd;
+.submit-btn:hover {
+  background-color: var(--primary-color);
+}
+
+.cancel-btn:hover  {
+  background-color: var(--error-color);
 }

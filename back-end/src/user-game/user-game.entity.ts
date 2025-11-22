@@ -24,4 +24,7 @@ export class UserGame {
 
   @Column({ type: 'float', nullable: true })
   rating?: number;
+
+  @Column({ type: 'float', nullable: true })
+  playtime?: number;
 }

@@ -100,7 +100,7 @@ li.selected {
 }
 
 .submit-btn:hover {
-  background-color: var(--success-color);
+  background-color: var(--primary-color);
 }
 
 .clear-btn:hover {

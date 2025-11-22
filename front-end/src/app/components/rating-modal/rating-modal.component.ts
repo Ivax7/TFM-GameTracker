@@ -23,7 +23,6 @@ export class RatingModalComponent {
     }
   }
   
-
   setHover(value: number) {
     this.hover = value;
   }
@@ -37,11 +36,9 @@ export class RatingModalComponent {
   }
 
   onConfirm() {
-    console.log('Rating a guardar:', this.rating);
     this.save.emit(this.rating);
     this.close.emit();
   }
-
 
   onClose() {
     this.close.emit();

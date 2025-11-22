@@ -20,8 +20,8 @@
     </div>
 
     <div class="modal-buttons">
-      <button (click)="onClose(); $event.stopPropagation()">Cancel</button>
-      <button (click)="onConfirm(); $event.stopPropagation()">Save</button>
+      <button class="action-btn cancel-btn" (click)="onClose(); $event.stopPropagation()">Cancel</button>
+      <button class="action-btn submit-btn" (click)="onConfirm(); $event.stopPropagation()">Submit</button>
     </div>
 
   </div>
