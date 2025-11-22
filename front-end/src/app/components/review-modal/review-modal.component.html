@@ -1,0 +1,12 @@
+<div class="modal-backdrop" *ngIf="showReview">
+  <div class="modal">
+    <h2>Write your review</h2>
+
+    <textarea [(ngModel)]="reviewText" maxlength="500"></textarea>
+
+    <div class="actions">
+      <button class="action-btn cancel-btn" (click)="close.emit()">Cancel</button>
+      <button class="action-btn submit-btn" (click)="save.emit(reviewText)">Submit</button>
+    </div>
+  </div>
+</div>

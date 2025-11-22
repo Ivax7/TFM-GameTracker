@@ -1,16 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ModalManagerController } from './modal-manager.component';
-describe('ModalManagerComponent', () => {
-  let component: ModalManagerController;
-  let fixture: ComponentFixture<ModalManagerController>;
+
+import { ReviewModalComponent } from './review-modal.component';
+
+describe('ReviewModalComponent', () => {
+  let component: ReviewModalComponent;
+  let fixture: ComponentFixture<ReviewModalComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ModalManagerController]
+      imports: [ReviewModalComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ModalManagerController);
+    fixture = TestBed.createComponent(ReviewModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

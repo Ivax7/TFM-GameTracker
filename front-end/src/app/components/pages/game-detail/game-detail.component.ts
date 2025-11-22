@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { RawgService } from '../../../services/rawg.service';
 import { GameActionsComponent } from '../../game-actions/game-actions.component';
 import { CommonModule } from '@angular/common';
+import { ModalManagerService } from '../../../services/modal-manager.service';
 
 @Component({
   selector: 'app-game-detail',
@@ -18,7 +19,8 @@ export class GameDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private rawgService: RawgService
+    private rawgService: RawgService,
+    public modalManager: ModalManagerService
   ) {}
 
   ngOnInit() {

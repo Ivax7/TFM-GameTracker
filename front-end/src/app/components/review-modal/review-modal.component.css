@@ -1,0 +1,56 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(2px);
+  z-index: 50;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #1c1c1c;
+  padding: 2rem;
+  width: 400px;
+  border-radius: 12px;
+  color: white;
+  z-index: 100;
+  box-shadow: 0 0 20px rgba(0,0,0,.4);
+}
+
+textarea,
+input {
+  width: 100%;
+  margin-bottom: 1rem;
+  border-radius: 6px;
+  padding: .7rem;
+  background: #222;
+  border: 1px solid #333;
+  color: white;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+button {
+  background: none;
+  color: var(--text-main);
+  border: 1px solid #666;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all .2s ease-in-out;
+}
+
+.submit-btn:hover {
+  background-color: var(--primary-color);
+}
+
+.cancel-btn:hover  {
+  background-color: var(--error-color);
+}

@@ -44,9 +44,9 @@ export class UserGameService {
     return this.http.get<any[]>(`${this.apiUrl}/${status}`, { headers });
   }
 
-  getGameStatus(gameId: number): Observable<{ status: string; rating: number | null; playtime: number }> {
+  getGameStatus(gameId: number): Observable<{ status: string; rating: number | null; playtime: number; review?: string }> {
     const headers = this.getAuthHeaders();
-      return this.http.get<{ status: string; rating: number | null; playtime: number }>(
+      return this.http.get<{ status: string; rating: number | null; playtime: number; review?: string }>(
       `${this.apiUrl}/status/${gameId}`,
       { headers }
       );
@@ -71,4 +71,15 @@ export class UserGameService {
       { headers }
     );
   }
+
+  // Review
+  setGameReview(gameId: number, review: string): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.http.post(
+      `${this.apiUrl}/review`,
+      { gameId, review },
+      { headers }
+    );
+  }
+
 }

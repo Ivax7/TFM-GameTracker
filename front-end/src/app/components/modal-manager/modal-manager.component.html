@@ -19,3 +19,11 @@
   (save)="onSetPlaytime($event)"
   (close)="showPlaytimeModal = false"
 ></app-playtime-modal>
+
+<app-review-modal
+  [showReview]="showReviewModal"
+  [initialReview]="currentGame?.review || ''"
+  (save)="onSaveReview($event)"
+  (close)="showReviewModal = false"
+></app-review-modal>
+

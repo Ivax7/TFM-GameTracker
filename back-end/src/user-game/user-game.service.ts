@@ -130,4 +130,31 @@ async setRating(userId: number, gameId: number, rating: number) {
   return this.repo.save(userGame);
 }
 
+  /* REVIEWS */
+  async setReview(userId: number, gameId: number, review: string) {
+  const user = await this.userRepo.findOne({ where: { id: userId } });
+  if (!user) throw new Error('User not found');
+
+  const game = await this.gameService.findOrCreate({ id: gameId });
+
+  let userGame = await this.repo.findOne({
+    where: { user: { id: userId }, game: { id: gameId } },
+    relations: ['user', 'game'],
+  });
+
+  if (!userGame) {
+    userGame = this.repo.create({
+      user,
+      game,
+      status: 'Playing',
+      gameName: game.name,
+      review,
+    });
+  } else {
+    userGame.review = review;
+  }
+
+  return this.repo.save(userGame);
+}
+
 }

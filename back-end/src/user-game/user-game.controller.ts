@@ -60,6 +60,7 @@ export class UserGameController {
       status: userGame?.status || null,
       rating: userGame?.rating ?? null,
       playtime: userGame?.playtime ?? 0,
+      review: userGame?.revirew ?? "",
     };
   }
 
@@ -82,5 +83,15 @@ export class UserGameController {
   ) {
     return this.userGameService.setPlaytime(req.user.id, gameId, playtime);
   }
+
+  // Endpoint para setear playtime
+  @Post('review')
+  async setReview(
+    @Req() req: AuthRequest,
+    @Body() body: { gameId: number; review: string },
+  ) {
+    return this.userGameService.setReview(req.user.id, body.gameId, body.review);
+  }
+
 
 }
