@@ -1,0 +1,15 @@
+<div class="public-profile" *ngIf="!loading">
+  <div class="profile-picture">
+    <img [src]="profileImageUrl" alt="User avatar">
+  </div>
+
+  <div class="profile-info">
+    <p>{{ displayName }}</p>
+    <p>&#64;{{ username }}</p>
+    <p><em> {{ bio || 'No bio available' }} </em></p>
+  </div>
+</div>
+
+<div *ngIf="loading">
+  <p>Loading profile...</p>
+</div>

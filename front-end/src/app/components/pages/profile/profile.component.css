@@ -1,0 +1,32 @@
+.public-profile {
+  display: flex;
+  flex-direction: row;
+  align-items: left;
+  margin-left: 50px;
+  margin-top: 50px;
+  gap: 1rem;
+  color: #f0f0f0;
+}
+
+.profile-picture img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.profile-info p {
+  margin: 0.5rem 0;
+  font-size: 14px;
+}
+
+.profile-info p:first-child {
+  font-size: 28px;
+  font-weight: bold;
+}

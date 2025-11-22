@@ -24,11 +24,21 @@
 }
 
 .search-bar input {
+  background-color: var(--background-secondary);
+  color: var(--text-main);
   padding: 0.5rem 1rem;
   border-radius: 6px;
   border: none;
   outline: none;
-  width: 250px;
+  width: 350px;
+  height: 40px;
+  border: 1px solid transparent;
+  transition: .2s ease-in-out;
+}
+
+.search-bar input:focus {
+  filter: brightness(1.2);
+  border: 1px solid var(--primary-color);
 }
 
 .search-bar button {
@@ -39,6 +49,7 @@
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.3s ease;
+  height: 40px;
 }
 
 .search-bar button:hover {

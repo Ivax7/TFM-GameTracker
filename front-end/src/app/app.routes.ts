@@ -6,12 +6,14 @@ import { WishlistComponent } from './components/pages/wishlist/wishlist.componen
 import { MainPageComponent } from './main-page/main-page.component';
 import { CollectionStatusComponent } from './components/pages/collection-status/collection-status.component';
 import { SettingsComponent } from './components/pages/settings/settings.component';
+import { ProfileComponent } from './components/pages/profile/profile.component';
 
 export const routes: Routes = [
   { path: '', component: MainPageComponent },
   { path: 'trending', component: TrendingGamesComponent },
   { path: 'search/:query', component: SearchResultsComponent },
   { path: 'detail/:id', component: GameDetailComponent },
+  { path: 'profile', component: ProfileComponent },
   { path: 'wishlist', component: WishlistComponent },
   { path: 'collection', component: CollectionStatusComponent },
   { path: 'settings', component: SettingsComponent },
