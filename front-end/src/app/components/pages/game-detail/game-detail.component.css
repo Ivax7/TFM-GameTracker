@@ -26,7 +26,6 @@
 }
 
 
-
 /* Info del juego */
 .info {
   padding: 2rem;
@@ -59,31 +58,6 @@
   align-items: center;
   justify-content: flex-start;
 }
-
-.duration {
-
-}
-
-
-/* Rating */
-.rating {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-right: 2rem;
-  font-size: 1.2rem;
-  color: #ffcc00;
-  font-weight: 500;
-  line-height: 1;
-}
-
-.rating .star {
-  width: 24px;
-  height: 24px;
-  vertical-align: middle;
-  filter: drop-shadow(0 0 3px rgba(255, 215, 0, 0.3)); /* sutil brillo */
-}
-
 
 
 /* Descripción */
@@ -136,19 +110,65 @@
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.6);
 }
 
+.media-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.media-info p {
+  position: relative;
+  padding: 15px;
+  margin: 0;
+  margin-top: 15px;
+  width: 250px;
+  align-items: center;
+  background-color: none;
+  border-radius: 6px;
+}
+
+.rating .star {
+  margin-left: 5px;
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+  filter: drop-shadow(0 0 3px rgba(255, 215, 0, 0.3));
+}
+
+.duration {
+  position: relative;
+}
+
+.media-info p::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 4px;
+  height: 100%;
+  background-color: var(--secondary-color);
+}
+
+.media-info span {
+  color: var(--primary-color);
+  font-weight: bold;
+}
+
+
 /* ADDITIONAL INFO GRID */
 .additional-info {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   gap: 1.5rem;
   width: 60%;
-  margin: 3rem 0 3rem 2rem; /* 🔹 elimina auto y lo pega a la izquierda */
+  margin: 3rem 0 3rem 2rem;
   padding: 2rem;
   background-color: #181818;
   border-radius: 16px;
   color: #f0f0f0;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  justify-content: start; /* 🔹 asegura que las columnas se peguen a la izquierda */
+  justify-content: start;
 }
 
 
@@ -182,7 +202,7 @@
 }
 
 
-/* 📱 Responsive */
+/* Responsive */
 @media (max-width: 1200px) {
   .additional-info {
     grid-template-columns: repeat(3, 1fr);

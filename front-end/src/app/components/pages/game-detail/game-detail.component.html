@@ -10,22 +10,13 @@
       <h1>{{ game.name }}</h1>
     
       <div class="icons">
-        <!-- RATING -->
-        <p class="rating">{{ game.rating }} <img class="star" src="../../../assets/images/icons/star-filled.svg" alt="⭐"></p>
-        
+
         <app-game-actions
         class="icons"
         [game]="game"
         ></app-game-actions>
         
       </div>
-      <p class="duration">Average playtime: 
-          @if (game.playtime && game.playtime > 0) {
-            {{ game.playtime }} hours
-          } @else {
-            N/A
-          }
-      </p>
     </div>
 
     <!-- DESCRIPCIÓN -->
@@ -34,8 +25,28 @@
         <div class="text">
           <p [innerHTML]="game.description"></p>
         </div>
-        <div class="image">
-          <img [src]="game.background_image" [alt]="game.name" />
+        <div class="media-info">
+          <div class="image">
+            <img [src]="game.background_image" [alt]="game.name" />
+          </div>
+          
+          <!-- RATING -->
+          @if(game.rating) {
+            <p class="rating">
+              Community rating: <span>{{ game.rating }}</span>
+              <img class="star" src="../../../assets/images/icons/star-filled.svg" alt="⭐">
+            </p>
+          }
+          
+          <!-- DURATION -->
+          @if (game.playtime && game.playtime > 0) {
+            <p class="duration">
+              Average playtime: <span>{{ game.playtime }} hours</span>
+            </p>
+          }
+
+
+
         </div>
       </div>
     </div>
