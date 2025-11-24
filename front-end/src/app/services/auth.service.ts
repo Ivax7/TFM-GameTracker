@@ -1,8 +1,6 @@
-// src/app/services/auth.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { tap } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { tap, Observable, BehaviorSubject } from 'rxjs';
 
 interface LoginResponse {
   access_token: string;
@@ -16,6 +14,9 @@ interface LoginResponse {
 export class AuthService {
   private apiUrl = 'http://localhost:3000/auth';
 
+  private tokenSubject = new BehaviorSubject<string | null>(localStorage.getItem('token'));
+  public token$ = this.tokenSubject.asObservable();
+
   constructor(private http: HttpClient) {}
 
   login(email: string, password: string): Observable<LoginResponse> {
@@ -25,6 +26,7 @@ export class AuthService {
           localStorage.setItem('token', res.access_token);
           localStorage.setItem('username', res.username || '');
           localStorage.setItem('email', res.email || '');
+          this.tokenSubject.next(res.access_token);
         })
       );
   }
@@ -45,6 +47,7 @@ export class AuthService {
     localStorage.removeItem('token');
     localStorage.removeItem('username');
     localStorage.removeItem('email');
+    this.tokenSubject.next(null);
   }
 
   getUser() {
@@ -58,6 +61,4 @@ export class AuthService {
     }
     return { username: '', email: '' };
   }
-
-
 }

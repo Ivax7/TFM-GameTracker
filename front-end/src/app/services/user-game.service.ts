@@ -82,4 +82,9 @@ export class UserGameService {
     );
   }
 
+  getGameReviews(gameId: number) {
+  return this.http.get<any[]>(`${this.apiUrl}/${gameId}/reviews`);
+  }
+
+
 }

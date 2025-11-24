@@ -137,9 +137,20 @@ export class ModalManagerController implements OnInit {
     if (!this.currentGame) return;
 
     this.userGameService.setGameReview(this.currentGame.id, review)
-      .subscribe(updated => {
-        this.currentGame.review = updated.review;
-        this.showReviewModal = false;
+      .subscribe({
+        next: (updated) => {
+          this.currentGame.review = updated.review;
+          this.showReviewModal = false;
+          alert('Review added successfully!');
+        },
+        error: (err) => {
+          if (err.status === 400 && err.error?.message) {
+            alert(err.error.message);
+          } else {
+            alert('You reached the maximum 3 reviews in this game.');
+          }
+        }
       });
   }
+
 }

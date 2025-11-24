@@ -110,3 +110,61 @@
 } @else {
   <p>Loading game details...</p>
 }
+
+
+<!-- USER REVIEWS -->
+<div class="reviews-header">
+  <h2>User Reviews</h2>
+
+  @if (reviews.length > 4) {
+    <button class="see-all" (click)="showAll = true">
+      See all reviews →
+    </button>
+  }
+</div>
+
+@if (!showAll) {
+
+  @if (limitedReviews.length === 0) {
+    <p>No reviews yet.</p>
+  } @else {
+
+    <div class="reviews-grid">
+      @for (r of limitedReviews; track r) {
+        <div class="review-card">
+          <h4>{{ r.username }}</h4>
+          <small class="date">{{ r.createdAt | date:'mediumDate' }}</small>
+
+          @if (r.rating) {
+            <p class="rating">
+              Rating: <strong>{{ r.rating }}</strong>/10
+            </p>
+          }
+
+          @if (r.playtime) {
+            <p class="playtime">
+              Played: {{ r.playtime }} hours
+            </p>
+          }
+
+          <p class="comment">"{{ r.review }}"</p>
+        </div>
+      }
+    </div>
+
+  }
+
+} @else {
+
+  <!-- Vista expandida -->
+  <div class="reviews-list">
+    @for (r of reviews; track r) {
+      <div class="review-card expanded">
+        <h4>{{ r.username }}</h4>
+        <small class="date">{{ r.createdAt }}</small>
+        <p>{{ r.review }}</p>
+      </div>
+    }
+  </div>
+
+}

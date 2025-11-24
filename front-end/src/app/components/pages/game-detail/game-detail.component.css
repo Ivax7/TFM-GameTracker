@@ -259,6 +259,37 @@
 }
 
 
+/* REVIEWS */
+
+.reviews-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.see-all {
+  background: none;
+  border: none;
+  color: #4A90E2;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.review-card {
+  background: #1c1c1c;
+  padding: 16px;
+  border-radius: 10px;
+  color: white;
+}
+
+
 /* Responsive */
 @media (max-width: 1200px) {
   .additional-info {

@@ -1,9 +1,8 @@
-import { Entity, PrimaryGeneratedColumn, ManyToOne, Column, Unique, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, ManyToOne, Column, JoinColumn, UpdateDateColumn, CreateDateColumn } from 'typeorm';
 import { User } from '../user/user.entity';
 import { Game } from '../game/game.entity';
 
 @Entity()
-@Unique(['user', 'game'])
 export class UserGame {
   @PrimaryGeneratedColumn()
   id: number;
@@ -30,4 +29,10 @@ export class UserGame {
   
   @Column({ type: 'text', nullable: true })
   review?: string;
+  
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

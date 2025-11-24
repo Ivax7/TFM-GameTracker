@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, Not, Raw } from 'typeorm';
 import { UserGame } from './user-game.entity';
 import { GameService } from '../game/game.service';
 import { User } from '../user/user.entity';
@@ -11,7 +11,7 @@ export type GameStatus = 'Playing' | 'Played' | 'Completed' | 'Abandoned';
 export class UserGameService {
   constructor(
     @InjectRepository(UserGame)
-    private repo: Repository<UserGame>,  // ✅ usar esta variable en vez de userGameRepository
+    private repo: Repository<UserGame>,
     @InjectRepository(User)
     private userRepo: Repository<User>,
     private readonly gameService: GameService,
@@ -128,33 +128,61 @@ async setRating(userId: number, gameId: number, rating: number) {
   }
 
   return this.repo.save(userGame);
-}
+  }
 
-  /* REVIEWS */
-  async setReview(userId: number, gameId: number, review: string) {
+    /* REVIEWS */
+  /** Guardar review, hasta un máximo de 3 por usuario por juego */
+async setReview(userId: number, gameId: number, review: string) {
   const user = await this.userRepo.findOne({ where: { id: userId } });
   if (!user) throw new Error('User not found');
 
   const game = await this.gameService.findOrCreate({ id: gameId });
 
-  let userGame = await this.repo.findOne({
+  // Buscar registros existentes del usuario para este juego
+  const userGames = await this.repo.find({
     where: { user: { id: userId }, game: { id: gameId } },
-    relations: ['user', 'game'],
+    order: { createdAt: 'ASC' },
   });
 
-  if (!userGame) {
-    userGame = this.repo.create({
+  // Contar cuántos reviews ya tiene
+  const reviewsCount = userGames.filter(ug => ug.review && ug.review.trim() !== '').length;
+
+  if (reviewsCount >= 3) {
+    throw new Error('You have reached the maximum number of reviews for this game (3).');
+  }
+
+  // Buscar un registro sin review para reutilizar o crear uno nuevo
+  let target: UserGame | undefined = userGames.find(ug => !ug.review || ug.review.trim() === '');
+  if (!target) {
+    target = this.repo.create({
       user,
       game,
       status: 'Playing',
       gameName: game.name,
-      review,
     });
-  } else {
-    userGame.review = review;
   }
 
-  return this.repo.save(userGame);
+  target.review = review;
+
+  return this.repo.save(target);
 }
 
+
+  /** Obtener todas las reviews de un juego */
+  async getReviewsForGame(gameId: number) {
+    const reviews = await this.repo.find({
+      where: { game: { id: gameId }, review: Not('') },
+      relations: ['user'],
+      order: { createdAt: 'DESC' },
+    });
+
+    return reviews.map(r => ({
+      id: r.id,
+      username: r.user.username,
+      review: r.review,
+      rating: r.rating,
+      playtime: r.playtime,
+      createdAt: r.createdAt,
+    }));
+  }
 }
