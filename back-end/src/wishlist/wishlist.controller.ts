@@ -10,7 +10,7 @@ export class WishlistController {
 
   @Post(':gameId')
   async addToWishlist(@Param('gameId') gameId: number, @Body() body: any, @Req() req) {
-    const userId = req.user.userId;
+    const userId = req.user.id;
 
     const gameData = {
       id: gameId,
@@ -22,20 +22,20 @@ export class WishlistController {
 
   @Delete(':gameId')
   async removeFromWishlist(@Param('gameId') gameId: number, @Req() req) {
-    const userId = req.user.userId;
+    const userId = req.user.id;
     return this.wishlistService.removeFromWishlist(userId, gameId);
   }
 
   @Get()
   async getWishlist(@Req() req) {
-    const userId = req.user.userId;
+    const userId = req.user.id;
     return this.wishlistService.getWishlist(userId);
   }
 
   // AÑADE ESTE ENDPOINT QUE FALTA
   @Get('check/:gameId')
   async checkInWishlist(@Param('gameId') gameId: number, @Req() req) {
-    const userId = req.user.userId;
+    const userId = req.user.id;
     return this.wishlistService.isInWishlist(userId, gameId);
   }
 }

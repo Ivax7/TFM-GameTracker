@@ -1,11 +1,11 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../../auth/auth.service';
-import { WishlistService } from '../../services/wishlist.service';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { UserGameService } from '../../services/user-game.service';
-import { RatingModalComponent } from '../rating-modal/rating-modal.component';
+import { AuthService } from '../../auth/auth.service';
 import { ModalManagerService } from '../../services/modal-manager.service';
+import { UserGameService } from '../../services/user-game.service';
+import { WishlistService } from '../../services/wishlist.service';
+import { RatingModalComponent } from '../rating-modal/rating-modal.component';
 
 @Component({
   selector: 'app-game-actions',

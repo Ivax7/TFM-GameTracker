@@ -36,9 +36,8 @@ export class NavComponent implements OnInit {
     this.auth.currentUser$.subscribe(user => {
       this.currentUser = user;
     });
-    
-    // Búsqueda reactiva
-    this.searchSubject.pipe(
+
+      this.searchSubject.pipe(
       debounceTime(300),
       distinctUntilChanged(),
       switchMap(query =>
