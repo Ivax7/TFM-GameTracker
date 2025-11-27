@@ -1,53 +1,45 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../../../auth/auth.service';
 import { UserService } from '../../../../services/user.service';
+
 @Component({
   selector: 'app-email',
   standalone: true,
   imports: [FormsModule, CommonModule],
   templateUrl: './email.component.html',
-  styleUrl: './email.component.css'
+  styleUrls: ['./email.component.css']
 })
 export class EmailComponent implements OnInit {
-  email: string = '';
-  newEmail: string = '';
+  email = '';
+  newEmail = '';
 
   constructor(
-    private userService: UserService,
+    private authService: AuthService,
+    private userService: UserService
   ) {}
 
-  ngOnInit(): void {
-    this.loadUserData();
-  }
-
-  loadUserData() {
-    this.userService.getProfile().subscribe({
-      next: (user) => {
-        this.email = user.email;
-        this.newEmail = user.email;
-      },
-      error: (err) => {
-        console.log('Error loading profile', err);
-      }
-    })
+  ngOnInit() {
+    this.authService.currentUser$.subscribe(user => {
+      if (!user) return;
+      this.email = user.email;
+      this.newEmail = user.email;
+    });
   }
 
   updateEmail() {
     this.userService.updateEmail(this.newEmail).subscribe({
-      next: () => {
-        this.email = this.newEmail
-        alert('Email updated successfully:')
+      next: updatedUser => {
+        // Actualizamos usuario global
+        this.authService.updateCurrentUser({ email: updatedUser.email });
+        alert('Email updated successfully');
       },
-      error: (err) => console.log('Email cannot be updated:', err)
+      error: err => console.error('Email cannot be updated:', err)
     });
   }
 
-  /* Detect changes */
   hasChanges(): boolean {
-    return (
-      this.email !== this.newEmail
-    );
+    return this.email !== this.newEmail;
   }
-
 }

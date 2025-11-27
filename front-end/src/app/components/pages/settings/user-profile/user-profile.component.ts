@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../../../auth/auth.service';
 import { UserService } from '../../../../services/user.service';
 
 @Component({
@@ -13,80 +14,71 @@ import { UserService } from '../../../../services/user.service';
 export class UserProfileComponent implements OnInit {
   displayName = '';
   bio = '';
+  profileImageUrl = '../../../../../assets/images/icons/profile.svg';
+  selectedImageFile: File | null = null;
   loading = true;
 
-
-  // Original Values
   originalDisplayName = '';
   originalBio = '';
   originalImage = '';
 
-
-  profileImageUrl = '../../../../../assets/images/icons/profile.svg'; // default image
-  selectedImageFile: File | null = null;
-
-  constructor(private userService: UserService) {}
+  constructor(
+    private authService: AuthService,
+    private userService: UserService
+  ) {}
 
   ngOnInit() {
-    this.loadProfile();
-  }
+    // Obtenemos username y email directamente desde currentUser$
+    this.authService.currentUser$.subscribe(user => {
+      if (!user) return;
+      this.displayName = user.username;
 
-  // Carga de datos
-  loadProfile() {
-    this.loading = true;
-    this.userService.getProfile().subscribe({
-      next: (user) => {
-        this.displayName = user.displayName;
-        this.bio = user.bio;
-        this.profileImageUrl = user.profileImage || '../../../../../assets/images/icons/profile.svg';
+      // Solo llamamos a getProfile() para bio y profileImage
+      this.userService.getProfile().subscribe(profile => {
+        this.bio = profile.bio;
+        this.profileImageUrl = profile.profileImage || '../../../../../assets/images/icons/profile.svg';
 
-        // Guardamos originales
-        this.originalDisplayName = user.displayName;
-        this.originalBio = user.bio;
+        this.originalDisplayName = this.displayName;
+        this.originalBio = this.bio;
         this.originalImage = this.profileImageUrl;
-
         this.loading = false;
-      },
-      error: (err) => {
-        console.log('Error fetching profile:', err);
-        this.loading = false;
-      }
+      });
     });
   }
 
-
-  // Envio de datos al backend
   saveProfile() {
     const formData = new FormData();
     formData.append('displayName', this.displayName);
     formData.append('bio', this.bio);
-  
-    if (this.selectedImageFile) {
-      formData.append('profileImage', this.selectedImageFile);
-    }
-  
+    if (this.selectedImageFile) formData.append('profileImage', this.selectedImageFile);
+
     this.userService.updateProfileFormData(formData).subscribe({
-      next: () => alert('Profile updated successfully'),
-      error: (err) => console.log('There was a problem updating your profile', err)
+      next: updatedUser => {
+        // Actualizamos usuario global
+        this.authService.updateCurrentUser({
+          username: updatedUser.displayName,
+          email: updatedUser.email
+        });
+
+        this.originalDisplayName = this.displayName;
+        this.originalBio = this.bio;
+        this.originalImage = this.profileImageUrl;
+        alert('Profile updated successfully');
+      },
+      error: err => console.error('Error updating profile', err)
     });
   }
 
-  // Profiele pic
   onImageSelected(event: any) {
     const file = event.target.files[0];
-    if(!file) return;
-
+    if (!file) return;
     this.selectedImageFile = file;
 
     const reader = new FileReader();
-    reader.onload = () => {
-      this.profileImageUrl = reader.result as string;
-    };
-
+    reader.onload = () => this.profileImageUrl = reader.result as string;
     reader.readAsDataURL(file);
   }
 
-  // Detect changes
   hasChanges(): boolean {
     return (
       this.displayName !== this.originalDisplayName ||
@@ -94,5 +86,4 @@ export class UserProfileComponent implements OnInit {
       this.profileImageUrl !== this.originalImage
     );
   }
-
 }

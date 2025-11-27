@@ -128,7 +128,6 @@ export class ModalManagerController implements OnInit {
       .subscribe(updated => {
         this.currentGame.playtime = updated.playtime;
         this.showPlaytimeModal = false;
-        this.showReviewModal = true;
       });
   }
 

@@ -1,38 +1,49 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { UserProfile } from '../models/user-profile.model';
+import { AuthService } from '../auth/auth.service';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root'
+})
 export class UserService {
   private apiUrl = 'http://localhost:3000';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
-  private getAuthHeaders() {
-    const token = localStorage.getItem('token');
+  private getAuthHeaders(): HttpHeaders {
+    const token = this.authService.getToken() || '';
     return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
 
-  getProfile(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/user/profile`, { headers: this.getAuthHeaders() });
+  getProfile(): Observable<UserProfile> {
+    return this.http.get<UserProfile>(`${this.apiUrl}/user/profile`, {
+      headers: this.getAuthHeaders()
+    });
   }
 
-  updateProfileFormData(formData: FormData) {
-    return this.http.patch(`${this.apiUrl}/user/profile`, formData, { headers: this.getAuthHeaders() });
+  updateProfileFormData(formData: FormData): Observable<UserProfile> {
+    return this.http.patch<UserProfile>(`${this.apiUrl}/user/profile`, formData, {
+      headers: this.getAuthHeaders()
+    });
   }
 
-  updateUsernameProfile(username: string) {
-    const body = { username }
-    return this.http.patch(`${this.apiUrl}/user/profile`, body, {headers: this.getAuthHeaders() })
+  updateUsernameProfile(username: string): Observable<UserProfile> {
+    return this.http.patch<UserProfile>(`${this.apiUrl}/user/profile`, { username }, {
+      headers: this.getAuthHeaders()
+    });
+  }
+
+  updateEmail(email: string): Observable<UserProfile> {
+    return this.http.patch<UserProfile>(`${this.apiUrl}/user/profile`, { email }, {
+      headers: this.getAuthHeaders()
+    });
   }
 
   deleteAccount(): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/user/profile`, {headers: this.getAuthHeaders() })
+    return this.http.delete(`${this.apiUrl}/user/profile`, {
+      headers: this.getAuthHeaders()
+    });
   }
-
-  updateEmail(email: string) {
-    const body = { email }
-    return this.http.patch(`${this.apiUrl}/user/profile`, body, {headers: this.getAuthHeaders() })
-  }
-
 }
