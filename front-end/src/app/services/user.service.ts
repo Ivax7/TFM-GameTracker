@@ -24,10 +24,10 @@ export class UserService {
   }
 
   updateProfileFormData(formData: FormData): Observable<UserProfile> {
-    return this.http.patch<UserProfile>(`${this.apiUrl}/user/profile`, formData, {
-      headers: this.getAuthHeaders()
-    });
+    const headers = this.getAuthHeaders();
+    return this.http.patch<UserProfile>(`${this.apiUrl}/user/profile`, formData, { headers });
   }
+
 
   updateUsernameProfile(username: string): Observable<UserProfile> {
     return this.http.patch<UserProfile>(`${this.apiUrl}/user/profile`, { username }, {

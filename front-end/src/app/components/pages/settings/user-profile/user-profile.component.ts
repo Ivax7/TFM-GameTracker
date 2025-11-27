@@ -28,15 +28,18 @@ export class UserProfileComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Obtenemos username y email directamente desde currentUser$
     this.authService.currentUser$.subscribe(user => {
       if (!user) return;
+
+      // Rellenamos displayName, username y email
       this.displayName = user.username;
 
-      // Solo llamamos a getProfile() para bio y profileImage
+      // Solo llamamos a getProfile para bio y profileImage
       this.userService.getProfile().subscribe(profile => {
-        this.bio = profile.bio;
-        this.profileImageUrl = profile.profileImage || '../../../../../assets/images/icons/profile.svg';
+        this.bio = profile.bio || '';
+        this.profileImageUrl = profile.profileImage
+          ? profile.profileImage
+          : '../../../../../assets/images/icons/profile.svg';
 
         this.originalDisplayName = this.displayName;
         this.originalBio = this.bio;
@@ -46,36 +49,50 @@ export class UserProfileComponent implements OnInit {
     });
   }
 
-  saveProfile() {
-    const formData = new FormData();
-    formData.append('displayName', this.displayName);
-    formData.append('bio', this.bio);
-    if (this.selectedImageFile) formData.append('profileImage', this.selectedImageFile);
+saveProfile() {
+  const user = this.authService.getUser();
+  if (!user) return;
 
-    this.userService.updateProfileFormData(formData).subscribe({
-      next: updatedUser => {
-        // Actualizamos usuario global
-        this.authService.updateCurrentUser({
-          username: updatedUser.displayName,
-          email: updatedUser.email
-        });
+  const formData = new FormData();
+  formData.append('displayName', this.displayName);
+  formData.append('bio', this.bio);
+  formData.append('username', user.username);
+  formData.append('email', user.email);
 
-        this.originalDisplayName = this.displayName;
-        this.originalBio = this.bio;
-        this.originalImage = this.profileImageUrl;
-        alert('Profile updated successfully');
-      },
-      error: err => console.error('Error updating profile', err)
-    });
+  if (this.selectedImageFile) {
+    formData.append('profileImage', this.selectedImageFile);
   }
+
+  this.userService.updateProfileFormData(formData).subscribe({
+    next: updatedUser => {
+      this.authService.updateCurrentUser({
+        username: updatedUser.username,
+        email: updatedUser.email,
+        displayName: updatedUser.displayName,
+        profileImage: updatedUser.profileImage
+          ? 'http://localhost:3000/uploads/profile/' + updatedUser.profileImage
+          : '../../../../../assets/images/icons/profile.svg'
+      });
+
+      this.originalDisplayName = updatedUser.displayName;
+      this.originalBio = updatedUser.bio;
+      this.originalImage = this.profileImageUrl;
+
+      alert('Profile updated successfully');
+    },
+    error: err => console.log('Error updating profile', err)
+  });
+}
+
 
   onImageSelected(event: any) {
     const file = event.target.files[0];
     if (!file) return;
+
     this.selectedImageFile = file;
 
     const reader = new FileReader();
-    reader.onload = () => this.profileImageUrl = reader.result as string;
+    reader.onload = () => (this.profileImageUrl = reader.result as string);
     reader.readAsDataURL(file);
   }
 
