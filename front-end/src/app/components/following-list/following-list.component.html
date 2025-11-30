@@ -1,0 +1,12 @@
+
+@if (following.length === 0) {
+  <div>No following</div>
+} @else {
+  <div>
+    @for (f of following; track f.id) {
+      <div class="user-box">
+        {{ f.displayName }} (&#64;{{ f.username }})
+      </div>
+    }
+  </div>
+}

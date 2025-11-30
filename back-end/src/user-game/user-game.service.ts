@@ -130,29 +130,25 @@ async setRating(userId: number, gameId: number, rating: number) {
   return this.repo.save(userGame);
   }
 
-    /* REVIEWS */
-  /** Guardar review, hasta un máximo de 3 por usuario por juego */
+  /* REVIEWS */
+  /* Guardar review, hasta un máximo de 3 por usuario por juego */
 async setReview(userId: number, gameId: number, review: string) {
   const user = await this.userRepo.findOne({ where: { id: userId } });
   if (!user) throw new Error('User not found');
 
   const game = await this.gameService.findOrCreate({ id: gameId });
 
-  // Buscar registros existentes del usuario para este juego
   const userGames = await this.repo.find({
     where: { user: { id: userId }, game: { id: gameId } },
     order: { createdAt: 'ASC' },
   });
 
-  // Contar cuántos reviews ya tiene
   const reviewsCount = userGames.filter(ug => ug.review && ug.review.trim() !== '').length;
-
   if (reviewsCount >= 3) {
     throw new Error('You have reached the maximum number of reviews for this game (3).');
   }
 
-  // Buscar un registro sin review para reutilizar o crear uno nuevo
-  let target: UserGame | undefined = userGames.find(ug => !ug.review || ug.review.trim() === '');
+  let target = userGames.find(ug => !ug.review || ug.review.trim() === '');
   if (!target) {
     target = this.repo.create({
       user,
@@ -164,8 +160,19 @@ async setReview(userId: number, gameId: number, review: string) {
 
   target.review = review;
 
-  return this.repo.save(target);
+  const saved = await this.repo.save(target);
+
+  // ⭐ ⭐ DEVOLVEMOS LA REVIEW FORMATEADA ⭐ ⭐
+  return {
+    id: saved.id,
+    username: user.username,
+    review: saved.review,
+    rating: saved.rating,
+    playtime: saved.playtime,
+    createdAt: saved.createdAt,
+  };
 }
+
 
 
   /** Obtener todas las reviews de un juego */

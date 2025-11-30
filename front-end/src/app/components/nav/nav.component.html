@@ -1,29 +1,28 @@
 <nav class="nav">
   <img routerLink="/trending"  class="logo" src="assets/images/logo.png" alt="GT">
 
-  <div class="search-bar">
-    <input
-      type="text"
-      placeholder="Search games..."
-      [(ngModel)]="query"
-      (input)="onSearchChange()"
-      (keyup.enter)="searchGames()"
-    />
-    <button (click)="searchGames()">Search</button>
-  
-    
-    @if (showSuggestions) {
-      <ul class="suggestions">
-        @for (result of searchResults; track result.id) {
-          <li (click)="selectGame(result.id)">
-            <img [src]="result.background_image" [alt]="result.name" width="40" height="40" />
-            <span>{{ result.name }}</span>
-          </li>
-        }
-      </ul>
-    }
-  
-  </div>
+<div class="search-bar">
+  <input
+    type="text"
+    placeholder="Search games or @username..."
+    [(ngModel)]="query"
+    (input)="onSearchChange()"
+    (keyup.enter)="search()"
+  />
+  <button (click)="search()">Search</button>
+
+  <ul class="suggestions" *ngIf="showSuggestions">
+  <li *ngFor="let result of searchResults" (click)="selectItem(result)">
+    <img *ngIf="!searchingUsers" [src]="result.background_image" width="40" height="40" />
+    <img *ngIf="searchingUsers" [src]="result.profileImage || 'assets/images/icons/profile.svg'" width="40" height="40" />
+    <span>
+      {{ searchingUsers ? result.displayName + ' (@' + result.username + ')' : result.name }}
+    </span>
+  </li>
+</ul>
+
+</div>
+
 
   <div class="user-section">
     @if (!currentUser) {

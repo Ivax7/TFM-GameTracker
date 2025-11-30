@@ -35,4 +35,15 @@ export class UserService {
     return (result.affected ?? 0) > 0;
   }
 
+  async searchUsers(query: string): Promise<User[]> {
+    if (!query) return [];
+
+    const lowerQuery = query.toLowerCase();
+
+    return this.userRepo.createQueryBuilder('user')
+      .where('LOWER(user.username) LIKE :q', { q: `%${lowerQuery}%` })
+      .orWhere('LOWER(user.displayName) LIKE :q', { q: `%${lowerQuery}%` })
+      .getMany();
+  }
+
 }

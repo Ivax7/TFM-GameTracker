@@ -134,13 +134,16 @@ export class ModalManagerController implements OnInit {
   // ---------- REVIEW ----------
   onSaveReview(review: string) {
     if (!this.currentGame) return;
-
+  
     this.userGameService.setGameReview(this.currentGame.id, review)
       .subscribe({
-        next: (updated) => {
-          this.currentGame.review = updated.review;
+        next: (updatedReview) => {
+          this.currentGame.review = updatedReview.review;
           this.showReviewModal = false;
           alert('Review added successfully!');
+          
+          // 🔔 Notificar al componente que hay una nueva review
+          this.modalManager.notifyReviewAdded(updatedReview);
         },
         error: (err) => {
           if (err.status === 400 && err.error?.message) {
@@ -151,5 +154,6 @@ export class ModalManagerController implements OnInit {
         }
       });
   }
+  
 
 }

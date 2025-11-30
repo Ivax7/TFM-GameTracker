@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../../services/user.service';
+import { FollowService } from '../../../services/follow.service';
+
 @Component({
   selector: 'app-profile',
   standalone: true,
@@ -10,13 +12,21 @@ import { UserService } from '../../../services/user.service';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-  username = '';
-  displayName = '';
-  bio = '';
-  profileImageUrl = '../../../../../assets/images/icons/profile.svg';
+  profile: any = {};
   loading = true;
 
-  constructor(private userService: UserService) {}
+  followers: any[] = [];
+  following: any[] = [];
+  loadingFollowers = false;
+  loadingFollowing = false;
+
+  showFollowersModal = false;
+  showFollowingModal = false;
+
+  constructor(
+    private userService: UserService,
+    private followService: FollowService
+  ) {}
 
   ngOnInit() {
     this.loadProfile();
@@ -25,17 +35,40 @@ export class ProfileComponent implements OnInit {
   loadProfile() {
     this.loading = true;
     this.userService.getProfile().subscribe({
-      next: (user) => {
-        this.username = user.username; // o user.email si quieres
-        this.displayName = user.displayName;
-        this.bio = user.bio;
-        this.profileImageUrl = user.profileImage || '../../../../../assets/images/icons/profile.svg';
+      next: user => {
+        this.profile = user;
         this.loading = false;
       },
-      error: (err) => {
-        console.error('Error loading profile:', err);
-        this.loading = false;
-      }
+      error: () => this.loading = false
     });
+  }
+
+  openFollowers() {
+    this.loadingFollowers = true;
+    this.showFollowersModal = true;
+    this.followService.getFollowers(this.profile.id).subscribe({
+      next: list => {
+        this.followers = list;
+        this.loadingFollowers = false;
+      },
+      error: () => this.loadingFollowers = false
+    });
+  }
+
+  openFollowing() {
+    this.loadingFollowing = true;
+    this.showFollowingModal = true;
+    this.followService.getFollowing(this.profile.id).subscribe({
+      next: list => {
+        this.following = list;
+        this.loadingFollowing = false;
+      },
+      error: () => this.loadingFollowing = false
+    });
+  }
+
+  closeModal() {
+    this.showFollowersModal = false;
+    this.showFollowingModal = false;
   }
 }

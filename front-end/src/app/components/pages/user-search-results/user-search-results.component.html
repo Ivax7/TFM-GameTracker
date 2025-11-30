@@ -1,0 +1,13 @@
+<div class="user-search-page">
+  <h2>Search results for "&#64;{{ query }}"</h2>
+
+  <p *ngIf="loading">Loading users...</p>
+  <p *ngIf="!loading && users.length === 0">No users found.</p>
+
+  <ul *ngIf="!loading && users.length > 0">
+    <li *ngFor="let user of users" (click)="goToProfile(user.id)" class="user-box">
+      <img [src]="user.profileImage" width="40" height="40" />
+      <span>{{ user.displayName || user.username }} (&#64;{{ user.username }})</span>
+    </li>
+  </ul>
+</div>

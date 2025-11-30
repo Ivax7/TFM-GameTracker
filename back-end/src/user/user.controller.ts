@@ -1,4 +1,4 @@
-import { Controller, Get, Patch, Delete,  Body, Req, UseGuards, UnauthorizedException, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Controller, Get, Patch, Delete, Body, Req, UseGuards, UnauthorizedException, UseInterceptors, UploadedFile, Query } from '@nestjs/common';
 import { UserService } from './user.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -104,6 +104,16 @@ export class UserController {
     }
 
     return { message: 'User deleted successfully' };
+  }
+
+  @Get('search')
+  async searchUsers(@Query('q') q: string) {
+    return this.userService.searchUsers(q);
+  }
+
+  @Get('all')
+  async getAllUsers() {
+    return this.userService.searchUsers('');
   }
 
 }

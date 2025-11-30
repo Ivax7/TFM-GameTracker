@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { UserGameService } from '../../../services/user-game.service';
 import { GameCardComponent } from '../../game-card/game-card.component';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../auth/auth.service';
 
 @Component({
   selector: 'app-collection-status',
@@ -13,6 +14,8 @@ import { Router } from '@angular/router';
 })
 export class CollectionStatusComponent implements OnInit {
   
+  userName = '';
+
   statuses = [
     { key: 'Playing', label: 'Playing' },
     { key: 'Played', label: 'Played' },
@@ -28,10 +31,16 @@ export class CollectionStatusComponent implements OnInit {
 
   constructor(
     private userGameService: UserGameService,
+    private authService: AuthService,
     private router: Router
   ) {}
 
   ngOnInit() {
+    // Obtenemos el user
+    this.authService.currentUser$.subscribe(currentUser => {
+      this.userName = currentUser?.username || 'Usuario';
+    });
+    
     this.loadGames();
   }
 

@@ -5,7 +5,8 @@ import { FormsModule } from '@angular/forms';
 import { AuthModalComponent } from '../../auth/auth-modal/auth-modal.component';
 import { AuthService } from '../../auth/auth.service';
 import { RawgService } from '../../services/rawg.service';
-import { Subject, debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
+import { Subject, debounceTime, distinctUntilChanged, switchMap, of } from 'rxjs';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-nav',
@@ -17,54 +18,89 @@ import { Subject, debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 export class NavComponent implements OnInit {
   query = '';
   searchResults: any[] = [];
+  searchingUsers = false;
+  showSuggestions = false;
   private searchSubject = new Subject<string>();
-
 
   showAuthModal = false;
   currentUser: any = null;
   isDropdownOpen = false;
-  showSuggestions = false;
 
   constructor(
     private router: Router,
     private auth: AuthService,
     private rawgService: RawgService,
+    private userService: UserService,
     private elementRef: ElementRef
   ) {}
 
   ngOnInit() {
-    this.auth.currentUser$.subscribe(user => {
-      this.currentUser = user;
-    });
+    this.auth.currentUser$.subscribe(user => this.currentUser = user);
 
-      this.searchSubject.pipe(
-      debounceTime(300),
+    this.searchSubject.pipe(
+      debounceTime(200),
       distinctUntilChanged(),
-      switchMap(query =>
-        query.trim().length > 0 ? this.rawgService.getGamesByName(query) : []
-      )
+      switchMap(query => {
+        const trimmed = query.trim();
+        if (!trimmed) return of([]); // no buscar nada si está vacío
+
+        if (trimmed.startsWith('@')) {
+          const username = trimmed.slice(1).trim();
+          if (!username) return of([]); // evita q vacía
+          this.searchingUsers = true;
+          return this.userService.searchUsers(username);
+        } else {
+          this.searchingUsers = false;
+          return this.rawgService.getGamesByName(trimmed);
+        }
+      })
     ).subscribe({
-      next: (res: any) => {
-        this.searchResults = res.results?.slice(0, 5) || [];
+      next: res => {
+        if (this.searchingUsers) {
+          this.searchResults = Array.isArray(res) ? res.slice(0, 5) : [];
+        } else {
+          this.searchResults = res.results?.slice(0, 5) || [];
+        }
         this.showSuggestions = this.searchResults.length > 0;
       },
-      error: (err) => console.log(err)
-    })
+      error: () => {
+        this.searchResults = [];
+        this.showSuggestions = false;
+      }
+    });
   }
 
   onSearchChange() {
     this.searchSubject.next(this.query);
   }
 
-  searchGames() {
-    if (!this.query.trim()) return;
-    this.router.navigate(['/search', this.query]);
-    this.showSuggestions = false;
-    this.resetSearch();
+search() {
+  const trimmed = this.query.trim();
+  if (!trimmed) return;
+
+  if (trimmed.startsWith('@')) {
+    const username = trimmed.slice(1).trim();
+    if (!username) return;
+    this.searchingUsers = true;
+    // Navega usando parámetro de ruta
+    this.router.navigate(['/users/search', username]);
+  } else {
+    this.searchingUsers = false;
+    this.router.navigate(['/search', trimmed]);
   }
 
-  selectGame(gameId: number) {
-    this.router.navigate(['/detail', gameId]);
+  this.resetSearch();
+}
+
+
+
+
+  selectItem(item: any) {
+    if (this.searchingUsers) {
+      this.router.navigate(['/profile', item.id]);
+    } else {
+      this.router.navigate(['/detail', item.id]);
+    }
     this.resetSearch();
   }
 
@@ -74,28 +110,13 @@ export class NavComponent implements OnInit {
     this.showSuggestions = false;
   }
 
-  toggleAuthModal() {
-    this.showAuthModal = !this.showAuthModal;
-  }
-
-  logout() {
-    this.auth.logout();
-  }
-
-  toggleDropdown() {
-    this.isDropdownOpen = !this.isDropdownOpen;
-  }
+  toggleAuthModal() { this.showAuthModal = !this.showAuthModal; }
+  logout() { this.auth.logout(); }
+  toggleDropdown() { this.isDropdownOpen = !this.isDropdownOpen; }
 
   @HostListener('document:click', ['$event'])
   onClickOutside(event: MouseEvent) {
     const dropdown = this.elementRef.nativeElement.querySelector('.dropdown');
-    const clickedInsideDropdown = dropdown?.contains(event.target);
-
-    if (this.isDropdownOpen && !clickedInsideDropdown) {
-      this.isDropdownOpen = false;
-    }
+    if (this.isDropdownOpen && !dropdown?.contains(event.target)) this.isDropdownOpen = false;
   }
-
-  
-
 }

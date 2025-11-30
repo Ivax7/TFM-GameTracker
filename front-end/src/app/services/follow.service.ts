@@ -1,0 +1,53 @@
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Follow } from '../models/follow.model';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class FollowService {
+
+  private apiUrl = 'http://localhost:3000/follow';
+
+  constructor(private http: HttpClient) {}
+
+  private getAuthHeaders() {
+    return {
+      headers: new HttpHeaders({
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      })
+    };
+  }
+
+  followUser(targetUserId: number): Observable<any> {
+    return this.http.post(
+      `${this.apiUrl}/follow`,
+      { targetUserId },
+      this.getAuthHeaders()
+    );
+  }
+
+  unfollowUser(targetUserId: number): Observable<any> {
+    return this.http.post(
+      `${this.apiUrl}/unfollow`,
+      { targetUserId },
+      this.getAuthHeaders()
+    );
+  }
+
+  isFollowing(targetUserId: number): Observable<{ following: boolean }> {
+    return this.http.get<{ following: boolean }>(
+      `${this.apiUrl}/is-following/${targetUserId}`,
+      this.getAuthHeaders()
+    );
+  }
+
+  getFollowers(userId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/followers/${userId}`);
+  }
+
+  getFollowing(userId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/following/${userId}`);
+  }
+}

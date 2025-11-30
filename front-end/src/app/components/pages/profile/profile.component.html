@@ -1,15 +1,79 @@
-<div class="public-profile" *ngIf="!loading">
-  <div class="profile-picture">
-    <img [src]="profileImageUrl" alt="User avatar">
-  </div>
-
-  <div class="profile-info">
-    <p>{{ displayName }}</p>
-    <p>&#64;{{ username }}</p>
-    <p><em> {{ bio || 'No bio available' }} </em></p>
-  </div>
-</div>
-
-<div *ngIf="loading">
+@if (loading) {
   <p>Loading profile...</p>
-</div>
+} @else {
+  <div class="public-profile">
+    <div class="profile-left">
+      <div class="profile-picture">
+        <img [src]="profile.profileImage || '../../../../../assets/images/icons/profile.svg'" alt="User avatar">
+      </div>
+      <div class="profile-info">
+        <p>{{ profile.displayName }}</p>
+        <p>&#64;{{ profile.username }}</p>
+        <p><em>{{ profile.bio || 'No bio available' }}</em></p>
+      </div>
+    </div>
+
+    <div class="profile-right">
+      <button class="btn-follow" (click)="openFollowers()">
+        <span class="count">{{ followers.length }}</span>
+        <span class="label">Followers</span>
+      </button>
+      <button class="btn-follow" (click)="openFollowing()">
+        <span class="count">{{ following.length }}</span>
+        <span class="label">Following</span>
+      </button>
+    </div>
+
+
+  </div>
+
+  <!-- Modal Followers -->
+  @if (showFollowersModal) {
+    <div class="modal">
+      <div class="modal-content">
+        <span class="close" (click)="closeModal()">&times;</span>
+        <h3>Followers</h3>
+        @if (loadingFollowers) {
+          <p>Loading...</p>
+        } @else {
+          @if (followers.length === 0) {
+            <p>No followers yet</p>
+          } @else {
+            <div>
+              @for (f of followers; track f.id) {
+                <div class="user-box">
+                  {{ f.displayName }} (&#64;{{ f.username }})
+                </div>
+              }
+            </div>
+          }
+        }
+      </div>
+    </div>
+  }
+
+  <!-- Modal Following -->
+  @if (showFollowingModal) {
+    <div class="modal">
+      <div class="modal-content">
+        <span class="close" (click)="closeModal()">&times;</span>
+        <h3>Following</h3>
+        @if (loadingFollowing) {
+          <p>Loading...</p>
+        } @else {
+          @if (following.length === 0) {
+            <p>No following</p>
+          } @else {
+            <div>
+              @for (f of following; track f.id) {
+                <div class="user-box">
+                  {{ f.displayName }} (&#64;{{ f.username }})
+                </div>
+              }
+            </div>
+          }
+        }
+      </div>
+    </div>
+  }
+}

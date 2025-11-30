@@ -16,11 +16,13 @@ export class ModalManagerService {
   private ratingModalState = new BehaviorSubject<ModalState>({ show: false, game: null });
   private playtimeModalState = new BehaviorSubject<ModalState>({ show: false, game: null });
   private reviewModalState = new BehaviorSubject<ModalState>({ show: false, game: null });
+  private reviewAddedSource = new BehaviorSubject<any | null>(null);
 
   statusModal$ = this.statusModalState.asObservable();
   ratingModal$ = this.ratingModalState.asObservable();
   playtimeModal$ = this.playtimeModalState.asObservable();
   reviewModal$ = this.reviewModalState.asObservable();
+  reviewAdded$ = this.reviewAddedSource.asObservable();
 
   // ------------------ STATUS ------------------
   openStatusModal(game: any) {
@@ -56,5 +58,9 @@ export class ModalManagerService {
 
   closeReviewModal() {
     this.reviewModalState.next({ show: false, game: null });
+  }
+
+  notifyReviewAdded(review: any) {
+    this.reviewAddedSource.next(review);
   }
 }

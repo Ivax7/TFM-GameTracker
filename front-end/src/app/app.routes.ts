@@ -7,6 +7,7 @@ import { MainPageComponent } from './main-page/main-page.component';
 import { CollectionStatusComponent } from './components/pages/collection-status/collection-status.component';
 import { SettingsComponent } from './components/pages/settings/settings.component';
 import { ProfileComponent } from './components/pages/profile/profile.component';
+import { UserSearchResultsComponent } from './components/pages/user-search-results/user-search-results.component';
 
 export const routes: Routes = [
   { path: '', component: MainPageComponent },
@@ -17,5 +18,6 @@ export const routes: Routes = [
   { path: 'wishlist', component: WishlistComponent },
   { path: 'collection', component: CollectionStatusComponent },
   { path: 'settings', component: SettingsComponent },
+  { path: 'users/search/:query', component: UserSearchResultsComponent },
   { path: '**', redirectTo: '' },
 ];

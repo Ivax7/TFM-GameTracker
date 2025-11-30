@@ -46,4 +46,20 @@ export class UserService {
       headers: this.getAuthHeaders()
     });
   }
+
+  // Barra búsqueda usuarios
+searchUsers(query: string = ''): Observable<any[]> {
+  const q = query.trim();
+  if (!q) {
+    return this.http.get<any[]>(`${this.apiUrl}/user/all`, {
+      headers: this.getAuthHeaders()
+    });
+  }
+  return this.http.get<any[]>(`${this.apiUrl}/user/search?q=${q}`, {
+    headers: this.getAuthHeaders()
+  });
+}
+
+
+
 }

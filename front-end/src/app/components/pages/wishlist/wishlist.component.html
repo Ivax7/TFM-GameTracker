@@ -2,7 +2,7 @@
   <h2>{{ userName }}'s Wishlist</h2>
 
   @if (loading) {
-    <p>Cargando tus juegos guardados...</p>
+    <p>Loading games...</p>
   }
 
   @if (error) {
@@ -10,7 +10,7 @@
   }
 
   @if (!loading && wishlist.length === 0) {
-    <p>No tienes juegos en tu wishlist todavía.</p>
+    <p>You don't have any game in your wishilist yet</p>
   }
 
   @if (!loading && wishlist.length > 0) {

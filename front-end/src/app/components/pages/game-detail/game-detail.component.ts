@@ -31,16 +31,24 @@ export class GameDetailComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    // Recargar token y datos si cambia
     this.authService.token$.subscribe(() => {
-    // Token cambiado → recargar reviews y estado del juego
-    this.loadReviews();
-    this.loadGame();
+      this.loadReviews();
+      this.loadGame();
     });
     
+    // Cargar datos según el id de la ruta
     this.route.paramMap.subscribe(params => {
       this.gameId = Number(params.get('id'));
       this.loadGame();
       this.loadReviews();
+    });
+
+    // 🔔 Suscribirse a nuevas reviews emitidas desde el modal
+    this.modalManager.reviewAdded$.subscribe((newReview) => {
+      if (!newReview) return;
+      this.reviews.unshift(newReview);             // Agregar al inicio
+      this.limitedReviews = this.reviews.slice(0,4); // Actualizar vista limitada
     });
   }
 
@@ -58,29 +66,26 @@ export class GameDetailComponent implements OnInit {
   }
 
   loadReviews() {
-  this.userGameService.getGameReviews(this.gameId).subscribe({
-    next: (reviews) => {
-      this.reviews = reviews;
-      this.limitedReviews = reviews.slice(0, 4);
-    },
-    error: (err) => console.error('Error cargando reviews:', err)
-  });
+    this.userGameService.getGameReviews(this.gameId).subscribe({
+      next: (reviews) => {
+        this.reviews = reviews;
+        this.limitedReviews = reviews.slice(0, 4);
+      },
+      error: (err) => console.error('Error cargando reviews:', err)
+    });
   }
 
-submitReview(reviewText: string) {
-  this.userGameService.setGameReview(this.gameId, reviewText).subscribe({
-    next: () => {
-      alert('Review added successfully!');
-      this.loadReviews();
-    },
-    error: (err) => {
-      if (err.status === 400 && err.error?.message) {
-        alert(err.error.message);
-      } else {
-        alert('Error submitting review.');
+  submitReview(reviewText: string) {
+    this.userGameService.setGameReview(this.gameId, reviewText).subscribe({
+      next: (newReview) => {
+        this.reviews.unshift(newReview);
+        this.limitedReviews = this.reviews.slice(0, 4);
+        alert('Review added successfully!');
+      },
+      error: (err) => {
+        console.error(err);
+        alert('Error submitting review');
       }
-    }
-  });
-}
-
+    });
+  }
 }

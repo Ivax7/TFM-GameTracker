@@ -1,3 +1,7 @@
+p{
+  color: var(--text-secondary);
+}
+
 .game-detail {
   display: flex;
   flex-direction: column;
@@ -261,6 +265,15 @@
 
 /* REVIEWS */
 
+.reviews {
+  padding: 2rem;
+  background-color: #111;
+}
+
+h2 {
+  color: var(--secondary-color);
+}
+
 .reviews-header {
   display: flex;
   justify-content: space-between;
@@ -288,6 +301,8 @@
   border-radius: 10px;
   color: white;
 }
+
+
 
 
 /* Responsive */
