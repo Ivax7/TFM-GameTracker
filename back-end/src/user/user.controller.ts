@@ -1,10 +1,10 @@
-import { Controller, Get, Patch, Delete, Body, Req, UseGuards, UnauthorizedException, UseInterceptors, UploadedFile, Query } from '@nestjs/common';
+import { Controller, Get, Patch, Delete, Body, Req, UseGuards, UnauthorizedException, UseInterceptors, UploadedFile, Query, Param } from '@nestjs/common';
 import { UserService } from './user.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
-
+import { NotFoundException } from '@nestjs/common';
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -115,5 +115,26 @@ export class UserController {
   async getAllUsers() {
     return this.userService.searchUsers('');
   }
+
+  // Get del usuario por nombre para ver el perfil
+  @Get('username/:username')
+  async getPublicProfile(@Param('username') username: string) {
+    const user = await this.userService.findByUsername(username);
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    return {
+      id: user.id,
+      username: user.username,
+      displayName: user.displayName,
+      bio: user.bio,
+      profileImage: user.profileImage ? `http://localhost:3000/uploads/${user.profileImage}` : null,
+      followersCount: user.followers?.length || 0,
+      followingCount: user.following?.length || 0,
+    };
+  }
+
 
 }

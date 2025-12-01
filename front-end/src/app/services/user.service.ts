@@ -48,18 +48,24 @@ export class UserService {
   }
 
   // Barra búsqueda usuarios
-searchUsers(query: string = ''): Observable<any[]> {
-  const q = query.trim();
-  if (!q) {
-    return this.http.get<any[]>(`${this.apiUrl}/user/all`, {
+  searchUsers(query: string = ''): Observable<any[]> {
+    const q = query.trim();
+    if (!q) {
+      return this.http.get<any[]>(`${this.apiUrl}/user/all`, {
+        headers: this.getAuthHeaders()
+      });
+    }
+    return this.http.get<any[]>(`${this.apiUrl}/user/search?q=${q}`, {
       headers: this.getAuthHeaders()
     });
   }
-  return this.http.get<any[]>(`${this.apiUrl}/user/search?q=${q}`, {
-    headers: this.getAuthHeaders()
-  });
-}
 
+  // Click en usuario para ver perfil
+  getUserByUsername(username: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/user/username/${username}`, {
+      headers: this.getAuthHeaders()
+    });
+  }
 
 
 }

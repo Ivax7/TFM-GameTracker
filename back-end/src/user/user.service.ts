@@ -46,4 +46,13 @@ export class UserService {
       .getMany();
   }
 
+  // Para cargar perfil público
+  async findByUsername(username: string): Promise<User | null> {
+    return this.userRepo.findOne({
+      where: { username },
+      relations: ['followers', 'following']
+    });
+  }
+
+
 }

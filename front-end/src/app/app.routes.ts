@@ -8,16 +8,20 @@ import { CollectionStatusComponent } from './components/pages/collection-status/
 import { SettingsComponent } from './components/pages/settings/settings.component';
 import { ProfileComponent } from './components/pages/profile/profile.component';
 import { UserSearchResultsComponent } from './components/pages/user-search-results/user-search-results.component';
+import { UserProfileComponent } from './components/pages/settings/user-profile/user-profile.component';
 
 export const routes: Routes = [
   { path: '', component: MainPageComponent },
   { path: 'trending', component: TrendingGamesComponent },
   { path: 'search/:query', component: SearchResultsComponent },
   { path: 'detail/:id', component: GameDetailComponent },
+  // Private profile
   { path: 'profile', component: ProfileComponent },
   { path: 'wishlist', component: WishlistComponent },
   { path: 'collection', component: CollectionStatusComponent },
   { path: 'settings', component: SettingsComponent },
   { path: 'users/search/:query', component: UserSearchResultsComponent },
+  // Public profile
+  { path: 'user/:username', component: ProfileComponent },
   { path: '**', redirectTo: '' },
 ];

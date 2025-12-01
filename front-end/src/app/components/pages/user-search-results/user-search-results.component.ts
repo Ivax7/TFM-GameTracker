@@ -47,7 +47,8 @@ export class UserSearchResultsComponent implements OnInit {
     });
   }
 
-  goToProfile(userId: number) {
-    this.router.navigate(['/profile', userId]);
+  goToProfile(username: string) {
+    this.router.navigate(['/user', username]);
   }
+
 }
