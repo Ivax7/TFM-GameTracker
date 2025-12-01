@@ -22,19 +22,19 @@ export class FollowService {
 
   followUser(targetUserId: number): Observable<any> {
     return this.http.post(
-      `${this.apiUrl}/follow`,
-      { targetUserId },
+      `${this.apiUrl}/${targetUserId}`,
+      {}, // body vacío
+      this.getAuthHeaders()
+    );
+  }
+  
+  unfollowUser(targetUserId: number): Observable<any> {
+    return this.http.delete(
+      `${this.apiUrl}/${targetUserId}`,
       this.getAuthHeaders()
     );
   }
 
-  unfollowUser(targetUserId: number): Observable<any> {
-    return this.http.post(
-      `${this.apiUrl}/unfollow`,
-      { targetUserId },
-      this.getAuthHeaders()
-    );
-  }
 
   isFollowing(targetUserId: number): Observable<{ following: boolean }> {
     return this.http.get<{ following: boolean }>(

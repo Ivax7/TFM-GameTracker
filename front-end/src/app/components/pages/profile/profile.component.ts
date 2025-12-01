@@ -17,6 +17,8 @@ export class ProfileComponent implements OnInit {
   profile: any = {};
   loading = true;
 
+  isFollowing = false;
+
   followers: any[] = [];
   following: any[] = [];
 
@@ -72,6 +74,9 @@ export class ProfileComponent implements OnInit {
           profileImage: user.profileImage || 'assets/images/icons/profile.svg'
         };
 
+        // check if we already follow the user
+        this.isFollowing = this.following.some(f => f.id === user.id);
+
         this.loading = false;
       },
       error: () => this.loading = false
@@ -108,4 +113,25 @@ export class ProfileComponent implements OnInit {
     this.showFollowersModal = false;
     this.showFollowingModal = false;
   }
+
+  toggleFollow() {
+  if (!this.isFollowing) {
+    this.followService.followUser(this.profile.id).subscribe({
+      next: () => {
+        this.isFollowing = true;
+        this.profile.followersCount++;
+      },
+      error: err => console.error(err)
+    });
+  } else {
+    this.followService.unfollowUser(this.profile.id).subscribe({
+      next: () => {
+        this.isFollowing = false;
+        this.profile.followersCount--;
+      },
+      error: err => console.error(err)
+    });
+  }
+}
+
 }

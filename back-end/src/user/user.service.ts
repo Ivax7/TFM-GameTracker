@@ -25,11 +25,19 @@ export class UserService {
     return this.userRepo.findOne({ where: { id: userId } });
   }
 
+  // NUEVO: cargar relaciones followers y following
+  async findByIdWithRelations(userId: number): Promise<User | null> {
+    return this.userRepo.findOne({
+      where: { id: userId },
+      relations: ['followers', 'following'],
+    });
+  }
+
   async updateProfile(userId: number, data: Partial<User>) {
     await this.userRepo.update(userId, data);
     return this.findById(userId);
   }
-  
+
   async deleteUser(userId: number) {
     const result = await this.userRepo.delete(userId);
     return (result.affected ?? 0) > 0;
@@ -46,13 +54,10 @@ export class UserService {
       .getMany();
   }
 
-  // Para cargar perfil público
   async findByUsername(username: string): Promise<User | null> {
     return this.userRepo.findOne({
       where: { username },
-      relations: ['followers', 'following']
+      relations: ['followers', 'following'],
     });
   }
-
-
 }
