@@ -45,22 +45,30 @@ export class FollowService {
   }
 
   async getFollowers(userId: number) {
-    return this.followRepo.find({
+    // Devuelve directamente los usuarios que siguen a este user
+    const follows = await this.followRepo.find({
       where: { following: { id: userId } },
       relations: ['follower'],
     });
+    return follows.map(f => f.follower);
   }
 
   async getFollowing(userId: number) {
-    return this.followRepo.find({
+    // Devuelve directamente los usuarios que este user sigue
+    const follows = await this.followRepo.find({
       where: { follower: { id: userId } },
       relations: ['following'],
     });
+    return follows.map(f => f.following);
   }
 
   async isFollowing(followerId: number, followingId: number) {
-    return !!(await this.followRepo.findOne({
-      where: { follower: { id: followerId }, following: { id: followingId } },
-    }));
+    const exists = await this.followRepo.findOne({
+      where: {
+        follower: { id: followerId },
+        following: { id: followingId },
+      },
+    });
+    return { following: !!exists };
   }
 }

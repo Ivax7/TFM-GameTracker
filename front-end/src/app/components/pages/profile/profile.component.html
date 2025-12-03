@@ -38,53 +38,49 @@
 
   </div>
 
-  <!-- MODAL Followers -->
-  @if (showFollowersModal) {
-    <div class="modal">
-      <div class="modal-content">
-        <span class="close" (click)="closeModal()">&times;</span>
-        <h3>Followers</h3>
+<!-- Followers -->
+<div *ngIf="showFollowersModal" class="modal">
+  <div class="modal-content">
+    <span class="close" (click)="closeModal()">&times;</span>
+    <h3>Followers</h3>
 
-        @if (loadingFollowers) {
-          <p>Loading...</p>
-        } @else {
-          @if (followers.length === 0) {
-            <p>No followers yet</p>
-          } @else {
-            @for (f of followers; track f.id) {
-              <div class="user-box">
-                {{ f.displayName }} (&#64;{{ f.username }})
-              </div>
-            }
-          }
-        }
+    <p *ngIf="loadingFollowers">Loading...</p>
+    <p *ngIf="!loadingFollowers && followers.length === 0">No followers yet</p>
 
+    <div class="users-list" *ngIf="!loadingFollowers && followers.length > 0">
+      <div class="user-box" *ngFor="let f of followers">
+        <img [src]="f.profileImage || 'assets/images/icons/profile.svg'" 
+            alt="{{ f.username }} avatar" class="user-avatar">
+        <div class="user-info">
+          <p class="display-name">{{ f.displayName || f.username }}</p>
+          <p class="username">&#64;{{ f.username }}</p>
+        </div>
       </div>
     </div>
-  }
+  </div>
+</div>
 
-  <!-- MODAL Following -->
-  @if (showFollowingModal) {
-    <div class="modal">
-      <div class="modal-content">
-        <span class="close" (click)="closeModal()">&times;</span>
-        <h3>Following</h3>
+<!-- Following -->
+<div *ngIf="showFollowingModal" class="modal">
+  <div class="modal-content">
+    <span class="close" (click)="closeModal()">&times;</span>
+    <h3>Following</h3>
 
-        @if (loadingFollowing) {
-          <p>Loading...</p>
-        } @else {
-          @if (following.length === 0) {
-            <p>No following</p>
-          } @else {
-            @for (f of following; track f.id) {
-              <div class="user-box">
-                {{ f.displayName }} (&#64;{{ f.username }})
-              </div>
-            }
-          }
-        }
+    <p *ngIf="loadingFollowing">Loading...</p>
+    <p *ngIf="!loadingFollowing && following.length === 0">No following</p>
 
+    <div class="users-list" *ngIf="!loadingFollowing && following.length > 0">
+      <div class="user-box" *ngFor="let f of following">
+        <img [src]="f.profileImage || 'assets/images/icons/profile.svg'" 
+          alt="{{ f.username }} avatar" class="user-avatar">
+        <div class="user-info">
+          <p class="display-name">{{ f.displayName || f.username }}</p>
+          <p class="username">&#64;{{ f.username }}</p>
+        </div>
       </div>
     </div>
+  </div>
+</div>
+
+
   }
-}

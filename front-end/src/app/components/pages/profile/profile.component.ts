@@ -67,47 +67,75 @@ export class ProfileComponent implements OnInit {
 
   loadPublicProfile(username: string) {
     this.loading = true;
+
     this.userService.getUserByUsername(username).subscribe({
       next: user => {
+        console.log(user)
         this.profile = {
           ...user,
-          profileImage: user.profileImage || 'assets/images/icons/profile.svg'
+          profileImage: user.profileImage || 'assets/images/icons/profile.svg',
+          id: user.id,
         };
 
-        // check if we already follow the user
-        this.isFollowing = this.following.some(f => f.id === user.id);
-
-        this.loading = false;
+        // check if we follow the user
+        this.followService.isFollowing(user.id).subscribe({
+          next: res => {
+            this.isFollowing = res.following; // true o false desde la API
+            this.loading = false;
+          },
+          error: () => {
+            this.isFollowing = false;
+            this.loading = false;
+          }
+        });
       },
-      error: () => this.loading = false
+      error: () => {
+        this.loading = false;
+      }
     });
   }
+
 
   openFollowers() {
-    this.loadingFollowers = true;
-    this.showFollowersModal = true;
+  console.log(this.profile.id)
 
-    this.followService.getFollowers(this.profile.id).subscribe({
-      next: list => {
-        this.followers = list;
-        this.loadingFollowers = false;
-      },
-      error: () => this.loadingFollowers = false
-    });
-  }
+  this.loadingFollowers = true;
+  this.showFollowersModal = true;
 
-  openFollowing() {
-    this.loadingFollowing = true;
-    this.showFollowingModal = true;
+  this.followService.getFollowers(this.profile.id).subscribe({
+    next: list => {
+      this.followers = list;
+      this.loadingFollowers = false;
+      console.log('Followers:', this.followers);
+    },
+    error: (err) => {
+      console.log(err);
+      this.loadingFollowers = false;
+    }
+  });
+}
 
-    this.followService.getFollowing(this.profile.id).subscribe({
-      next: list => {
-        this.following = list;
-        this.loadingFollowing = false;
-      },
-      error: () => this.loadingFollowing = false
-    });
-  }
+openFollowing() {
+  console.log(this.profile.id)
+
+  this.loadingFollowing = true;
+  this.showFollowingModal = true;
+
+  this.followService.getFollowing(this.profile.id).subscribe({
+    next: list => {
+      this.following = list;
+      this.loadingFollowing = false;
+      console.log('Following:', this.following);
+    },
+    error: (err) => {
+      console.log(err);
+      this.loadingFollowing = false;
+    }
+  });
+}
+
+
+
 
   closeModal() {
     this.showFollowersModal = false;
@@ -115,23 +143,22 @@ export class ProfileComponent implements OnInit {
   }
 
   toggleFollow() {
-  if (!this.isFollowing) {
-    this.followService.followUser(this.profile.id).subscribe({
-      next: () => {
-        this.isFollowing = true;
-        this.profile.followersCount++;
-      },
-      error: err => console.error(err)
-    });
-  } else {
-    this.followService.unfollowUser(this.profile.id).subscribe({
-      next: () => {
-        this.isFollowing = false;
-        this.profile.followersCount--;
-      },
-      error: err => console.error(err)
-    });
+    if (!this.isFollowing) {
+      this.followService.followUser(this.profile.id).subscribe({
+        next: () => {
+          this.isFollowing = true;
+          this.profile.followersCount = (this.profile.followersCount || 0) + 1;
+        }
+      });
+    } else {
+      this.followService.unfollowUser(this.profile.id).subscribe({
+        next: () => {
+          this.isFollowing = false;
+          this.profile.followersCount = Math.max(0, (this.profile.followersCount || 1) - 1);
+        }
+      });
+    }
   }
-}
+
 
 }
