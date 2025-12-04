@@ -57,10 +57,16 @@ export class NavComponent implements OnInit {
     ).subscribe({
       next: res => {
         if (this.searchingUsers) {
-          this.searchResults = Array.isArray(res) ? res.slice(0, 5) : [];
+          this.searchResults = Array.isArray(res) 
+            ? res.slice(0, 5).map(u => ({
+            ...u,
+            profileImage: u.profileImage ? `http://localhost:3000/uploads/${u.profileImage}` : 'assets/images/icons/profile.svg'
+          }))
+          : [];
         } else {
           this.searchResults = res.results?.slice(0, 5) || [];
-        }
+        }     
+
         this.showSuggestions = this.searchResults.length > 0;
       },
       error: () => {

@@ -240,7 +240,7 @@ p{
 .info-item h3 {
   font-size: 1rem;
   margin-bottom: 0.5rem;
-  color: #00bfff;
+  color: var(--primary-color);
   text-transform: uppercase;
   font-weight: 600;
   letter-spacing: 0.5px;
@@ -254,7 +254,7 @@ p{
 }
 
 .info-item a {
-  color: #00bfff;
+  color: var(--primary-color);
   text-decoration: none;
 }
 
