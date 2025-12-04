@@ -16,11 +16,11 @@
         <p>{{ profile.displayName }}</p>
         <p>&#64;{{ profile.username }}</p>
         <p><em>{{ profile.bio || 'No bio available' }}</em></p>
+        <button class="toggle-follow" [class.following]="isFollowing" *ngIf="!isOwnProfile" (click)="toggleFollow()">
+          {{ isFollowing ? 'Unfollow' : 'Follow' }}
+        </button>
       </div>
     
-      <button class="btn-follow" *ngIf="!isOwnProfile" (click)="toggleFollow()">
-        {{ isFollowing ? 'Unfollow' : 'Follow' }}
-      </button>
 
     </div>
 
@@ -38,49 +38,60 @@
 
   </div>
 
-<!-- Followers -->
-<div *ngIf="showFollowersModal" class="modal">
+<!-- FOLLOWERS MODAL -->
+<div class="modal" *ngIf="showFollowersModal">
   <div class="modal-content">
     <span class="close" (click)="closeModal()">&times;</span>
-    <h3>Followers</h3>
 
-    <p *ngIf="loadingFollowers">Loading...</p>
-    <p *ngIf="!loadingFollowers && followers.length === 0">No followers yet</p>
+    <h2 class="modal-title">Seguidores</h2>
 
-    <div class="users-list" *ngIf="!loadingFollowers && followers.length > 0">
-      <div class="user-box" *ngFor="let f of followers">
-        <img [src]="f.profileImage || 'assets/images/icons/profile.svg'" 
-            alt="{{ f.username }} avatar" class="user-avatar">
-        <div class="user-info">
-          <p class="display-name">{{ f.displayName || f.username }}</p>
-          <p class="username">&#64;{{ f.username }}</p>
+    <div *ngIf="loadingFollowers" class="loading">Cargando...</div>
+
+    <div *ngIf="!loadingFollowers">
+
+      <div *ngFor="let user of followers" class="user-item" (click)="goToUser(user.username)">
+        <div class="user-left">
+          <img 
+            [src]="user.profileImage || 'assets/images/icons/profile.svg'" 
+            alt="profile"
+          />
+          <div class="user-info">
+            <p class="name">{{ user.username }}</p>
+            <p class="email">{{ user.email }}</p>
+          </div>
         </div>
       </div>
+
     </div>
+
   </div>
 </div>
 
-<!-- Following -->
-<div *ngIf="showFollowingModal" class="modal">
+<!-- FOLLOWING MODAL -->
+<div class="modal" *ngIf="showFollowingModal">
   <div class="modal-content">
     <span class="close" (click)="closeModal()">&times;</span>
-    <h3>Following</h3>
 
-    <p *ngIf="loadingFollowing">Loading...</p>
-    <p *ngIf="!loadingFollowing && following.length === 0">No following</p>
+    <h2 class="modal-title">Siguiendo</h2>
 
-    <div class="users-list" *ngIf="!loadingFollowing && following.length > 0">
-      <div class="user-box" *ngFor="let f of following">
-        <img [src]="f.profileImage || 'assets/images/icons/profile.svg'" 
-          alt="{{ f.username }} avatar" class="user-avatar">
-        <div class="user-info">
-          <p class="display-name">{{ f.displayName || f.username }}</p>
-          <p class="username">&#64;{{ f.username }}</p>
+    <div *ngIf="loadingFollowing" class="loading">Cargando...</div>
+
+    <div *ngIf="!loadingFollowing">
+
+      <div *ngFor="let user of following" class="user-item" (click)="goToUser(user.username)">
+        <div class="user-left">
+          <img 
+            [src]="user.profileImage || 'assets/images/icons/profile.svg'" 
+            alt="profile"
+          />
+          <div class="user-info">
+            <p class="name">{{ user.username }}</p>
+            <p class="email">{{ user.email }}</p>
+          </div>
         </div>
       </div>
+
     </div>
   </div>
 </div>
-
-
-  }
+}

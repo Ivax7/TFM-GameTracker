@@ -25,6 +25,7 @@
 .profile-info {
   display: flex;
   flex-direction: column;
+  gap: 10px;
 }
 
 .profile-info p {
@@ -43,6 +44,35 @@
   gap: 10px;
   margin-right: 400px;
 }
+
+/* Toggle Follow */
+
+/* Toggle Follow Minimalista */
+.toggle-follow {
+  padding: 6px 14px;
+  width: 100px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 20px;
+  border: 1px solid #aaa;
+  background-color: transparent;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Hover cuando aún no sigues */
+.toggle-follow:not(.following):hover {
+  background-color: var(--success-color-hover);
+  color: #fff;
+}
+
+/* Hover cuando sigues */
+.toggle-follow.following:hover {
+  color: #fff;
+  background-color: var(--error-color-strong);
+}
+
 
 /* Botón */
 .btn-follow {
@@ -144,4 +174,67 @@
 
 .user-box:hover {
   background-color: #f5f5f5;
+}
+
+
+/* FOLLOWERS/FOLLOWING MODAL STYLE */
+
+.modal-title {
+  margin-top: 0;
+  text-align: center;
+  font-size: 22px;
+  margin-bottom: 15px;
+  font-weight: bold;
+  color: #444;
+}
+
+.loading {
+  text-align: center;
+  color: #555;
+  padding: 15px;
+}
+
+.user-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.user-item:hover {
+  background: #f9f9f9;
+}
+
+.user-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-left img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #ddd;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-info .name {
+  margin: 0;
+  font-size: 16px;
+  font-weight: bold;
+  color: #222;
+}
+
+.user-info .email {
+  margin: 0;
+  font-size: 13px;
+  color: #777;
 }

@@ -43,12 +43,19 @@ export class FollowService {
     );
   }
 
-  getFollowers(userId: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/followers/${userId}`, this.getAuthHeaders());
-  }
-  
-  getFollowing(userId: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/following/${userId}`, this.getAuthHeaders());
-  }
+getFollowers(userId: number): Observable<any[]> {
+  return this.http.get<any[]>(
+    `${this.apiUrl}/followers/${userId}`,
+    this.getAuthHeaders()
+  );
+}
+
+getFollowing(userId: number): Observable<any[]> {
+  return this.http.get<any[]>(
+    `${this.apiUrl}/following/${userId}`,
+    this.getAuthHeaders()
+  );
+}
+
 
 }

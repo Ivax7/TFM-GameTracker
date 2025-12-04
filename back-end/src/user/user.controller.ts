@@ -24,6 +24,7 @@ export class UserController {
     const baseUrl = 'http://localhost:3000/uploads/';
 
     return {
+      id: user.id,
       displayName: user.displayName || '',
       bio: user.bio || '',
       email: user.email,

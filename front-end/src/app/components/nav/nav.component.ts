@@ -92,12 +92,9 @@ search() {
   this.resetSearch();
 }
 
-
-
-
   selectItem(item: any) {
     if (this.searchingUsers) {
-      this.router.navigate(['/profile', item.id]);
+      this.router.navigate(['/user', item.username]);
     } else {
       this.router.navigate(['/detail', item.id]);
     }

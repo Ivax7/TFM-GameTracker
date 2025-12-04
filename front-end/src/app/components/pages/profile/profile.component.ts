@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../../services/user.service';
 import { FollowService } from '../../../services/follow.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -34,7 +34,8 @@ export class ProfileComponent implements OnInit {
   constructor(
     private userService: UserService,
     private followService: FollowService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -54,16 +55,22 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  loadProfile() {
-    this.loading = true;
-    this.userService.getProfile().subscribe({
-      next: user => {
-        this.profile = user;
-        this.loading = false;
-      },
-      error: () => this.loading = false
-    });
-  }
+loadProfile() {
+  this.loading = true;
+  this.userService.getProfile().subscribe({
+    next: user => {
+      this.profile = {
+        ...user,
+        id: user.id,
+        profileImage: user.profileImage || 'assets/images/icons/profile.svg'
+      };
+
+      this.loading = false;
+    },
+    error: () => this.loading = false
+  });
+}
+
 
   loadPublicProfile(username: string) {
     this.loading = true;
@@ -95,18 +102,18 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-
-  openFollowers() {
-  console.log(this.profile.id)
-
+openFollowers() {
   this.loadingFollowers = true;
   this.showFollowersModal = true;
 
   this.followService.getFollowers(this.profile.id).subscribe({
     next: list => {
-      this.followers = list;
+      const baseUrl = 'http://localhost:3000/uploads/';
+      this.followers = list.map(u => ({
+        ...u,
+        profileImage: u.profileImage ? baseUrl + u.profileImage : 'assets/images/icons/profile.svg'
+      }));
       this.loadingFollowers = false;
-      console.log('Followers:', this.followers);
     },
     error: (err) => {
       console.log(err);
@@ -116,16 +123,17 @@ export class ProfileComponent implements OnInit {
 }
 
 openFollowing() {
-  console.log(this.profile.id)
-
   this.loadingFollowing = true;
   this.showFollowingModal = true;
 
   this.followService.getFollowing(this.profile.id).subscribe({
     next: list => {
-      this.following = list;
+      const baseUrl = 'http://localhost:3000/uploads/';
+      this.following = list.map(u => ({
+        ...u,
+        profileImage: u.profileImage ? baseUrl + u.profileImage : 'assets/images/icons/profile.svg'
+      }));
       this.loadingFollowing = false;
-      console.log('Following:', this.following);
     },
     error: (err) => {
       console.log(err);
@@ -133,9 +141,6 @@ openFollowing() {
     }
   });
 }
-
-
-
 
   closeModal() {
     this.showFollowersModal = false;
@@ -159,6 +164,12 @@ openFollowing() {
       });
     }
   }
+
+  goToUser(username: string) {
+    this.closeModal();
+    this.router.navigate(['/user', username]);
+  }
+
 
 
 }

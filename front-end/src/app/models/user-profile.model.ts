@@ -1,7 +1,10 @@
 export interface UserProfile {
+  id: number; 
+  username: string;
+  email: string;
   displayName: string;
   bio: string;
-  email: string;
-  username: string;
-  profileImage: string | null;
+  profileImage: string;
+  followersCount: number;
+  followingCount: number;
 }
