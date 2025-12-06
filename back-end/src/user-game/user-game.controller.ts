@@ -5,7 +5,7 @@ import { UserGameService } from './user-game.service';
 
 interface AuthRequest extends Request {
   user: {
-    id: number;
+    userId: number;
     email?: string;
     username?: string;
   };
@@ -18,15 +18,14 @@ export class UserGameController {
   // Endpoint público
   @Get(':gameId/reviews')
   async getReviews(@Param('gameId') gameId: number) {
-    return this.userGameService.getReviewsForGame(gameId);
+    return this.userGameService.getReviewsForGame(Number(gameId));
   }
 
-  // Los demás requieren autenticación
   @UseGuards(AuthGuard('jwt'))
   @Get('status/:gameId')
   async getGameStatus(@Req() req: AuthRequest, @Param('gameId') gameId: number) {
-    const userId = req.user.id;
-    const userGame = await this.userGameService.findUserGameById(userId, gameId);
+    const userId = req.user.userId;
+    const userGame = await this.userGameService.findUserGameById(userId, Number(gameId));
 
     return {
       status: userGame?.status || null,
@@ -40,7 +39,7 @@ export class UserGameController {
   @Post('status')
   async setStatus(@Req() req: AuthRequest, @Body() body) {
     return this.userGameService.setStatus(
-      req.user.id,
+      req.user.userId,
       body.gameId,
       body.status,
       body.name,
@@ -52,32 +51,34 @@ export class UserGameController {
 
   @UseGuards(AuthGuard('jwt'))
   @Get(':status')
-  async getGamesByStatus(
-    @Req() req: AuthRequest,
-    @Param('status') status: string
-  ) {
+  async getGamesByStatus(@Req() req: AuthRequest, @Param('status') status: string) {
     return this.userGameService.findByStatus(
-      req.user.id,
+      req.user.userId,
       status as 'Playing' | 'Played' | 'Completed' | 'Abandoned'
     );
   }
 
-
   @UseGuards(AuthGuard('jwt'))
   @Post('rating')
   async setRating(@Req() req: AuthRequest, @Body() body) {
-    return this.userGameService.setRating(req.user.id, body.gameId, body.rating);
+    return this.userGameService.setRating(req.user.userId, body.gameId, body.rating);
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Post('playtime')
   async setPlaytime(@Req() req: AuthRequest, @Body() body) {
-    return this.userGameService.setPlaytime(req.user.id, body.gameId, body.playtime);
+    return this.userGameService.setPlaytime(req.user.userId, body.gameId, body.playtime);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('user-reviews')
+  async getUserReviews(@Req() req: AuthRequest) {
+    return this.userGameService.getReviewsByUser(req.user.userId);
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Post('review')
   async setReview(@Req() req: AuthRequest, @Body() body) {
-    return this.userGameService.setReview(req.user.id, body.gameId, body.review);
+    return this.userGameService.setReview(req.user.userId, body.gameId, body.review);
   }
 }

@@ -26,10 +26,10 @@ export class UserGame {
 
   @Column({ type: 'float', nullable: true })
   playtime?: number;
-  
+
   @Column({ type: 'text', nullable: true })
   review?: string;
-  
+
   @CreateDateColumn()
   createdAt: Date;
 

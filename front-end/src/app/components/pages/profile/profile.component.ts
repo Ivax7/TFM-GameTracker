@@ -4,13 +4,14 @@ import { FormsModule } from '@angular/forms';
 import { UserService } from '../../../services/user.service';
 import { FollowService } from '../../../services/follow.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Chart, registerables } from 'chart.js';
-Chart.register(...registerables);
+import { RatingsChartComponent } from '../../ratings-chart/ratings-chart.component';
+import { ReviewsSummaryComponent } from '../../reviews-summary/reviews-summary.component';
+
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RatingsChartComponent, ReviewsSummaryComponent],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
@@ -33,8 +34,28 @@ export class ProfileComponent implements OnInit {
   isOwnProfile = true;
   routeUsername: string | null = null;
 
+
+  // Manú navegación ratings/reviews
+  selectedTab: 'ratings' | 'reviews' = 'ratings';
+
+  selectTab(tab: 'ratings' | 'reviews') {
+    this.selectedTab = tab;
+  }
+
   // Ratings
   ratingChart: any
+  ratingCounts: {1:number,2:number,3:number,4:number,5:number} = {
+    1: 0,
+    2: 0,
+    3: 0,
+    4: 0,
+    5: 0
+  };
+
+
+  // Reviews
+  visitedUserId!: number;
+
 
   constructor(
     private userService: UserService,
@@ -52,6 +73,7 @@ export class ProfileComponent implements OnInit {
         // PERFIL PÚBLICO
         this.isOwnProfile = false;
         this.loadPublicProfile(this.routeUsername);
+        
       } else {
         // PERFIL PRIVADO
         this.isOwnProfile = true;
@@ -70,6 +92,7 @@ loadProfile() {
         profileImage: user.profileImage || 'assets/images/icons/profile.svg'
       };
       
+      this.visitedUserId = this.profile.id;
       this.loadUserRatings(this.profile.id)
 
       this.loading = false;
@@ -91,6 +114,7 @@ loadProfile() {
           id: user.id,
         };
 
+        this.visitedUserId = this.profile.id;
         this.loadUserRatings(this.profile.id)
 
         // check if we follow the user
@@ -197,50 +221,9 @@ loadUserRatings(userId: number) {
 
       console.log('Counts finales para el chart:', counts);
 
-      this.renderChart(counts);
+      this.ratingCounts = counts;
     },
     error: err => console.log('Error al cargar ratings:', err)
   });
 }
-
-
-
-  // Renderizar gráfico
-  renderChart(counts: any) {
-    if (this.ratingChart) this.ratingChart.destroy();
-
-    const ctx = document.getElementById('ratingsChart') as HTMLCanvasElement;
-    this.ratingChart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: ['1 ⭐', '2 ⭐', '3 ⭐', '4 ⭐', '5 ⭐'],
-        datasets: [{
-          label: 'Ratings count',
-          data: [
-            counts[1],
-            counts[2],
-            counts[3],
-            counts[4],
-            counts[5]
-          ],
-          backgroundColor: [
-            '#ff6b6b',
-            '#ffa94d',
-            '#ffd93d',
-            '#6bcf63',
-            '#4c9aff'
-          ]
-        }]
-      },
-      options: {
-        responsive: true,
-        scales: {
-          y: {
-            beginAtZero: true,
-            ticks: { stepSize: 1 }
-          }
-        }
-      }
-    })
-  }
 }

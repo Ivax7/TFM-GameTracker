@@ -97,11 +97,27 @@
 
 
   <!-- NAV RATING/REVIEWS -->
-  
-  <!-- Rating -->
-  <div class="ratings-chart">
-    <h3>Game Ratings</h3>
-    <canvas id="ratingsChart"></canvas>
+  <div class="ratings-reviews-nav">
+    <ul>
+      <li 
+        [class.active]="selectedTab === 'ratings'" 
+        (click)="selectTab('ratings')">
+        Ratings
+      </li>
+      <li 
+        [class.active]="selectedTab === 'reviews'" 
+        (click)="selectTab('reviews')">
+        Reviews
+      </li>
+    </ul>
+  </div>
+
+    <!-- Content -->
+  <div class="profile-content">
+    <ng-container [ngSwitch]="selectedTab">
+      <app-ratings-chart *ngSwitchCase="'ratings'" [counts]="ratingCounts"></app-ratings-chart>
+      <app-reviews-summary *ngSwitchCase="'reviews'" [userId]="visitedUserId"></app-reviews-summary>
+    </ng-container>
   </div>
 
 

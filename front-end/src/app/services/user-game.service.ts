@@ -82,9 +82,15 @@ export class UserGameService {
     );
   }
 
+  // Recoger Reviews por usuario y juego
   getGameReviews(gameId: number) {
-  return this.http.get<any[]>(`${this.apiUrl}/${gameId}/reviews`);
+    return this.http.get<any[]>(`${this.apiUrl}/${gameId}/reviews`);
   }
 
 
+  // Recoger todas las reviews de un usuario
+  getUserReviewsByUser(userId: number): Observable<any[]> {
+    return this.http.get<any[]>(`http://localhost:3000/user-reviews/${userId}`);
+  }
+  
 }

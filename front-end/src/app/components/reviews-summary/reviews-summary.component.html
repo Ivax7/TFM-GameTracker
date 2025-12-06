@@ -1,0 +1,25 @@
+<div class="reviews-container">
+
+  <div *ngIf="loading">Loading...</div>
+
+  <div *ngIf="!loading && reviews.length === 0">
+    <p style="color: #fff;">No reviews written yet.</p>
+  </div>
+
+  <div class="review-card" *ngFor="let r of reviews">
+    <img [src]="r.backgroundImage" class="game-img">
+
+    <div class="content">
+      <h3>{{ r.name }}</h3>
+
+      <p class="rating">Rating: {{ r.rating }} ⭐</p>
+
+      <p class="review-text">
+        {{ r.review }}
+      </p>
+
+      <p class="date">{{ r.updatedAt | date:'medium' }}</p>
+    </div>
+  </div>
+
+</div>

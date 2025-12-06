@@ -238,3 +238,48 @@
   font-size: 13px;
   color: #777;
 }
+
+
+
+/* NAV RATING / REVIEWS */
+.ratings-reviews-nav {
+  display: flex;
+  padding: 1.5rem;
+}
+
+.ratings-reviews-nav ul {
+  display: flex;
+  flex-direction: row;
+  gap: 1.5rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.ratings-reviews-nav li {
+  position: relative;
+  color: var(--text-main);
+  margin: 0;
+  padding: 10px 20px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.ratings-reviews-nav li:hover {
+  color: var(--hover-color);
+}
+
+.ratings-reviews-nav li.active {
+  color: var(--primary-color);
+}
+
+.ratings-reviews-nav li.active::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 4px;
+  background-color: var(--primary-color);
+}
