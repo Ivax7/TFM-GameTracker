@@ -67,5 +67,12 @@ export class UserService {
     });
   }
 
+  // Recoger ratings
+  getUserRatings(userId: number) {
+    return this.http.get<any[]>(`${this.apiUrl}/ratings/user/${userId}`, {
+      headers: this.getAuthHeaders()
+    });
+  }
+
 
 }

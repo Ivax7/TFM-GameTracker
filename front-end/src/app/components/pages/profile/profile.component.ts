@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { UserService } from '../../../services/user.service';
 import { FollowService } from '../../../services/follow.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Chart, registerables } from 'chart.js';
+Chart.register(...registerables);
 
 @Component({
   selector: 'app-profile',
@@ -30,6 +32,9 @@ export class ProfileComponent implements OnInit {
 
   isOwnProfile = true;
   routeUsername: string | null = null;
+
+  // Ratings
+  ratingChart: any
 
   constructor(
     private userService: UserService,
@@ -64,6 +69,8 @@ loadProfile() {
         id: user.id,
         profileImage: user.profileImage || 'assets/images/icons/profile.svg'
       };
+      
+      this.loadUserRatings(this.profile.id)
 
       this.loading = false;
     },
@@ -83,6 +90,8 @@ loadProfile() {
           profileImage: user.profileImage || 'assets/images/icons/profile.svg',
           id: user.id,
         };
+
+        this.loadUserRatings(this.profile.id)
 
         // check if we follow the user
         this.followService.isFollowing(user.id).subscribe({
@@ -172,4 +181,66 @@ openFollowing() {
 
 
 
+  // Cargar ratings usuarios
+loadUserRatings(userId: number) {
+  this.userService.getUserRatings(userId).subscribe({
+    next: (games: any[]) => {
+      console.log('Ratings recibidos del backend:', games);
+
+      const counts: Record<1|2|3|4|5, number> = { 1:0, 2:0, 3:0, 4:0, 5:0 };
+
+      games.forEach(g => {
+        const r = Number(g.rating) as 1|2|3|4|5;
+        console.log(`Juego: ${g.game.name}, score: ${r}`);
+        if (r >= 1 && r <= 5) counts[r]++;
+      });
+
+      console.log('Counts finales para el chart:', counts);
+
+      this.renderChart(counts);
+    },
+    error: err => console.log('Error al cargar ratings:', err)
+  });
+}
+
+
+
+  // Renderizar gráfico
+  renderChart(counts: any) {
+    if (this.ratingChart) this.ratingChart.destroy();
+
+    const ctx = document.getElementById('ratingsChart') as HTMLCanvasElement;
+    this.ratingChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['1 ⭐', '2 ⭐', '3 ⭐', '4 ⭐', '5 ⭐'],
+        datasets: [{
+          label: 'Ratings count',
+          data: [
+            counts[1],
+            counts[2],
+            counts[3],
+            counts[4],
+            counts[5]
+          ],
+          backgroundColor: [
+            '#ff6b6b',
+            '#ffa94d',
+            '#ffd93d',
+            '#6bcf63',
+            '#4c9aff'
+          ]
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: { stepSize: 1 }
+          }
+        }
+      }
+    })
+  }
 }

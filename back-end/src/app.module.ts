@@ -12,6 +12,7 @@ import { UserGame } from './user-game/user-game.entity';
 import { Wishlist } from './wishlist/wishlist.entity';
 import { GameModule } from './game/game.module';
 import { FollowModule } from './follow/follow.module';
+import { RatingModule } from './rating/rating.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -31,6 +32,7 @@ import { FollowModule } from './follow/follow.module';
     UserGameModule,
     GameModule,
     FollowModule,
+    RatingModule,
   ],
   controllers: [AppController],
   providers: [AppService],
