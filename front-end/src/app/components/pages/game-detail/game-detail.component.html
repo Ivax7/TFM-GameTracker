@@ -16,7 +16,7 @@
         [game]="game"
         ></app-game-actions>
         
-        <button class="btn-review" (click)="modalManager.openReviewModal(game)">
+        <button class="btn-review" (click)="modalManager.openReviewModal(game)" [disabled]="!game">
           <img src="/assets/images/icons/pencil.svg" alt=""> Review
         </button>
       </div>

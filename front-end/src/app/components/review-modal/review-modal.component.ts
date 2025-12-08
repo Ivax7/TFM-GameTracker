@@ -13,6 +13,8 @@ export class ReviewModalComponent {
 
   @Input() showReview: boolean = false;
   @Input() initialReview: string = '';
+  @Input() game: any;
+
 
   @Output() save = new EventEmitter<string>();
   @Output() close = new EventEmitter<void>();

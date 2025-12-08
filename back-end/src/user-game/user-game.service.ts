@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Not } from 'typeorm';
 import { UserGame } from './user-game.entity';
@@ -13,12 +13,39 @@ export class UserGameService {
   constructor(
     @InjectRepository(UserGame)
     private repo: Repository<UserGame>,
+
     @InjectRepository(User)
     private userRepo: Repository<User>,
+
     private readonly gameService: GameService,
   ) {}
 
-  /** Crear o actualizar status y gameName */
+  // ------------------------------------------
+  // HELPERS
+  // ------------------------------------------
+  private async getUser(userId: number) {
+    const user = await this.userRepo.findOne({ where: { id: userId } });
+    if (!user) throw new NotFoundException('User not found');
+    return user;
+  }
+
+  private async getGame(gameId: number, data?: Partial<Game>) {
+    return this.gameService.findOrCreate({
+      id: gameId,
+      ...data,
+    });
+  }
+
+  private async findUserGame(userId: number, gameId: number) {
+    return this.repo.findOne({
+      where: { user: { id: userId }, game: { id: gameId } },
+      relations: ['user', 'game'],
+    });
+  }
+
+  // ------------------------------------------
+  // SET STATUS
+  // ------------------------------------------
   async setStatus(
     userId: number,
     gameId: number,
@@ -28,52 +55,50 @@ export class UserGameService {
     released?: string,
     rating?: number,
   ) {
-    const user = await this.userRepo.findOne({ where: { id: userId } });
-    if (!user) throw new Error('User not found');
+    const user = await this.getUser(userId);
 
-    const game = await this.gameService.findOrCreate({
-      id: gameId,
+    const game = await this.getGame(gameId, {
       name: gameName,
       backgroundImage,
       released,
       rating,
     });
 
-    let userGame = await this.repo.findOne({
-      where: { user: { id: userId }, game: { id: game.id } },
-    });
+    let userGame = await this.findUserGame(userId, game.id);
 
     if (!userGame) {
       userGame = this.repo.create({
-        user,
-        game,
+        user: user as any,
+        game: game as any,
         status,
-        gameName: game.name || 'Unknown Game',
+        gameName: game.name ?? 'Unknown Game',
+        backgroundImage: game.backgroundImage ?? undefined,
       });
     } else {
       userGame.status = status;
-      userGame.gameName = game.name || 'Unknown Game';
+      userGame.gameName = game.name ?? userGame.gameName;
+      userGame.backgroundImage = game.backgroundImage ?? userGame.backgroundImage;
     }
 
     return this.repo.save(userGame);
   }
 
+
+  // ------------------------------------------
+  // SET RATING
+  // ------------------------------------------
   async setRating(userId: number, gameId: number, rating: number) {
-    const user = await this.userRepo.findOne({ where: { id: userId } });
-    if (!user) throw new Error('User not found');
+    const user = await this.getUser(userId);
+    const game = await this.getGame(gameId);
 
-    const game = await this.gameService.findOrCreate({ id: gameId });
-
-    let userGame = await this.repo.findOne({
-      where: { user: { id: userId }, game: { id: game.id } },
-    });
+    let userGame = await this.findUserGame(userId, game.id);
 
     if (!userGame) {
       userGame = this.repo.create({
         user,
         game,
         status: 'Playing',
-        gameName: game.name || 'Unknown Game',
+        gameName: game.name ?? 'Unknown Game',
         rating,
       });
     } else {
@@ -83,22 +108,21 @@ export class UserGameService {
     return this.repo.save(userGame);
   }
 
+  // ------------------------------------------
+  // SET PLAYTIME
+  // ------------------------------------------
   async setPlaytime(userId: number, gameId: number, playtime: number) {
-    const user = await this.userRepo.findOne({ where: { id: userId } });
-    if (!user) throw new Error('User not found');
+    const user = await this.getUser(userId);
+    const game = await this.getGame(gameId);
 
-    const game = await this.gameService.findOrCreate({ id: gameId });
-
-    let userGame = await this.repo.findOne({
-      where: { user: { id: userId }, game: { id: game.id } },
-    });
+    let userGame = await this.findUserGame(userId, game.id);
 
     if (!userGame) {
       userGame = this.repo.create({
         user,
         game,
         status: 'Playing',
-        gameName: game.name || 'Unknown Game',
+        gameName: game.name ?? 'Unknown Game',
         playtime,
       });
     } else {
@@ -108,52 +132,93 @@ export class UserGameService {
     return this.repo.save(userGame);
   }
 
-  async setReview(userId: number, gameId: number, review: string) {
-    if (!review?.trim()) throw new Error('Review cannot be empty');
+// ------------------------------------------
+// SET REVIEW (SIN DUPLICADOS, guarda backgroundImage correctamente)
+// ------------------------------------------
 
-    const user = await this.userRepo.findOne({ where: { id: userId } });
-    if (!user) throw new Error('User not found');
+async setReview(
+  userId: number,
+  gameId: number,
+  review: string,
+  gameName?: string,
+  backgroundImage?: string,
+  released?: string,
+  rating?: number,
+) {
+  if (!review?.trim()) throw new Error('Review cannot be empty');
 
-    const game = await this.gameService.findOrCreate({ id: gameId });
+  const user = await this.getUser(userId);
 
-    const existingReviews = await this.repo.find({
-      where: { user: { id: userId }, game: { id: game.id } },
-      order: { createdAt: 'ASC' },
-    });
+  // Recupera o crea el juego
+  let game = await this.getGame(gameId, { name: gameName, backgroundImage, rating, released });
 
-    const reviewCount = existingReviews.filter(r => r.review?.trim()).length;
-    if (reviewCount >= 3) throw new Error('Maximum 3 reviews per game');
+  // --- Actualiza Game si vienen nuevos datos ---
+  let shouldSaveGame = false;
 
-    let target = existingReviews.find(r => !r.review?.trim());
-    if (!target) {
-      target = this.repo.create({
-        user,
-        game,
-        status: 'Playing',
-        gameName: game.name || 'Unknown Game',
-        review,
-        rating: undefined,
-        playtime: 0,
-      });
-    } else {
-      target.review = review;
-    }
-
-    const saved = await this.repo.save(target);
-
-    return {
-      id: saved.id,
-      username: user.username,
-      review: saved.review,
-      rating: saved.rating,
-      playtime: saved.playtime,
-      gameId: game.id,
-      gameName: saved.gameName || game.name,
-      backgroundImage: game.backgroundImage,
-      createdAt: saved.createdAt,
-    };
+  if (backgroundImage && backgroundImage !== game.backgroundImage) {
+    game.backgroundImage = backgroundImage;
+    shouldSaveGame = true;
   }
 
+  if (gameName && gameName !== game.name) {
+    game.name = gameName;
+    shouldSaveGame = true;
+  }
+
+  if (rating != null && rating !== game.rating) {
+    game.rating = rating;
+    shouldSaveGame = true;
+  }
+
+  if (released && released !== game.released) {
+    game.released = released;
+    shouldSaveGame = true;
+  }
+
+  if (shouldSaveGame) {
+    await this.gameService.save(game); // Guarda la info completa en la tabla Game
+  }
+
+  // --- Crear o actualizar UserGame ---
+  let userGame = await this.findUserGame(userId, game.id);
+
+  if (!userGame) {
+    userGame = this.repo.create({
+      user: user as any,
+      game: game as any,
+      status: 'Playing',
+      gameName: game.name ?? undefined,
+      review,
+      backgroundImage: game.backgroundImage ?? undefined,
+      rating: game.rating ?? undefined,
+      playtime: undefined,
+    });
+  } else {
+    userGame.review = review;
+    userGame.gameName = game.name ?? userGame.gameName;
+    userGame.backgroundImage = game.backgroundImage ?? userGame.backgroundImage ?? undefined;
+    userGame.rating = game.rating ?? userGame.rating ?? undefined;
+  }
+
+  const saved = await this.repo.save(userGame);
+
+  return {
+    id: saved.id,
+    gameId: game.id,
+    username: user.username,
+    gameName: saved.gameName,
+    review: saved.review,
+    playtime: saved.playtime,
+    rating: saved.rating,
+    backgroundImage: saved.backgroundImage,
+    createdAt: saved.createdAt,
+  };
+}
+
+
+  // ------------------------------------------
+  // GET REVIEWS FOR GAME
+  // ------------------------------------------
   async getReviewsForGame(gameId: number) {
     const reviews = await this.repo.find({
       where: { game: { id: gameId }, review: Not('') },
@@ -168,12 +233,15 @@ export class UserGameService {
       rating: r.rating,
       playtime: r.playtime,
       gameId: r.game.id,
-      gameName: r.gameName || r.game.name,
+      gameName: r.gameName ?? r.game.name,
       backgroundImage: r.game.backgroundImage,
       createdAt: r.createdAt,
     }));
   }
 
+  // ------------------------------------------
+  // GET USER REVIEWS
+  // ------------------------------------------
   async getReviewsByUser(userId: number) {
     const reviews = await this.repo.find({
       where: { user: { id: userId }, review: Not('') },
@@ -183,17 +251,20 @@ export class UserGameService {
 
     return reviews.map(r => ({
       id: r.id,
+      username: r.user.username,
       gameId: r.game.id,
-      name: r.gameName || r.game.name,
+      gameName: r.gameName ?? r.game.name,
       backgroundImage: r.game.backgroundImage,
       review: r.review,
       rating: r.rating,
       playtime: r.playtime,
-      username: r.user?.username,
       createdAt: r.updatedAt,
     }));
   }
 
+  // ------------------------------------------
+  // USED BY LISTS (PLAYING, COMPLETED…)
+  // ------------------------------------------
   async findByStatus(userId: number, status: GameStatus) {
     return this.repo.find({
       where: { user: { id: userId }, status },
@@ -202,9 +273,6 @@ export class UserGameService {
   }
 
   async findUserGameById(userId: number, gameId: number) {
-    return this.repo.findOne({
-      where: { user: { id: userId }, game: { id: gameId } },
-      relations: ['game'],
-    });
+    return this.findUserGame(userId, gameId);
   }
 }

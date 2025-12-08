@@ -19,6 +19,9 @@ export class UserGame {
   gameName: string;
 
   @Column({ nullable: true })
+  backgroundImage?: string;
+
+  @Column({ nullable: true })
   status: string;
 
   @Column({ type: 'float', nullable: true })

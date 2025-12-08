@@ -134,26 +134,31 @@ export class ModalManagerController implements OnInit {
   // ---------- REVIEW ----------
   onSaveReview(review: string) {
     if (!this.currentGame) return;
-  
-    this.userGameService.setGameReview(this.currentGame.id, review)
-      .subscribe({
-        next: (updatedReview) => {
-          this.currentGame.review = updatedReview.review;
-          this.showReviewModal = false;
-          alert('Review added successfully!');
-          
-          // 🔔 Notificar al componente que hay una nueva review
-          this.modalManager.notifyReviewAdded(updatedReview);
-        },
-        error: (err) => {
-          if (err.status === 400 && err.error?.message) {
-            alert(err.error.message);
-          } else {
-            alert('You reached the maximum 3 reviews in this game.');
-          }
-        }
-      });
-  }
-  
 
+    this.userGameService.setGameReview(
+      this.currentGame.id,
+      review,
+      this.currentGame.name,
+      this.currentGame.background_image,
+      this.currentGame.released,
+      this.currentGame.rating
+    ).subscribe({
+      next: (updatedReview) => {
+        this.currentGame.review = updatedReview.review;
+        this.showReviewModal = false;
+        alert('Review added successfully!');
+
+        this.modalManager.notifyReviewAdded(updatedReview);
+      },
+      error: (err) => {
+        console.log(err)
+        if (err.status === 400 && err.error?.message) {
+          alert(err.error.message);
+        } else {
+          alert('Error al guardar la review.');
+
+        }
+      }
+    });
+  }
 }

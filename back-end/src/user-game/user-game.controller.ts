@@ -1,5 +1,5 @@
 import { Request } from 'express';
-import { Controller, Post, Body, UseGuards, Req, Get, Param } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Req, Get, Param, ParseIntPipe } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { UserGameService } from './user-game.service';
 
@@ -17,8 +17,8 @@ export class UserGameController {
 
   // Endpoint público
   @Get(':gameId/reviews')
-  async getReviews(@Param('gameId') gameId: number) {
-    return this.userGameService.getReviewsForGame(Number(gameId));
+  async getReviews(@Param('gameId', ParseIntPipe) gameId: number) {
+    return this.userGameService.getReviewsForGame(gameId);
   }
 
   @UseGuards(AuthGuard('jwt'))
@@ -76,9 +76,18 @@ export class UserGameController {
     return this.userGameService.getReviewsByUser(req.user.userId);
   }
 
+
   @UseGuards(AuthGuard('jwt'))
   @Post('review')
   async setReview(@Req() req: AuthRequest, @Body() body) {
-    return this.userGameService.setReview(req.user.userId, body.gameId, body.review);
+    return this.userGameService.setReview(
+      req.user.userId,
+      body.gameId,
+      body.review,
+      body.name,
+      body.backgroundImage,
+      body.rating,
+    );
   }
+
 }

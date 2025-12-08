@@ -34,7 +34,7 @@ export class GameStatusModalComponent {
 
   onSelect(status: string, event: MouseEvent) {
     event.stopPropagation();
-    this.pendingStatus = status;  // guardamos temporalmente
+    this.pendingStatus = status;
   }
 
   onSubmit(event: MouseEvent) {

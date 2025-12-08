@@ -31,24 +31,21 @@ export class GameDetailComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Recargar token y datos si cambia
     this.authService.token$.subscribe(() => {
       this.loadReviews();
       this.loadGame();
     });
-    
-    // Cargar datos según el id de la ruta
+
     this.route.paramMap.subscribe(params => {
       this.gameId = Number(params.get('id'));
       this.loadGame();
       this.loadReviews();
     });
 
-    // 🔔 Suscribirse a nuevas reviews emitidas desde el modal
-    this.modalManager.reviewAdded$.subscribe((newReview) => {
+    this.modalManager.reviewAdded$.subscribe((newReview: any) => {
       if (!newReview) return;
-      this.reviews.unshift(newReview);             // Agregar al inicio
-      this.limitedReviews = this.reviews.slice(0,4); // Actualizar vista limitada
+      this.reviews.unshift(newReview);
+      this.limitedReviews = this.reviews.slice(0, 4);
     });
   }
 
@@ -75,17 +72,32 @@ export class GameDetailComponent implements OnInit {
     });
   }
 
-  submitReview(reviewText: string) {
-    this.userGameService.setGameReview(this.gameId, reviewText).subscribe({
-      next: (newReview) => {
-        this.reviews.unshift(newReview);
-        this.limitedReviews = this.reviews.slice(0, 4);
-        alert('Review added successfully!');
-      },
-      error: (err) => {
-        console.error(err);
-        alert('Error submitting review');
-      }
-    });
+submitReview(data: { review: string, game: any }) {
+  const { review, game } = data;
+
+  if (!game || !game.name) {
+    console.log("⚠ No game loaded yet");
+    return;
   }
+
+  this.userGameService.setGameReview(
+    game.id,
+    review,
+    game.name,
+    game.background_image, // <- aquí enviamos el background
+    game.released,
+    game.rating
+  ).subscribe({
+    next: (newReview) => {
+      this.reviews.unshift(newReview);
+      this.limitedReviews = this.reviews.slice(0, 4);
+      alert('Review added successfully!');
+    },
+    error: (err) => {
+      console.error(err);
+      alert('Error submitting review');
+    }
+  });
+}
+
 }

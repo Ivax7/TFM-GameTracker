@@ -7,20 +7,19 @@ import { UserGame } from '../user-game/user-game.entity';
 export class UserReviewsService {
   constructor(
     @InjectRepository(UserGame)
-    private userGameRepo: Repository<UserGame>,
+    private readonly userGameRepo: Repository<UserGame>,
   ) {}
 
   async getReviewsByUser(userId: number) {
-    console.log('Buscando reviews para userId:', userId);
-  
     const reviews = await this.userGameRepo.find({
-      where: { user: { id: userId }, review: Not('') },
+      where: {
+        user: { id: userId },
+        review: Not(''),
+      },
       relations: ['game'],
       order: { createdAt: 'DESC' },
     });
-  
-    console.log('Reviews encontradas en BD:', reviews);
-  
+
     return reviews.map(r => ({
       id: r.id,
       gameId: r.game.id,
@@ -32,5 +31,4 @@ export class UserReviewsService {
       createdAt: r.updatedAt,
     }));
   }
-
 }

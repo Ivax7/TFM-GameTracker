@@ -73,14 +73,30 @@ export class UserGameService {
   }
 
   // Review
-  setGameReview(gameId: number, review: string): Observable<any> {
+  setGameReview(
+    gameId: number,
+    review: string,
+    name?: string,
+    backgroundImage?: string,
+    released?: string,
+    rating?: number
+  ): Observable<any> {
     const headers = this.getAuthHeaders();
+  
     return this.http.post(
       `${this.apiUrl}/review`,
-      { gameId, review },
+      {
+        gameId,
+        review,
+        name,
+        backgroundImage,
+        released,
+        rating
+      },
       { headers }
     );
   }
+
 
   // Recoger Reviews por usuario y juego
   getGameReviews(gameId: number) {
