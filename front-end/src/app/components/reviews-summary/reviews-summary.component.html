@@ -6,16 +6,20 @@
     <p style="color: #fff;">No reviews written yet.</p>
   </div>
 
-  <div class="review-card" *ngFor="let r of reviews">
+  <div class="review-card" 
+    *ngFor="let r of reviews" 
+    (click)="seeGameDetail(r.gameId)">
     <img [src]="r.backgroundImage" class="game-img">
 
     <div class="content">
       <h3>{{ r.name }}</h3>
 
-      <p class="rating">Rating: {{ r.rating }} ⭐</p>
+      <p class="rating">{{ r.rating }} 
+        <img class="star" src="../../../assets/images/icons/star-filled.svg" 
+        alt="⭐"></p>
 
       <p class="review-text">
-        {{ r.review }}
+        "{{ r.review }}"
       </p>
 
       <p class="date">{{ r.updatedAt | date:'medium' }}</p>

@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserGameService } from '../../services/user-game.service';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-reviews-summary',
@@ -15,7 +16,11 @@ export class ReviewsSummaryComponent implements OnInit {
   reviews: any[] = [];
   loading = true;
 
-  constructor(private userGameService: UserGameService, private http: HttpClient) {}
+  constructor(
+    private userGameService: UserGameService,
+    private http: HttpClient,
+    private router: Router
+  ) {}
 
   ngOnInit() {
   if (!this.userId) {
@@ -25,17 +30,21 @@ export class ReviewsSummaryComponent implements OnInit {
   }
 
   this.userGameService.getUserReviewsByUser(this.userId).subscribe({
-    next: (data) => {
-      this.reviews = data;
-      console.log('Reviews cargadas:', this.reviews);
-      this.loading = false;
-    },
-    error: (err) => {
-      console.error('Error al cargar reviews:', err);
-      this.loading = false;
-    }
-  });
-}
+      next: (data) => {
+        this.reviews = data;
+        console.log('Reviews cargadas:', this.reviews);
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Error al cargar reviews:', err);
+        this.loading = false;
+      }
+    });
+  }
+
+  seeGameDetail(gameId: number) {
+    this.router.navigate(['/detail', gameId]);
+  }
 
 }
 

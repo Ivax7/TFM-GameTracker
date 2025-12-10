@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { ModalManagerService } from '../../../services/modal-manager.service';
 import { UserGameService } from '../../../services/user-game.service';
 import { AuthService } from '../../../services/auth.service';
+import { map, combineLatest } from 'rxjs';
 
 @Component({
   selector: 'app-game-detail',
@@ -31,23 +32,25 @@ export class GameDetailComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.authService.token$.subscribe(() => {
-      this.loadReviews();
-      this.loadGame();
-    });
+  const gameId$ = this.route.paramMap.pipe(
+    map(params => Number(params.get('id')))
+  );
 
-    this.route.paramMap.subscribe(params => {
-      this.gameId = Number(params.get('id'));
+  combineLatest([gameId$, this.authService.token$]).subscribe(
+    ([gameId, _token]) => {
+      this.gameId = gameId;
       this.loadGame();
       this.loadReviews();
-    });
+    }
+  );
 
-    this.modalManager.reviewAdded$.subscribe((newReview: any) => {
-      if (!newReview) return;
-      this.reviews.unshift(newReview);
-      this.limitedReviews = this.reviews.slice(0, 4);
-    });
-  }
+  this.modalManager.reviewAdded$.subscribe((newReview: any) => {
+    if (!newReview) return;
+    this.reviews.unshift(newReview);
+    this.limitedReviews = this.reviews.slice(0, 4);
+  });
+}
+
 
   loadGame() {
     this.rawgService.getGameById(this.gameId).subscribe({
@@ -56,7 +59,7 @@ export class GameDetailComponent implements OnInit {
         this.loading = false;
       },
       error: (err) => {
-        console.error('Error cargando el juego:', err);
+        console.log('Error cargando el juego:', err);
         this.loading = false;
       }
     });

@@ -156,7 +156,6 @@ export class ModalManagerController implements OnInit {
           alert(err.error.message);
         } else {
           alert('Error al guardar la review.');
-
         }
       }
     });

@@ -6,6 +6,8 @@ import { FollowService } from '../../../services/follow.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RatingsChartComponent } from '../../ratings-chart/ratings-chart.component';
 import { ReviewsSummaryComponent } from '../../reviews-summary/reviews-summary.component';
+import { WishlistService } from '../../../services/wishlist.service';
+import { UserGameService } from '../../../services/user-game.service';
 
 
 @Component({
@@ -21,6 +23,9 @@ export class ProfileComponent implements OnInit {
   loading = true;
 
   isFollowing = false;
+
+  wishlistCount = 0;
+  collectionCount = 0;
 
   followers: any[] = [];
   following: any[] = [];
@@ -61,7 +66,9 @@ export class ProfileComponent implements OnInit {
     private userService: UserService,
     private followService: FollowService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private wishlistService: WishlistService,
+    private userGameService: UserGameService,
   ) {}
 
   ngOnInit() {
@@ -93,7 +100,10 @@ loadProfile() {
       };
       
       this.visitedUserId = this.profile.id;
-      this.loadUserRatings(this.profile.id)
+      this.loadUserRatings(this.profile.id);
+
+      this.loadWishlistCount();
+      this.loadCollectionCount();
 
       this.loading = false;
     },
@@ -206,24 +216,56 @@ openFollowing() {
 
 
   // Cargar ratings usuarios
-loadUserRatings(userId: number) {
-  this.userService.getUserRatings(userId).subscribe({
-    next: (games: any[]) => {
-      console.log('Ratings recibidos del backend:', games);
+  loadUserRatings(userId: number) {
+    this.userService.getUserRatings(userId).subscribe({
+      next: (games: any[]) => {
+        console.log('Ratings recibidos del backend:', games);
 
-      const counts: Record<1|2|3|4|5, number> = { 1:0, 2:0, 3:0, 4:0, 5:0 };
+        const counts: Record<1|2|3|4|5, number> = { 1:0, 2:0, 3:0, 4:0, 5:0 };
 
-      games.forEach(g => {
-        const r = Number(g.rating) as 1|2|3|4|5;
-        console.log(`Juego: ${g.game.name}, score: ${r}`);
-        if (r >= 1 && r <= 5) counts[r]++;
+        games.forEach(g => {
+          const r = Number(g.rating) as 1|2|3|4|5;
+          console.log(`Juego: ${g.game.name}, score: ${r}`);
+          if (r >= 1 && r <= 5) counts[r]++;
+        });
+
+        console.log('Counts finales para el chart:', counts);
+
+        this.ratingCounts = counts;
+      },
+      error: err => console.log('Error al cargar ratings:', err)
+    });
+  }
+
+  goToWishlist() {
+    this.router.navigate(['/wishlist']);
+  }
+
+  goToCollection() {
+    this.router.navigate(['/collection']);
+  }
+
+  // 🟦 CONTAR WISHLIST
+  loadWishlistCount() {
+    this.wishlistService.getWishlist().subscribe({
+      next: (items) => this.wishlistCount = items.length,
+      error: (err) => console.error("Error loading wishlist", err)
+    });
+  }
+
+  loadCollectionCount() {
+    const statuses = ["Playing", "Played", "Completed", "Abandoned"];
+    let total = 0;
+
+    statuses.forEach(status => {
+      this.userGameService.getGamesByStatus(status).subscribe({
+        next: games => {
+          total += games.length;
+          this.collectionCount = total; // actualizar cada vez que llega
+        },
+        error: err => console.error(`Error loading status ${status}`, err)
       });
+    });
+  }
 
-      console.log('Counts finales para el chart:', counts);
-
-      this.ratingCounts = counts;
-    },
-    error: err => console.log('Error al cargar ratings:', err)
-  });
-}
 }

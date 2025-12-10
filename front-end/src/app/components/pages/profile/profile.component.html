@@ -25,15 +25,28 @@
     </div>
 
     <div class="profile-right">
-      <button class="btn-follow" (click)="openFollowers()">
+      
+      <button class="btn-action" (click)="goToWishlist()">
+        <span class="count">{{ wishlistCount }}</span>
+        <span class="label">Games</span>
+      </button>
+
+      <button class="btn-action" (click)="goToCollection()">
+        <span class="count">{{ collectionCount }}</span>
+        <span class="label">Played</span>
+      </button>
+
+
+      <button class="btn-action" (click)="openFollowing()">
+        <span class="count">{{ profile.followingCount || following.length }}</span>
+        <span class="label">Following</span>
+      </button>
+
+      <button class="btn-action" (click)="openFollowers()">
         <span class="count">{{ profile.followersCount || followers.length }}</span>
         <span class="label">Followers</span>
       </button>
 
-      <button class="btn-follow" (click)="openFollowing()">
-        <span class="count">{{ profile.followingCount || following.length }}</span>
-        <span class="label">Following</span>
-      </button>
     </div>
 
   </div>
@@ -43,7 +56,7 @@
   <div class="modal-content">
     <span class="close" (click)="closeModal()">&times;</span>
 
-    <h2 class="modal-title">Seguidores</h2>
+    <h2 class="modal-title">Followers</h2>
 
     <div *ngIf="loadingFollowers" class="loading">Cargando...</div>
 
@@ -72,7 +85,7 @@
   <div class="modal-content">
     <span class="close" (click)="closeModal()">&times;</span>
 
-    <h2 class="modal-title">Siguiendo</h2>
+    <h2 class="modal-title">Following</h2>
 
     <div *ngIf="loadingFollowing" class="loading">Cargando...</div>
 

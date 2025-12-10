@@ -75,7 +75,7 @@
 
 
 /* Botón */
-.btn-follow {
+.btn-action {
   position: relative;
   z-index: 0;
   display: flex;
@@ -95,18 +95,18 @@
 }
 
 /* Número y label */
-.btn-follow .count {
+.btn-action .count {
   font-size: 20px;
   font-weight: bold;
 }
 
-.btn-follow .label {
+.btn-action .label {
   font-size: 12px;
   text-transform: uppercase;
 }
 
 /* ::after animación de fondo */
-.btn-follow::after {
+.btn-action::after {
   content: "";
   position: absolute;
   left: 0;
@@ -119,11 +119,11 @@
 }
 
 /* Hover */
-.btn-follow:hover::after {
+.btn-action:hover::after {
   height: 100%;
 }
 
-.btn-follow:active {
+.btn-action:active {
   transform: translateY(0);
 }
 
@@ -143,7 +143,8 @@
 }
 
 .modal-content {
-  background-color: #fff;
+  background-color: var(--background-secondary);
+  color: var(--text-main);
   padding: 20px;
   width: 90%;
   max-width: 400px;
@@ -160,7 +161,6 @@
   right: 15px;
   font-size: 24px;
   font-weight: bold;
-  color: #333;
   cursor: pointer;
 }
 
@@ -185,12 +185,10 @@
   font-size: 22px;
   margin-bottom: 15px;
   font-weight: bold;
-  color: #444;
 }
 
 .loading {
   text-align: center;
-  color: #555;
   padding: 15px;
 }
 
@@ -204,7 +202,7 @@
 }
 
 .user-item:hover {
-  background: #f9f9f9;
+  background: #ffffff2a;
 }
 
 .user-left {
@@ -230,7 +228,6 @@
   margin: 0;
   font-size: 16px;
   font-weight: bold;
-  color: #222;
 }
 
 .user-info .email {

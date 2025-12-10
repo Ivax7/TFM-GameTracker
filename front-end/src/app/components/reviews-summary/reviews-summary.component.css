@@ -5,15 +5,17 @@
   margin: 32px auto; /* margen superior/inferior + centrado horizontal */
   max-width: 800px; /* ancho máximo del contenedor */
   justify-content: center; /* centra las columnas si hay espacio extra */
+  color: var(--text-main);
 }
 
 .review-card {
   display: flex;
   flex-direction: column;
-  background-color: #fff;
+  background-color: var(--background-secondary);
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   overflow: hidden;
+  cursor: pointer;
 }
 
 .review-card .game-img {
@@ -36,4 +38,16 @@
 .review-card .date {
   margin: 4px 0;
   font-size: 14px;
+}
+
+.star {
+  margin-left: 5px;
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+  filter: drop-shadow(0 0 3px rgba(255, 215, 0, 0.3));
+}
+
+.review-text {
+  font-style: italic;
 }
