@@ -214,8 +214,13 @@ openFollowing() {
 
 
   goToCollection() {
-    this.router.navigate(['/collection']);
+    if (this.isOwnProfile) {
+      this.router.navigate(['/collection']);
+    } else {
+      this.router.navigate(['/collection'], { queryParams: { userId: this.visitedUserId } });
+    }
   }
+
 
 
   loadWishlistCount() {

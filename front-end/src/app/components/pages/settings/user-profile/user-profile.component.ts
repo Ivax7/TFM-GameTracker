@@ -26,21 +26,18 @@ export class UserProfileComponent implements OnInit {
     private authService: AuthService,
     private userService: UserService
   ) {}
-
+  
   ngOnInit() {
     this.authService.currentUser$.subscribe(user => {
       if (!user) return;
-
-      // Rellenamos displayName, username y email
-      this.displayName = user.username;
-
-      // Solo llamamos a getProfile para bio y profileImage
+    
       this.userService.getProfile().subscribe(profile => {
+        this.displayName = profile.displayName || '';
         this.bio = profile.bio || '';
         this.profileImageUrl = profile.profileImage
           ? profile.profileImage
           : '../../../../../assets/images/icons/profile.svg';
-
+      
         this.originalDisplayName = this.displayName;
         this.originalBio = this.bio;
         this.originalImage = this.profileImageUrl;
@@ -48,6 +45,7 @@ export class UserProfileComponent implements OnInit {
       });
     });
   }
+
 
 saveProfile() {
   const user = this.authService.getUser();

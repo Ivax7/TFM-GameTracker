@@ -3,8 +3,7 @@ import { CommonModule } from '@angular/common';
 import { WishlistService } from '../../../services/wishlist.service';
 import { GameCardComponent } from '../../game-card/game-card.component';
 import { AuthService } from '../../../auth/auth.service';
-import { Router } from '@angular/router';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-wishlist',
@@ -14,10 +13,12 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./wishlist.component.css']
 })
 export class WishlistComponent implements OnInit {
+
   wishlist: any[] = [];
   loading = true;
   error = '';
   userName = '';
+  visitedUserId: number | null = null;
 
   constructor(
     private wishlistService: WishlistService,
@@ -26,40 +27,82 @@ export class WishlistComponent implements OnInit {
     private route: ActivatedRoute
   ) {}
 
-ngOnInit(): void {
-  this.route.paramMap.subscribe(params => {
-    const userId = params.get('userId');
+  ngOnInit(): void {
+    this.route.queryParamMap.subscribe(params => {
+      const userId = params.get('userId');
 
-    if (userId) {
-      this.loadPublicWishlist(Number(userId));
-    } else {
-      this.authService.currentUser$.subscribe(currentUser => {
-        this.userName = currentUser?.username || 'Usuario';
-        this.loadPrivateWishlist();
-      });
-    }
-  });
-}
+      if (userId) {
+        // PERFIL PÚBLICO
+        this.visitedUserId = Number(userId);
+        this.userName = 'User';
+        this.loadPublicWishlist(this.visitedUserId);
+      } else {
+        // PERFIL PRIVADO
+        this.visitedUserId = null;
 
+        this.authService.currentUser$.subscribe(currentUser => {
+          this.userName = currentUser?.username || 'Usuario';
+          this.loadPrivateWishlist();
+        });
+      }
+    });
+  }
+
+  // -----------------------------------------
+  // PRIVATE WISHLIST (DEL USUARIO LOGUEADO)
+  // -----------------------------------------
   loadPrivateWishlist() {
     this.loading = true;
+
     this.wishlistService.getWishlist().subscribe({
-      next: data => { this.wishlist = data; this.loading = false; this.userName = 'My'; },
-      error: () => { this.error = 'Error loading wishlist'; this.loading = false; }
+      next: data => {
+        this.wishlist = data.map(item => ({
+          gameId: item.gameId,
+          gameName: item.gameName,
+          backgroundImage: item.backgroundImage
+        }));
+        this.loading = false;
+      },
+      error: () => {
+        this.error = 'Error loading wishlist';
+        this.loading = false;
+      }
     });
   }
 
+  // -----------------------------------------
+  // PUBLIC WISHLIST (DE OTRO USUARIO)
+  // -----------------------------------------
   loadPublicWishlist(userId: number) {
     this.loading = true;
+
     this.wishlistService.getWishlistByUser(userId).subscribe({
-      next: data => { this.wishlist = data; this.userName = 'User'; this.loading = false; },
-      error: () => { this.error = 'Error loading public wishlist'; this.loading = false; }
+      next: data => {
+        this.wishlist = data.map(item => ({
+          gameId: item.gameId,
+          gameName: item.gameName,
+          backgroundImage: item.backgroundImage
+        }));
+        this.loading = false;
+      },
+      error: (err) => {
+        console.log('🔥 Error real del backend:', err);
+        this.error = 'Error loading public wishlist';
+        this.loading = false;
+      }
     });
   }
 
+  // -----------------------------------------
+  // REMOVE (solo si es wishlist propia)
+  // -----------------------------------------
   removeFromWishlist(game: any) {
+    if (this.visitedUserId) return; // Evitar eliminar en perfiles públicos
+
     this.wishlistService.removeFromWishlist(game.gameId).subscribe({
-      next: () => { this.wishlist = this.wishlist.filter(g => g.gameId !== game.gameId); },
+      next: () => {
+        this.wishlist = this.wishlist.filter(g => g.gameId !== game.gameId);
+      },
       error: (err) => console.error(err)
     });
   }
@@ -71,7 +114,4 @@ ngOnInit(): void {
   trackByGameId(index: number, game: any) {
     return game.gameId;
   }
-
-
-
 }
