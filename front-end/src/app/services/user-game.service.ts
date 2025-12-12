@@ -109,4 +109,9 @@ export class UserGameService {
     return this.http.get<any[]>(`http://localhost:3000/user-reviews/${userId}`);
   }
   
+
+  getUserGamesByStatus(userId: number, status: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/user/${userId}/status/${status}`);
+  }
+
 }

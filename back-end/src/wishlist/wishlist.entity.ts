@@ -1,5 +1,4 @@
-// src/wishlist/wishlist.entity.ts
-import { Entity, PrimaryGeneratedColumn, ManyToOne, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, ManyToOne, Column, JoinColumn } from 'typeorm';
 import { User } from '../user/user.entity';
 
 @Entity()
@@ -17,5 +16,6 @@ export class Wishlist {
   backgroundImage: string;
 
   @ManyToOne(() => User, (user) => user.wishlist, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'userId' })
   user: User;
 }

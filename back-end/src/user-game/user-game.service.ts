@@ -275,4 +275,14 @@ async setReview(
   async findUserGameById(userId: number, gameId: number) {
     return this.findUserGame(userId, gameId);
   }
+
+  async getUserGamesByStatus(userId: number, status: string) {
+    return this.repo.find({
+      where: { user: { id: userId }, status },
+      relations: ['game'],
+      order: { updatedAt: 'DESC' }
+    });
+  }
+
+
 }

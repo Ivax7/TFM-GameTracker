@@ -90,4 +90,13 @@ export class UserGameController {
     );
   }
 
+
+  // GET PUBLIC PROFILE COLLECTION
+  @Get('user/:userId/status/:status')
+  async getUserGamesByStatus(
+    @Param('userId') userId: number,
+    @Param('status') status: string,
+  ) {
+    return this.userGameService.getUserGamesByStatus(userId, status);
+  }
 }

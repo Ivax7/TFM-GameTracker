@@ -18,6 +18,7 @@ export const routes: Routes = [
   // Private profile
   { path: 'profile', component: ProfileComponent },
   { path: 'wishlist', component: WishlistComponent },
+  { path: 'wishlist:userId', component: WishlistComponent },
   { path: 'collection', component: CollectionStatusComponent },
   { path: 'settings', component: SettingsComponent },
   { path: 'users/search/:query', component: UserSearchResultsComponent },

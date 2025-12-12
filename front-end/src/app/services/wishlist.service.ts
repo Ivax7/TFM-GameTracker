@@ -38,4 +38,10 @@ export class WishlistService {
   isInWishlist(gameId: number): Observable<boolean> {
     return this.http.get<boolean>(`${this.apiUrl}/check/${gameId}`, { headers: this.getHeaders() });
   }
+
+  getWishlistByUser(userId: number): Observable<WishlistItem[]> {
+    return this.http.get<WishlistItem[]>(`${this.apiUrl}/user/${userId}`);
+  }
+
+  
 }

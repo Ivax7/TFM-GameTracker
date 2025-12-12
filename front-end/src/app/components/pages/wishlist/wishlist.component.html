@@ -1,32 +1,35 @@
 <div class="wishlist-container">
-  <h2>{{ userName }}'s Wishlist</h2>
+  <h2>
+    {{ userName === 'My' ? 'My Wishlist' : userName + "'s Wishlist" }}
+  </h2>
 
-  @if (loading) {
-    <p>Loading games...</p>
-  }
+  <!-- Loading -->
+  <div *ngIf="loading">
+    <p>Cargando juegos...</p>
+  </div>
 
-  @if (error) {
+  <!-- Error -->
+  <div *ngIf="error && !loading">
     <p class="error">{{ error }}</p>
-  }
+  </div>
 
-  @if (!loading && wishlist.length === 0) {
-    <p>You don't have any game in your wishilist yet</p>
-  }
+  <!-- Empty state -->
+  <div *ngIf="!loading && wishlist.length === 0 && !error">
+    <p>No hay juegos en esta wishlist todavía.</p>
+  </div>
 
-  @if (!loading && wishlist.length > 0) {
-    <div class="wishlist-grid">
-      @for (game of wishlist; track game.id) {
-        <app-game-card
-          [game]="{
-            id: game.gameId,
-            name: game.gameName,
-            background_image: game.backgroundImage
-          }"
-          [initialBookmarked]="true"
-          (bookmarkToggled)="removeFromWishlist($event)"
-          (cardClicked)="seeGameDetail($event)"
-        ></app-game-card>
-      }
-    </div>
-  }
+  <!-- Wishlist Grid -->
+  <div *ngIf="!loading && wishlist.length > 0" class="wishlist-grid">
+    <app-game-card
+      *ngFor="let game of wishlist; trackBy: trackByGameId"
+      [game]="{
+        id: game.gameId,
+        name: game.gameName,
+        background_image: game.backgroundImage
+      }"
+      [initialBookmarked]="true"
+      (bookmarkToggled)="removeFromWishlist($event)"
+      (cardClicked)="seeGameDetail($event)"
+    ></app-game-card>
+  </div>
 </div>

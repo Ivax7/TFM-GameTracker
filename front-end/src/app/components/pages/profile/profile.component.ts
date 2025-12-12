@@ -77,73 +77,53 @@ export class ProfileComponent implements OnInit {
       this.routeUsername = params.get('username');
 
       if (this.routeUsername) {
-        // PERFIL PÚBLICO
         this.isOwnProfile = false;
         this.loadPublicProfile(this.routeUsername);
         
       } else {
-        // PERFIL PRIVADO
         this.isOwnProfile = true;
         this.loadProfile();
       }
     });
   }
 
-loadProfile() {
-  this.loading = true;
-  this.userService.getProfile().subscribe({
-    next: user => {
-      this.profile = {
-        ...user,
-        id: user.id,
-        profileImage: user.profileImage || 'assets/images/icons/profile.svg'
-      };
-      
-      this.visitedUserId = this.profile.id;
-      this.loadUserRatings(this.profile.id);
+  loadProfile() {
+    this.loading = true;
+    this.userService.getProfile().subscribe({
+      next: user => {
+        this.profile = { ...user, profileImage: user.profileImage || 'assets/images/icons/profile.svg' };
+        this.visitedUserId = user.id;
 
-      this.loadWishlistCount();
-      this.loadCollectionCount();
-
-      this.loading = false;
-    },
-    error: () => this.loading = false
-  });
-}
+        this.loadUserRatings(user.id);
+        this.loadWishlistCount();
+        this.loadCollectionCount();
+        this.loading = false;
+      },
+      error: () => this.loading = false
+    });
+  }
 
 
   loadPublicProfile(username: string) {
     this.loading = true;
-
     this.userService.getUserByUsername(username).subscribe({
       next: user => {
-        console.log(user)
-        this.profile = {
-          ...user,
-          profileImage: user.profileImage || 'assets/images/icons/profile.svg',
-          id: user.id,
-        };
+        this.profile = { ...user, profileImage: user.profileImage || 'assets/images/icons/profile.svg' };
+        this.visitedUserId = user.id;
 
-        this.visitedUserId = this.profile.id;
-        this.loadUserRatings(this.profile.id)
+        this.loadUserRatings(user.id);
+        this.loadPublicWishlistCount(user.id);
+        this.loadPublicCollectionCount(user.id);
 
-        // check if we follow the user
         this.followService.isFollowing(user.id).subscribe({
-          next: res => {
-            this.isFollowing = res.following; // true o false desde la API
-            this.loading = false;
-          },
-          error: () => {
-            this.isFollowing = false;
-            this.loading = false;
-          }
+          next: res => { this.isFollowing = res.following; this.loading = false; },
+          error: () => { this.isFollowing = false; this.loading = false; }
         });
       },
-      error: () => {
-        this.loading = false;
-      }
+      error: () => this.loading = false
     });
   }
+
 
 openFollowers() {
   this.loadingFollowers = true;
@@ -213,59 +193,54 @@ openFollowing() {
     this.router.navigate(['/user', username]);
   }
 
-
-
   // Cargar ratings usuarios
   loadUserRatings(userId: number) {
-    this.userService.getUserRatings(userId).subscribe({
-      next: (games: any[]) => {
-        console.log('Ratings recibidos del backend:', games);
-
-        const counts: Record<1|2|3|4|5, number> = { 1:0, 2:0, 3:0, 4:0, 5:0 };
-
-        games.forEach(g => {
-          const r = Number(g.rating) as 1|2|3|4|5;
-          console.log(`Juego: ${g.game.name}, score: ${r}`);
-          if (r >= 1 && r <= 5) counts[r]++;
-        });
-
-        console.log('Counts finales para el chart:', counts);
-
-        this.ratingCounts = counts;
-      },
-      error: err => console.log('Error al cargar ratings:', err)
-    });
+    this.userService.getUserRatings(userId).subscribe({ next: (games: any[]) => {
+      const counts: Record<1|2|3|4|5, number> = {1:0,2:0,3:0,4:0,5:0};
+      games.forEach(g => { const r = Number(g.rating) as 1|2|3|4|5; if(r>=1&&r<=5) counts[r]++; });
+      this.ratingCounts = counts;
+    }});
   }
 
+
+  // Go to Wishlist
   goToWishlist() {
-    this.router.navigate(['/wishlist']);
+    if (this.isOwnProfile) {
+      this.router.navigate(['/wishlist']);
+    } else {
+      this.router.navigate(['/wishlist'], { queryParams: { userId: this.visitedUserId } });
+    }
   }
+
 
   goToCollection() {
     this.router.navigate(['/collection']);
   }
 
-  // 🟦 CONTAR WISHLIST
+
   loadWishlistCount() {
-    this.wishlistService.getWishlist().subscribe({
-      next: (items) => this.wishlistCount = items.length,
-      error: (err) => console.error("Error loading wishlist", err)
-    });
+    this.wishlistService.getWishlist().subscribe({ next: items => this.wishlistCount = items.length });
+  }
+
+  loadPublicWishlistCount(userId: number) {
+    this.wishlistService.getWishlistByUser(userId).subscribe({ next: items => this.wishlistCount = items.length });
   }
 
   loadCollectionCount() {
     const statuses = ["Playing", "Played", "Completed", "Abandoned"];
     let total = 0;
-
     statuses.forEach(status => {
-      this.userGameService.getGamesByStatus(status).subscribe({
-        next: games => {
-          total += games.length;
-          this.collectionCount = total; // actualizar cada vez que llega
-        },
-        error: err => console.error(`Error loading status ${status}`, err)
-      });
+      this.userGameService.getGamesByStatus(status).subscribe({ next: games => { total += games.length; this.collectionCount = total; }});
     });
   }
+
+  loadPublicCollectionCount(userId: number) {
+    const statuses = ["Playing", "Played", "Completed", "Abandoned"];
+    let total = 0;
+    statuses.forEach(status => {
+      this.userGameService.getUserGamesByStatus(userId, status).subscribe({ next: games => { total += games.length; this.collectionCount = total; }});
+    });
+  }
+
 
 }
