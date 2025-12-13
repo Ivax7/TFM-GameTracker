@@ -1,19 +1,24 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserGameService } from '../../../services/user-game.service';
 import { GameCardComponent } from '../../game-card/game-card.component';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../../auth/auth.service';
+import { CollectionStatusChartComponent } from '../../collection-status-chart/collection-status-chart.component';
 
 @Component({
   selector: 'app-collection-status',
   standalone: true,
-  imports: [CommonModule, GameCardComponent],
+  imports: [
+    CommonModule,
+    GameCardComponent,
+    CollectionStatusChartComponent
+  ],
   templateUrl: './collection-status.component.html',
   styleUrls: ['./collection-status.component.css']
 })
 export class CollectionStatusComponent implements OnInit {
-  
+
   userName = '';
   visitedUserId: number | null = null;
 
@@ -24,7 +29,10 @@ export class CollectionStatusComponent implements OnInit {
     { key: 'Abandoned', label: 'Abandoned' },
   ];
 
+  chartReady = false;
+
   gamesByStatus: Record<string, any[]> = {};
+  statusCounts: Record<string, number> = {};
   selectedTab: string = 'Playing';
 
   constructor(
@@ -35,67 +43,82 @@ export class CollectionStatusComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.statuses.forEach(s => {
+      this.gamesByStatus[s.key] = [];
+      this.statusCounts[s.key] = 0;
+    });
 
-    // Se inicializa el diccionario vacío
-    this.statuses.forEach(s => this.gamesByStatus[s.key] = []);
-
-    // Detectar si estamos viendo un perfil ajeno
     this.route.queryParamMap.subscribe(params => {
       const userId = params.get('userId');
 
       if (userId) {
-        // PERFIL PÚBLICO
         this.visitedUserId = Number(userId);
-        this.userName = 'User'; // El username debería venir del perfil
+        this.userName = 'User';
         this.loadPublicCollection(this.visitedUserId);
       } else {
-        // PERFIL PROPIO
         this.visitedUserId = null;
-        this.authService.currentUser$.subscribe(currentUser => {
-          this.userName = currentUser?.username || 'Usuario';
+        this.authService.currentUser$.subscribe(user => {
+          this.userName = user?.username || 'Usuario';
           this.loadPrivateCollection();
         });
       }
     });
   }
 
-  // ---------------------------
-  // COLECCIÓN DEL USUARIO LOGUEADO
-  // ---------------------------
   loadPrivateCollection() {
     for (const status of this.statuses) {
       this.userGameService.getGamesByStatus(status.key).subscribe({
-        next: (games) => {
-          this.gamesByStatus[status.key] = games.map((g: any) => ({
-            id: g.game?.id,
-            name: g.game?.name,
-            background_image: g.game?.backgroundImage,
-            status: g.status,
-          }));
-        },
-        error: (err) => console.error(`Error loading ${status.key} games:`, err),
+        next: games => this.assignGames(status.key, games),
+        error: err => console.error(err)
       });
     }
   }
 
-  // ---------------------------
-  // COLECCIÓN PÚBLICA DE OTRO USUARIO
-  // ---------------------------
   loadPublicCollection(userId: number) {
     for (const status of this.statuses) {
       this.userGameService.getUserGamesByStatus(userId, status.key).subscribe({
-        next: (games) => {
-          this.gamesByStatus[status.key] = games.map((g: any) => ({
-            id: g.game?.id,
-            name: g.game?.name,
-            background_image: g.game?.backgroundImage,
-            status: g.status,
-          }));
-        },
-        error: (err) => console.error(`Error loading ${status.key} games:`, err),
+        next: games => this.assignGames(status.key, games),
+        error: err => console.error(err)
       });
     }
   }
+
+// private assignGames(statusKey: string, games: any[]) {
+//   this.gamesByStatus[statusKey] = games.map(g => ({
+//     id: g.game?.id,
+//     name: g.game?.name,
+//     background_image: g.game?.backgroundImage,
+//     status: g.status,
+//   }));
+
+//   this.statusCounts[statusKey] = games.length;
+
+//   console.log('Status counts:', this.statusCounts); 
+
+//   const total = Object.values(this.statusCounts).reduce((a, b) => a + b, 0);
+//   this.chartReady = total > 0;
+// }
+
+private assignGames(statusKey: string, games: any[]) {
+  this.gamesByStatus[statusKey] = games.map(g => ({
+    id: g.game?.id,
+    name: g.game?.name,
+    background_image: g.game?.backgroundImage,
+    status: g.status,
+  }));
+
+  this.statusCounts = {
+    ...this.statusCounts,
+    [statusKey]: games.length
+  };
+
+  console.log('Status counts:', JSON.stringify(this.statusCounts)); // Usar JSON.stringify para mejor visualización
+
+  const total = Object.values(this.statusCounts).reduce((a, b) => a + b, 0);
+  this.chartReady = total > 0;
+}
+
+
 
   selectTab(statusKey: string) {
     this.selectedTab = statusKey;
@@ -104,5 +127,4 @@ export class CollectionStatusComponent implements OnInit {
   seeGameDetail(gameId: number) {
     this.router.navigate(['/detail', gameId]);
   }
-
 }

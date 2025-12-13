@@ -1,6 +1,13 @@
 <div class="collection-status">
   <h2>{{ userName }}'s Collection</h2>
 
+  <app-collection-status-chart
+    [counts]="statusCounts"
+    (statusSelected)="selectTab($event)">
+  </app-collection-status-chart>
+
+
+
   <ul class="tabs">
     @for (status of statuses; track status.key) {
       <li 

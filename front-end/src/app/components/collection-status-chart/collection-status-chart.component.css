@@ -1,0 +1,10 @@
+.collection-chart {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto 2rem;
+}
+
+.collection-chart .chart {
+  width: 100%;
+  height: 300px; /* importante para que ECharts dibuje */
+}
