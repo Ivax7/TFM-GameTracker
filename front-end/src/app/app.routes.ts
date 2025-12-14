@@ -9,6 +9,7 @@ import { SettingsComponent } from './components/pages/settings/settings.componen
 import { ProfileComponent } from './components/pages/profile/profile.component';
 import { UserSearchResultsComponent } from './components/pages/user-search-results/user-search-results.component';
 import { UserProfileComponent } from './components/pages/settings/user-profile/user-profile.component';
+import { CustomListsComponent } from './components/pages/custom-lists/custom-lists.component';
 
 export const routes: Routes = [
   { path: '', component: MainPageComponent },
@@ -18,6 +19,7 @@ export const routes: Routes = [
   // Private profile
   { path: 'profile', component: ProfileComponent },
   { path: 'wishlist', component: WishlistComponent },
+  { path: 'custom-lists', component: CustomListsComponent },
   { path: 'wishlist:userId', component: WishlistComponent },
   { path: 'collection', component: CollectionStatusComponent },
   { path: 'settings', component: SettingsComponent },

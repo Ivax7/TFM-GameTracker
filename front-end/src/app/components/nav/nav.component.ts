@@ -42,11 +42,11 @@ export class NavComponent implements OnInit {
       distinctUntilChanged(),
       switchMap(query => {
         const trimmed = query.trim();
-        if (!trimmed) return of([]); // no buscar nada si está vacío
+        if (!trimmed) return of([]);
 
         if (trimmed.startsWith('@')) {
           const username = trimmed.slice(1).trim();
-          if (!username) return of([]); // evita q vacía
+          if (!username) return of([]);
           this.searchingUsers = true;
           return this.userService.searchUsers(username);
         } else {
@@ -88,7 +88,6 @@ search() {
     const username = trimmed.slice(1).trim();
     if (!username) return;
     this.searchingUsers = true;
-    // Navega usando parámetro de ruta
     this.router.navigate(['/users/search', username]);
   } else {
     this.searchingUsers = false;
