@@ -40,16 +40,35 @@ export class CollectionStatusChartComponent implements AfterViewInit, OnChanges 
     }
   }
 
+  private statusColors: Record<string, string> = {
+    Playing: '#f4a261',
+    Played: '#2ecc71',
+    Completed: '#05647a',
+    Abandoned: '#e74c3c'
+  };
+
+
   private updateChart() {
     if (!this.counts) return;
 
     const data = Object.entries(this.counts)
-      .map(([name, value]) => ({ name, value }));
+    .filter(([_, value]) => value > 0)
+    .map(([name, value]) => ({
+      name,
+      value,
+      itemStyle: {
+        color: this.statusColors[name] || '#999'
+      }
+    }));
+
 
     if (!data.length) return;
 
     const option: echarts.EChartsOption = {
-      tooltip: { trigger: 'item' },
+      tooltip: { 
+        trigger: 'item',
+        formatter: '{b}: {c} games({d}%)'
+      },
       legend: { bottom: 0, textStyle: { color: '#fff' } },
       series: [
         {
