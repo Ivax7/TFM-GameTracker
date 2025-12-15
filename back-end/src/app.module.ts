@@ -14,6 +14,8 @@ import { GameModule } from './game/game.module';
 import { FollowModule } from './follow/follow.module';
 import { RatingModule } from './rating/rating.module';
 import { UserReviewsModule } from './user-reviews/user-reviews.module';
+import { CustomListModule } from './custom-list/custom-list.module';
+
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -35,6 +37,7 @@ import { UserReviewsModule } from './user-reviews/user-reviews.module';
     FollowModule,
     RatingModule,
     UserReviewsModule,
+    CustomListModule,
   ],
   controllers: [AppController],
   providers: [AppService],

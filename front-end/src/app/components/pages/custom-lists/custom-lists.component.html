@@ -1,1 +1,28 @@
-<p>custom-lists works!</p>
+<section class="custom-lists">
+  <header class="lists-header">
+    <h2>Custom Lists</h2>
+    <button class="new-btn" (click)="openModal()">+ New</button>
+  </header>
+
+  <section class="lists-grid">
+    <div
+      class="list-card"
+      *ngFor="let list of lists; trackBy: trackById"
+    >
+      <h3>{{ list.title }}</h3>
+      <p *ngIf="list.description">{{ list.description }}</p>
+      <span class="count">
+        {{ list.games?.length || 0 }} games
+      </span>
+    </div>
+  </section>
+
+</section>
+
+@if(showCreateModal) {
+  <app-custom-list-modal
+    *ngIf="showCreateModal"
+    (close)="closeModal()"
+    (create)="onCreateList($event)">
+  </app-custom-list-modal>
+}

@@ -2,6 +2,7 @@ import { Wishlist } from 'src/wishlist/wishlist.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { UserGame } from 'src/user-game/user-game.entity';
 import { Follow } from 'src/follow/follow.entity';
+import { CustomList } from 'src/custom-list/custom-list.entity';
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
@@ -39,5 +40,8 @@ export class User {
 
   @OneToMany(() => Follow, follow => follow.following)
   followers: Follow[];
+
+  @OneToMany(() => CustomList, list => list.user)
+  customLists: CustomList[];
 
 }
