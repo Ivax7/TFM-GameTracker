@@ -7,6 +7,7 @@ import { UserGameService } from '../../services/user-game.service';
 import { firstValueFrom } from 'rxjs';
 import { PlaytimeModalComponent } from "../playtime-modal/playtime-modal.component";
 import { ReviewModalComponent } from '../review-modal/review-modal.component';
+import { SelectCustomListModalComponent } from '../select-custom-list-modal/select-custom-list-modal.component';
 
 @Component({
   selector: 'app-modal-manager',
@@ -16,7 +17,8 @@ import { ReviewModalComponent } from '../review-modal/review-modal.component';
     GameStatusModalComponent,
     RatingModalComponent,
     PlaytimeModalComponent,
-    ReviewModalComponent
+    ReviewModalComponent,
+    SelectCustomListModalComponent
   ],
   templateUrl: './modal-manager.component.html',
   styleUrls: ['./modal-manager.component.css']
@@ -27,6 +29,7 @@ export class ModalManagerController implements OnInit {
   showRatingModal = false;
   showPlaytimeModal = false;
   showReviewModal = false;
+  showCustomListModal = false;
 
   currentGame: any = null;
 
@@ -84,6 +87,12 @@ export class ModalManagerController implements OnInit {
       if (!state.game) return;
       this.currentGame = state.game;
       this.showReviewModal = state.show;
+    });
+
+    // ✅ -------- CUSTOM LIST --------
+    this.modalManager.customListModal$.subscribe(state => {
+      this.currentGame = state.game;
+      this.showCustomListModal = state.show;
     });
   }
 

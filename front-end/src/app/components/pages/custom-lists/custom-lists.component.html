@@ -5,16 +5,28 @@
   </header>
 
   <section class="lists-grid">
-    <div
-      class="list-card"
-      *ngFor="let list of lists; trackBy: trackById"
-    >
-      <h3>{{ list.title }}</h3>
-      <p *ngIf="list.description">{{ list.description }}</p>
-      <span class="count">
-        {{ list.games?.length || 0 }} games
+  <div
+  class="list-card"
+  *ngFor="let list of lists; trackBy: trackById"
+  >
+    <h3>{{ list.title }}</h3>
+
+    <p *ngIf="list.description">{{ list.description }}</p>
+
+    <div class="meta">
+      <span class="author">
+        👤 {{ list.user.displayName || list.user.username }}
+      </span>
+      <span class="date">
+        📅 {{ list.createdAt | date:'dd/MM/yyyy' }}
       </span>
     </div>
+
+    <span class="count">
+      {{ list.games?.length || 0 }} games
+    </span>
+  </div>
+
   </section>
 
 </section>

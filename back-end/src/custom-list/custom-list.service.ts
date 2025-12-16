@@ -23,7 +23,7 @@ export class CustomListsService {
   async getByUser(userId: number) {
     return this.listRepo.find({
       where: { user: { id: userId } },
-      relations: ['games']
+      relations: ['games', 'user'],
     });
   }
 

@@ -26,4 +26,7 @@ export class CustomList {
 
   @OneToMany(() => CustomListGame, clg => clg.list)
   games: CustomListGame[];
+
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  createdAt: Date;
 }

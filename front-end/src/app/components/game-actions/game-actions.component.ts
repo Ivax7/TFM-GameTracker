@@ -126,4 +126,17 @@ export class GameActionsComponent implements OnInit {
     this.modalManager.openStatusModal(game);
   }
 
+  
+  openCustomListModal(game: any, event: MouseEvent) {
+  event.stopPropagation();
+
+  if (!this.authService.isLoggedIn()) {
+    this.router.navigate(['/login']);
+    return;
+  }
+
+  this.modalManager.openCustomListModal(game);
+}
+
+
 }
