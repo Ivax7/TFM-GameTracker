@@ -5,30 +5,39 @@
   </header>
 
   <section class="lists-grid">
-  <div
-  class="list-card"
-  *ngFor="let list of lists; trackBy: trackById"
-  >
-    <h3>{{ list.title }}</h3>
+    <div class="list-card" *ngFor="let list of lists; trackBy: trackById">
+      <h3>{{ list.title }}</h3>
 
-    <p *ngIf="list.description">{{ list.description }}</p>
+      <p *ngIf="list.description">{{ list.description }}</p>
 
-    <div class="meta">
-      <span class="author">
-        👤 {{ list.user.displayName || list.user.username }}
-      </span>
-      <span class="date">
-        📅 {{ list.createdAt | date:'dd/MM/yyyy' }}
-      </span>
+      <div class="games-preview">
+        <ng-container *ngFor="let game of list.games?.slice(0,5); let i = index">
+          <div class="game-cover-wrapper">
+            <img 
+              [src]="game.backgroundImage" 
+              [alt]="game.name" 
+              class="game-cover"
+            />
+          
+            <!-- Contador de +5 juegos -->
+            <div 
+              *ngIf="i === 4 && list.games?.length! > 5" 
+              class="extra-count">
+              +{{ list.games!.length - 5 }}
+            </div>
+          </div>
+        </ng-container>
+      </div>
+
+
+      <div class="meta">
+        <span class="author">👤 {{ list.user.displayName || list.user.username }}</span>
+        <span class="date">📅 {{ list.createdAt | date:'dd/MM/yyyy' }}</span>
+      </div>
+
+      <span class="count">{{ list.games?.length || 0 }} games</span>
     </div>
-
-    <span class="count">
-      {{ list.games?.length || 0 }} games
-    </span>
-  </div>
-
   </section>
-
 </section>
 
 @if(showCreateModal) {

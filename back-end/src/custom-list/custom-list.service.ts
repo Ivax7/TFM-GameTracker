@@ -45,20 +45,31 @@ export class CustomListsService {
   }
 
 
-  async addGame(userId: number, listId: number, game: any) {
-    const list = await this.listRepo.findOne({
-      where: { id: listId, user: { id: userId } }
-    });
+async toggleGame(userId: number, listId: number, game: any) {
+  const list = await this.listRepo.findOne({
+    where: { id: listId, user: { id: userId } },
+    relations: ['games']
+  });
 
-    if (!list) throw new ForbiddenException();
+  if (!list) throw new ForbiddenException();
 
-    const entry = this.gameRepo.create({
-      gameId: game.id,
-      name: game.name,
-      backgroundImage: game.background_image,
-      list
-    });
+  const existing = list.games.find(g => g.gameId === game.id);
 
-    return this.gameRepo.save(entry);
+  if (existing) {
+    await this.gameRepo.remove(existing);
+    return { removed: true };
   }
+
+  const entry = this.gameRepo.create({
+    gameId: game.id,
+    name: game.name,
+    backgroundImage: game.background_image,
+    list
+  });
+
+  await this.gameRepo.save(entry);
+  return { added: true };
+}
+
+
 }

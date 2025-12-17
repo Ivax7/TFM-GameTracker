@@ -16,13 +16,14 @@ export class CustomListsComponent implements OnInit {
   showCreateModal = false;
   lists: CustomList[] = [];
 
-  constructor(
-    private customListService: CustomListService
-  ) {}
+  constructor(private customListService: CustomListService) {}
 
   ngOnInit() {
+    this.loadLists();
+  }
+
+  loadLists() {
     this.customListService.getMyLists().subscribe(lists => {
-      console.log('Lists from API:', lists);
       this.lists = lists;
     });
   }
@@ -36,17 +37,13 @@ export class CustomListsComponent implements OnInit {
   }
 
   onCreateList(data: { title: string; description: string }) {
-    console.log(data)
     this.customListService.createList(data).subscribe(list => {
-      console.log('Created list:', list);
       this.lists = [...this.lists, list];
+      this.closeModal();
     });
-    this.closeModal();
   }
-
 
   trackById(index: number, list: CustomList) {
     return list.id;
   }
-
 }

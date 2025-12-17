@@ -13,7 +13,7 @@
 
     <div class="modal-content">
 
-      <!-- IZQUIERDA: imagen de juego -->
+      <!-- IZQUIERDA -->
       <div class="modal-left">
         <div 
           class="background-layer"
@@ -21,24 +21,34 @@
         ></div>
       </div>
 
-      <!-- DERECHA: lista de custom lists -->
+      <!-- DERECHA -->
       <div class="modal-right">
         <h3>Add to Custom List</h3>
 
         <ul class="status-list">
-          <li *ngFor="let list of lists" 
-              (click)="selectedListId = list.id"
-              [class.selected]="selectedListId === list.id">
+          <li
+            *ngFor="let list of lists"
+            (click)="toggleList(list.id)"
+            [class.selected]="selectedListIds.has(list.id)">
             {{ list.title }}
           </li>
         </ul>
 
         <div class="action-btns">
-          <button class="action-btn clear-btn" (click)="selectedListId = null">Clear</button>
-          <button class="action-btn submit-btn" [disabled]="!selectedListId" (click)="save()">Save</button>
+          <button
+            class="action-btn clear-btn"
+            (click)="selectedListIds.clear()">
+            Clear
+          </button>
+        
+          <button
+            class="action-btn submit-btn"
+            [disabled]="selectedListIds.size === 0"
+            (click)="save()">
+            Save
+          </button>
         </div>
       </div>
-
     </div>
   </div>
 </div>

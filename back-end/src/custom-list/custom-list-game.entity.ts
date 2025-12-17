@@ -1,9 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, Unique } from "typeorm";
 import { User } from "src/user/user.entity";
 import { CustomList } from "./custom-list.entity";
 
 
 @Entity()
+@Unique(['gameId', 'list'])
+
 export class CustomListGame {
 
   @PrimaryGeneratedColumn()

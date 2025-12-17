@@ -28,7 +28,17 @@ export class CustomListService {
     return this.http.delete(`${this.apiUrl}/${listId}`);
   }
 
-  addGameToList(listId: number, game: any) {
-    return this.http.post(`${this.apiUrl}/${listId}/games`, game);
+  toggleGameInList(listId: number, game: any) {
+    return this.http.post(
+      `${this.apiUrl}/${listId}/games/toggle`,
+      game,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      }
+    );
   }
+
+
 }
