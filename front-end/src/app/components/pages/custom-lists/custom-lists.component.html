@@ -5,7 +5,11 @@
   </header>
 
   <section class="lists-grid">
-    <div class="list-card" *ngFor="let list of lists; trackBy: trackById">
+    <div 
+      class="list-card"
+      *ngFor="let list of lists; trackBy: trackById"
+      [routerLink]="['/custom-lists', list.id]"
+    >
       <h3>{{ list.title }}</h3>
 
       <p *ngIf="list.description">{{ list.description }}</p>
@@ -18,31 +22,35 @@
               [alt]="game.name" 
               class="game-cover"
             />
-          
-            <!-- Contador de +5 juegos -->
+
             <div 
               *ngIf="i === 4 && list.games?.length! > 5" 
-              class="extra-count">
+              class="extra-count"
+            >
               +{{ list.games!.length - 5 }}
             </div>
           </div>
         </ng-container>
       </div>
 
-
       <div class="meta">
-        <span class="author">👤 {{ list.user.displayName || list.user.username }}</span>
-        <span class="date">📅 {{ list.createdAt | date:'dd/MM/yyyy' }}</span>
+        <span class="author">
+          {{ list.user.displayName || list.user.username }}
+        </span>
+        <span class="date">
+          {{ list.createdAt | date:'dd/MM/yyyy' }}
+        </span>
       </div>
 
-      <span class="count">{{ list.games?.length || 0 }} games</span>
+      <span class="count">
+        {{ list.games?.length || 0 }} games
+      </span>
     </div>
   </section>
 </section>
 
-@if(showCreateModal) {
+@if (showCreateModal) {
   <app-custom-list-modal
-    *ngIf="showCreateModal"
     (close)="closeModal()"
     (create)="onCreateList($event)">
   </app-custom-list-modal>

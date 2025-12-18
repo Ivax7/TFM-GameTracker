@@ -10,6 +10,7 @@ import { ProfileComponent } from './components/pages/profile/profile.component';
 import { UserSearchResultsComponent } from './components/pages/user-search-results/user-search-results.component';
 import { UserProfileComponent } from './components/pages/settings/user-profile/user-profile.component';
 import { CustomListsComponent } from './components/pages/custom-lists/custom-lists.component';
+import { CustomListDetailComponent } from './components/pages/custom-lists/custom-list-detail/custom-list-detail.component';
 
 export const routes: Routes = [
   { path: '', component: MainPageComponent },
@@ -20,6 +21,7 @@ export const routes: Routes = [
   { path: 'profile', component: ProfileComponent },
   { path: 'wishlist', component: WishlistComponent },
   { path: 'custom-lists', component: CustomListsComponent },
+  { path: 'custom-lists/:id', component: CustomListDetailComponent },
   { path: 'wishlist:userId', component: WishlistComponent },
   { path: 'collection', component: CollectionStatusComponent },
   { path: 'settings', component: SettingsComponent },

@@ -38,7 +38,7 @@ export class TrendingGamesComponent implements OnInit {
           isBookmarked: ids.includes(g.id)
         }));
       },
-      error: err => console.warn('No se pudo cargar wishlist:', err)
+      error: err => console.log('No se pudo cargar wishlist:', err)
     });
   }
 

@@ -45,31 +45,51 @@ export class CustomListsService {
   }
 
 
-async toggleGame(userId: number, listId: number, game: any) {
-  const list = await this.listRepo.findOne({
-    where: { id: listId, user: { id: userId } },
-    relations: ['games']
-  });
+  async toggleGame(userId: number, listId: number, game: any) {
+    const list = await this.listRepo.findOne({
+      where: { id: listId, user: { id: userId } },
+      relations: ['games']
+    });
 
-  if (!list) throw new ForbiddenException();
+    if (!list) throw new ForbiddenException();
 
-  const existing = list.games.find(g => g.gameId === game.id);
+    const existing = list.games.find(g => g.gameId === game.id);
 
-  if (existing) {
-    await this.gameRepo.remove(existing);
-    return { removed: true };
+    if (existing) {
+      await this.gameRepo.remove(existing);
+      return { removed: true };
+    }
+
+    const entry = this.gameRepo.create({
+      gameId: game.id,
+      name: game.name,
+      backgroundImage: game.background_image,
+      list
+    });
+
+    await this.gameRepo.save(entry);
+    return { added: true };
   }
 
-  const entry = this.gameRepo.create({
-    gameId: game.id,
-    name: game.name,
-    backgroundImage: game.background_image,
-    list
-  });
+// GET listId para mostrar el detalle
 
-  await this.gameRepo.save(entry);
-  return { added: true };
-}
+  async getListById(listId: number, userId: number) {
+    const list = await this.listRepo.findOne({
+      where: {
+        id: listId,
+        user: { id: userId }
+      },
+      relations: ['user', 'games']
+    });
+  
+    if (!list) {
+      throw new ForbiddenException('List not found');
+    }
+  
+    return list;
+  }
+  
+
 
 
 }

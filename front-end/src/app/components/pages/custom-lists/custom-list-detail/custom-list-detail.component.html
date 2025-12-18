@@ -1,0 +1,40 @@
+<section class="custom-list-detail" *ngIf="!loading && list">
+
+  <header class="detail-header">
+    <h2>{{ list.title }}</h2>
+
+    <div class="meta">
+      <span class="author">
+        {{ list.user.displayName || list.user.username }}
+      </span>
+
+      <span class="date">
+        {{ list.createdAt | date:'dd/MM/yyyy' }}
+      </span>
+    </div>
+
+    <p class="description" *ngIf="list.description">
+      {{ list.description }}
+    </p>
+  </header>
+
+  <section class="games-grid" *ngIf="listGames.length > 0; else empty">
+    <app-game-card
+      *ngFor="let game of listGames; trackBy: trackByGameId"
+      [game]="{
+        id: game.gameId,
+        name: game.name,
+        background_image: game.background_image
+      }"
+      [initialBookmarked]="game.isBookmarked"
+      (cardClicked)="goToGameDetail($event)"
+    ></app-game-card>
+  </section>
+
+  <ng-template #empty>
+    <p class="empty">This list has no games yet.</p>
+  </ng-template>
+
+</section>
+
+<p *ngIf="loading">Loading list...</p>

@@ -40,5 +40,15 @@ export class CustomListService {
     );
   }
 
+  getListById(id: string | number): Observable<CustomList> {
+    return this.http.get<CustomList>(`${this.apiUrl}/${id}`, {
+      headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    })
+  }
+
+
+
 
 }

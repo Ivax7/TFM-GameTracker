@@ -1,0 +1,84 @@
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CustomListService } from '../../../../services/custom-list.service';
+import { WishlistService } from '../../../../services/wishlist.service';
+import { CustomList, CustomListGame } from '../../../../models/custom-list.model';
+import { GameCardComponent } from '../../../game-card/game-card.component';
+
+interface GameCardData {
+  gameId: number;
+  name: string;
+  background_image: string;
+  isBookmarked: boolean;
+}
+
+@Component({
+  selector: 'app-custom-list-detail',
+  standalone: true,
+  imports: [CommonModule, GameCardComponent],
+  templateUrl: './custom-list-detail.component.html',
+  styleUrls: ['./custom-list-detail.component.css']
+})
+export class CustomListDetailComponent implements OnInit {
+
+  list?: CustomList;
+  listGames: GameCardData[] = [];
+  loading = true;
+
+  constructor(
+    private route: ActivatedRoute,
+    private customListService: CustomListService,
+    private wishlistService: WishlistService,
+    private router: Router
+  ) {}
+
+  ngOnInit() {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (!id) return;
+
+    // Cargar wishlist para marcar los juegos ya guardados
+    this.wishlistService.getWishlist().subscribe({
+      next: wishlist => {
+        const wishlistIds = wishlist.map(g => g.gameId);
+
+        this.customListService.getListById(id).subscribe(list => {
+          this.list = list;
+
+          // Mapear juegos para GameCard
+          this.listGames = (list.games || []).map((game: CustomListGame) => ({
+            gameId: game.gameId,
+            name: game.name,
+            background_image: game.backgroundImage || '',
+            isBookmarked: wishlistIds.includes(game.gameId)
+          }));
+
+          this.loading = false;
+        });
+      },
+      error: () => {
+        // Si falla wishlist, igual mapear juegos sin bookmarks
+        this.customListService.getListById(id).subscribe(list => {
+          this.list = list;
+
+          this.listGames = (list.games || []).map((game: CustomListGame) => ({
+            gameId: game.gameId,
+            name: game.name,
+            background_image: game.backgroundImage || '',
+            isBookmarked: false
+          }));
+
+          this.loading = false;
+        });
+      }
+    });
+  }
+
+  goToGameDetail(gameId: number) {
+    this.router.navigate(['/detail', gameId]);
+  }
+
+  trackByGameId(index: number, game: GameCardData) {
+    return game.gameId;
+  }
+}
