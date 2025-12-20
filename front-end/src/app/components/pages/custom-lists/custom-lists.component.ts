@@ -50,4 +50,23 @@ export class CustomListsComponent implements OnInit {
   trackById(index: number, list: CustomList) {
     return list.id;
   }
+
+  deleteList(listId: number, event: MouseEvent) {
+    event.stopPropagation();
+
+    if (!confirm('Are you sure you want to delete this list?')) {
+      return;
+    }
+
+    this.customListService.deleteList(listId).subscribe({
+      next: () => {
+        this.lists = this.lists.filter(list => list.id !== listId);
+      },
+      error: err => {
+        console.error(err);
+        alert('Error deleting list');
+      }
+    });
+  }
+
 }

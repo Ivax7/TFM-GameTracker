@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Req, UseGuards, Get, Param } from '@nestjs/common';
+import { Controller, Post, Body, Req, UseGuards, Get, Param, Delete } from '@nestjs/common';
 import { CustomListsService } from './custom-list.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
@@ -12,10 +12,25 @@ export class CustomListController {
     return this.customListsService.getByUser(req.user.userId);
   }
 
+  // Crete custom list
   @UseGuards(JwtAuthGuard)
   @Post()
   create(@Req() req, @Body() data: { title: string; description?: string }) {
     return this.customListsService.create(req.user.userId, data);
+  }
+
+  // Delete custom list
+
+  @UseGuards(JwtAuthGuard)
+  @Delete(':id')
+  deleteList(
+    @Param('id') id: string,
+    @Req() req
+  ) {
+    return this.customListsService.deleteList(
+      Number(id),
+      req.user.userId
+    )
   }
 
   @UseGuards(JwtAuthGuard)
@@ -44,4 +59,6 @@ export class CustomListController {
       req.user.id
     );
   }
+
+
 }

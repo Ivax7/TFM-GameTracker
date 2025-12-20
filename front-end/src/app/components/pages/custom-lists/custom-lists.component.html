@@ -10,6 +10,16 @@
       *ngFor="let list of lists; trackBy: trackById"
       [routerLink]="['/custom-lists', list.id]"
     >
+
+      <!-- DELETE BUTTON -->
+      <button
+        class="delete-btn"
+        (click)="deleteList(list.id, $event)"
+        title="Delete list"
+      >
+        <img src="../../../../assets/images/icons/delete.svg" alt="🗑">
+      </button>
+      
       <h3>{{ list.title }}</h3>
 
       <p *ngIf="list.description">{{ list.description }}</p>

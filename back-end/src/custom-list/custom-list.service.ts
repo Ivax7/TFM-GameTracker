@@ -88,6 +88,24 @@ export class CustomListsService {
   
     return list;
   }
+
+
+  async deleteList(listId: number, userId: number) {
+    const list = await this.listRepo.findOne({
+      where: {
+        id: listId,
+        user: { id: userId }
+      }
+    });
+    
+    if (!list) {
+      throw new ForbiddenException('List not found');
+    }
+
+    await this.listRepo.remove(list);
+    return { deleted: true };
+
+  }
   
 
 
