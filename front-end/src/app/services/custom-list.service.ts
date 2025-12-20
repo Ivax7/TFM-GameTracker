@@ -51,6 +51,20 @@ export class CustomListService {
     })
   }
 
+updateList(
+  listId: number,
+  data: { title: string; description?: string }
+): Observable<CustomList> {
+  return this.http.patch<CustomList>(
+    `${this.apiUrl}/${listId}`,
+    data,
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    }
+  );
+}
 
 
 

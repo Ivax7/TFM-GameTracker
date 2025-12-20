@@ -89,6 +89,28 @@ export class CustomListsService {
     return list;
   }
 
+  async updateList(
+    listId: number,
+    userId: number,
+    data: { title: string; description?: string }
+  ) {
+    const list = await this.listRepo.findOne({
+      where: {
+        id: listId,
+        user: { id: userId }
+      }
+    });
+  
+    if (!list) {
+      throw new ForbiddenException('List not found');
+    }
+  
+    list.title = data.title;
+    list.description = data.description;
+  
+    return this.listRepo.save(list);
+  }
+
 
   async deleteList(listId: number, userId: number) {
     const list = await this.listRepo.findOne({

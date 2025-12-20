@@ -55,7 +55,7 @@ h2 {
 .list-card h3 {
   margin: 0 0 0.5rem 0;
   font-size: 1.2rem;
-  color: #06829d;
+  color: var(--primary-color);
 }
 
 .list-card p {
@@ -122,6 +122,8 @@ h2 {
   border-radius: 4px;
 }
 
+/* BUTTONS */
+
 .delete-btn {
   position: absolute;
   bottom: 8px;
@@ -148,6 +150,30 @@ h2 {
   color: var(--error-color);
   opacity: 1;
 }
+
+.edit-btn {
+  position: absolute;
+  bottom: 8px;
+  right: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.edit-btn:hover {
+  opacity: 1;
+}
+
+.edit-btn img {
+  width: 18px;
+  height: 18px;
+}
+
+
 
 @media (max-width: 600px) {
   .lists-header {

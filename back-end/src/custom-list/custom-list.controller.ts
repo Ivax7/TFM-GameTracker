@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Req, UseGuards, Get, Param, Delete } from '@nestjs/common';
+import { Controller, Post, Body, Req, UseGuards, Get, Param, Delete, Patch } from '@nestjs/common';
 import { CustomListsService } from './custom-list.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
@@ -32,6 +32,22 @@ export class CustomListController {
       req.user.userId
     )
   }
+
+  // Update custom list
+  @UseGuards(JwtAuthGuard)
+  @Patch(':id')
+  updateList(
+    @Param('id') id: string,
+    @Req() req,
+    @Body() data: { title: string; description?: string }
+  ) {
+    return this.customListsService.updateList(
+      Number(id),
+      req.user.userId,
+      data
+    );
+  }
+
 
   @UseGuards(JwtAuthGuard)
   @Post(':id/games/toggle')

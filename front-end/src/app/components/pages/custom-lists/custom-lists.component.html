@@ -19,6 +19,16 @@
       >
         <img src="../../../../assets/images/icons/delete.svg" alt="🗑">
       </button>
+
+            <!-- EDIT BUTTON -->
+      <button
+        class="edit-btn"
+        (click)="editList(list, $event)"
+        title="Edit list"
+      >
+        <img src="../../../../assets/images/icons/review.svg" alt="✏️">
+      </button>
+
       
       <h3>{{ list.title }}</h3>
 
@@ -61,7 +71,9 @@
 
 @if (showCreateModal) {
   <app-custom-list-modal
+    [list]="listToEdit"
     (close)="closeModal()"
-    (create)="onCreateList($event)">
+    (create)="onCreateList($event)"
+    (update)="onUpdateList($event)">
   </app-custom-list-modal>
 }

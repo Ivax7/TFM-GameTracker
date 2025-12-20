@@ -16,6 +16,7 @@ export class CustomListsComponent implements OnInit {
 
   showCreateModal = false;
   lists: CustomList[] = [];
+  listToEdit?: CustomList;
 
   constructor(
     private customListService: CustomListService,
@@ -38,6 +39,7 @@ export class CustomListsComponent implements OnInit {
 
   closeModal() {
     this.showCreateModal = false;
+    this.listToEdit = undefined;
   }
 
   onCreateList(data: { title: string; description: string }) {
@@ -66,6 +68,21 @@ export class CustomListsComponent implements OnInit {
         console.error(err);
         alert('Error deleting list');
       }
+    });
+  }
+
+  editList(list: CustomList, event: MouseEvent) {
+    event.stopPropagation();
+    this.listToEdit = list;
+    this.showCreateModal = true;
+  }
+  
+  onUpdateList(data: { id: number; title: string; description: string }) {
+    this.customListService.updateList(data.id, data).subscribe(updated => {
+      this.lists = this.lists.map(list =>
+        list.id === updated.id ? updated : list
+      );
+      this.closeModal();
     });
   }
 
