@@ -59,7 +59,7 @@ export class SelectCustomListModalComponent implements OnChanges {
       .filter(list => {
         const wasSelected = this.initialListIds.has(list.id);
         const isSelected = this.selectedListIds.has(list.id);
-        return wasSelected !== isSelected; // 🔥 solo cambios reales
+        return wasSelected !== isSelected;
       })
       .map(list =>
         this.customListService.toggleGameInList(list.id, {

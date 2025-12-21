@@ -89,7 +89,7 @@ h3 {
 button {
   background: none;
   color: var(--text-main);
-  border: 1px solid #666;
+  border: 1px solid var(--text-secondary);
   padding: 0.5rem 1rem;
   border-radius: 6px;
   cursor: pointer;

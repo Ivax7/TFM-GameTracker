@@ -108,7 +108,12 @@ export class CustomListsService {
     list.title = data.title;
     list.description = data.description;
   
-    return this.listRepo.save(list);
+    await this.listRepo.save(list);
+
+    return this.listRepo.findOne({
+      where: { id: listId },
+      relations: ['games', 'user']
+    });
   }
 
 
