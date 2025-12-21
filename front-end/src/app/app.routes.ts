@@ -11,6 +11,8 @@ import { UserSearchResultsComponent } from './components/pages/user-search-resul
 import { UserProfileComponent } from './components/pages/settings/user-profile/user-profile.component';
 import { CustomListsComponent } from './components/pages/custom-lists/custom-lists.component';
 import { CustomListDetailComponent } from './components/pages/custom-lists/custom-list-detail/custom-list-detail.component';
+import { AppsComponent } from './components/footer/apps/apps.component';
+import { SuggestionsComponent } from './components/footer/suggestions/suggestions.component';
 
 export const routes: Routes = [
   { path: '', component: MainPageComponent },
@@ -28,5 +30,9 @@ export const routes: Routes = [
   { path: 'users/search/:query', component: UserSearchResultsComponent },
   // Public profile
   { path: 'user/:username', component: ProfileComponent },
+  { path: 'apps', component: AppsComponent },
+  { path: 'suggestions', component: SuggestionsComponent },
+
+
   { path: '**', redirectTo: '' },
 ];

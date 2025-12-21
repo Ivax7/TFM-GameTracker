@@ -1,0 +1,57 @@
+<!-- Wrapper de toda la página -->
+<div class="suggestions-page">
+  <!-- Contenido principal flexible -->
+  <div class="content">
+
+    <div class="suggestions-container">
+      <h2>Suggestions</h2>
+      <p>Share your ideas for future features!</p>
+      <button (click)="showSuggestionModal = true">Make a suggestion</button>
+    </div>
+
+    <div class="suggestions-list">
+      <h4>Community Suggestions</h4>
+
+      <div *ngIf="suggestions.length === 0" class="no-suggestions">
+        No suggestions yet. Be the first to share!
+      </div>
+
+      <div *ngFor="let s of suggestions" class="suggestion-card">
+        <h5>{{ s.title }}</h5>
+        <p>{{ s.suggestion }}</p>
+        <small>by {{ s.userName }} • {{ s.date | date:'short' }}</small>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="suggestion-modal" *ngIf="showSuggestionModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5>Make your suggestion</h5>
+        <button class="btn-close" (click)="showSuggestionModal = false">×</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="mb-3">
+          <label>Title</label>
+          <input type="text" [(ngModel)]="title" maxlength="100"/>
+        </div>
+        <div class="mb-3">
+          <label>Suggestion</label>
+          <textarea id="bio" [(ngModel)]="suggestionText" maxlength="300" rows="4"></textarea>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="action-btn clear-btn" (click)="showSuggestionModal = false">Cancel</button>
+        <button class="action-btn submit-btn" (click)="uploadSuggestionModal()">Save</button>
+      </div>
+
+    </div>
+  </div>
+</div>

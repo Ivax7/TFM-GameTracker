@@ -3,11 +3,12 @@ import { Router, NavigationEnd, RouterOutlet } from '@angular/router';
 import { NavComponent } from './components/nav/nav.component';
 import { filter } from 'rxjs';
 import { ModalManagerController } from "./components/modal-manager/modal-manager.component";
+import { FooterComponent } from "./components/footer/footer.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, NavComponent, ModalManagerController],
+  imports: [RouterOutlet, NavComponent, ModalManagerController, FooterComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

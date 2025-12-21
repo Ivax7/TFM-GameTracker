@@ -1,0 +1,262 @@
+/* Reset básico */
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Página de sugerencias */
+.suggestions-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  text-align: center;
+  background-image: url('../../../../assets/images/elden-ring-wallpaper.jpeg');
+  background-size: cover;
+  background-position: center;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Contenedor del contenido */
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Cartel principal */
+.suggestions-container {
+  max-width: 700px;
+  width: 90%;
+  margin: 20px auto;
+  text-align: center;
+  background-color: rgba(34, 34, 34, 0.9); /* --background-secondary */
+  color: var(--text-main);
+  padding: 3rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  transition: transform 0.2s ease;
+}
+
+
+.suggestions-container h2 {
+  margin-bottom: 1rem;
+  font-size: 2rem;
+  color: var(--primary-color);
+}
+
+.suggestions-container button {
+  margin-top: 1rem;
+  padding: 0.5rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.suggestions-container button:hover {
+  background-color: var(--hover-color);
+  transform: scale(1.02);
+}
+
+/* Lista de sugerencias */
+.suggestions-list {
+  max-width: 700px;
+  width: 90%;
+  margin: 20px auto;
+  text-align: left;
+  background-color: rgba(33, 37, 41, 0.9);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+}
+
+.suggestions-list h4 {
+  margin-bottom: 1rem;
+  color: var(--secondary-color);
+  font-size: 1.5rem;
+}
+
+/* Mensaje cuando no hay sugerencias */
+.no-suggestions {
+  color: var(--text-secondary);
+  font-style: italic;
+  text-align: center;
+}
+
+/* Card de cada sugerencia */
+.suggestion-card {
+  background-color: #1f1f1f; /* más oscuro para contraste */
+  color: var(--text-main);
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  margin-bottom: 1rem;
+  padding: 1rem;
+  max-height: 200px;
+  overflow-y: auto;
+  word-wrap: break-word;
+}
+
+.suggestion-card h5 {
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+.suggestion-card p {
+  margin-bottom: 0.5rem;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+}
+
+.suggestion-card small {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+/* Modal */
+.suggestion-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.75);
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+.modal-body {
+  padding: 10px;
+}
+
+.suggestion-modal .modal-dialog {
+  max-width: 600px;
+  width: 100%;
+}
+
+.suggestion-modal .modal-content {
+  background-color: var(--background-secondary-dark);
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.7);
+  animation: modalFadeIn 0.3s ease;
+}
+
+
+/* Header y footer del modal */
+.suggestion-modal .modal-header,
+.suggestion-modal .modal-footer {
+  padding: 1rem 1.5rem;
+}
+
+.suggestion-modal .modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--hover-color);
+}
+
+.suggestion-modal .modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  border-top: 1px solid var(--hover-color);
+}
+
+/* Inputs y textarea del modal estilizados tipo profile-form */
+.suggestion-modal input,
+.suggestion-modal textarea {
+  padding: 0.6rem;
+  border: 1px solid #333;
+  border-radius: 6px;
+  background-color: var(--background-secondary);
+  color: var(--text-main);
+  font-family: 'Noto Sans', sans-serif;
+  font-size: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 4px 2px;
+  resize: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Focus para inputs y textarea */
+.suggestion-modal input:focus,
+.suggestion-modal textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 5px rgba(6, 130, 157, 0.5);
+}
+
+/* Si quieres un textarea específico con id bio */
+#bio {
+  box-sizing: border-box;
+  margin: 4px 2px;
+  resize: none;
+}
+
+
+/* Botón cerrar modal */
+.suggestion-modal .btn-close {
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  color: var(--error-color);
+  cursor: pointer;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+
+/* Botones genéricos tipo action-btn */
+.suggestion-modal .action-btn {
+  background: none;
+  color: var(--text-main);
+  border: 1px solid var(--text-secondary);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  font-size: 14px;
+}
+
+
+/* Hover para enviar */
+.suggestion-modal .submit-btn:hover {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: #fff;
+}
+
+/* Hover para limpiar o cancelar */
+.suggestion-modal .clear-btn:hover {
+  background-color: var(--error-color);
+  color: #fff;
+}
+
+/* Botón de cerrar modal */
+.suggestion-modal .close-btn {
+  color: var(--primary-color);
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 26px;
+  height: 26px;
+  cursor: pointer;
+  z-index: 12;
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: 1.5rem;
+  line-height: 1;
+}

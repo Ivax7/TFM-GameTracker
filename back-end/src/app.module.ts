@@ -15,6 +15,7 @@ import { FollowModule } from './follow/follow.module';
 import { RatingModule } from './rating/rating.module';
 import { UserReviewsModule } from './user-reviews/user-reviews.module';
 import { CustomListModule } from './custom-list/custom-list.module';
+import { SuggestionsModule } from './suggestions/suggestions.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { CustomListModule } from './custom-list/custom-list.module';
     RatingModule,
     UserReviewsModule,
     CustomListModule,
+    SuggestionsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
