@@ -78,7 +78,7 @@ import { SuggestionsModule } from './suggestions/suggestions.module';
       autoLoadEntities: true,
 
       // SOLO para desarrollo
-      synchronize: true,
+      // synchronize: true,
     }),
 
     UserModule,
