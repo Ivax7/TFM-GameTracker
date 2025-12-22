@@ -2,11 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CustomList } from '../models/custom-list.model';
-
+import { environment } from '../../environments/environment';
 @Injectable({ providedIn: 'root' })
 export class CustomListService {
-
-  private apiUrl = 'http://localhost:3000/custom-lists';
+  
+  // private apiUrl = 'http://localhost:3000/custom-lists';
+  private apiUrl = `${environment.apiUrl}/custom-lists`;
 
   constructor(private http: HttpClient) {}
 
