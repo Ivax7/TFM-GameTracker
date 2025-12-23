@@ -1,5 +1,4 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, Unique } from "typeorm";
-import { User } from "./user/user.entity";
 import { CustomList } from "./custom-list.entity";
 
 
