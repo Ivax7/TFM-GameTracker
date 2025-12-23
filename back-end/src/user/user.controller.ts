@@ -1,5 +1,4 @@
 import { Controller, Get, Patch, Delete, Body, Req, UseGuards, UnauthorizedException, UseInterceptors, UploadedFile, Query, Param } from '@nestjs/common';
-import { Multer } from 'multer';
 import { UserService } from './user.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
