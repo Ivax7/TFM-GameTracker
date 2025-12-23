@@ -48,6 +48,7 @@
 
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -65,20 +66,42 @@ import { SuggestionsModule } from './suggestions/suggestions.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-
-      // Render / producción
-      url: process.env.DATABASE_URL,
-
-      ssl: process.env.NODE_ENV === 'production'
-        ? { rejectUnauthorized: false }
-        : false,
-
-      autoLoadEntities: true,
-
-      // SOLO para desarrollo
-      // synchronize: true,
+    // Configurar variables de entorno
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => {
+        const databaseUrl = configService.get<string>('DATABASE_URL');
+        
+        // Si tenemos DATABASE_URL, úsala (para Render/Producción)
+        if (databaseUrl) {
+          return {
+            type: 'postgres',
+            url: databaseUrl,
+            ssl: configService.get<string>('NODE_ENV') === 'production' 
+              ? { rejectUnauthorized: false } 
+              : false,
+            autoLoadEntities: true,
+            synchronize: configService.get<string>('NODE_ENV') !== 'production',
+          };
+        }
+        
+        // Configuración para desarrollo local (fallback)
+        return {
+          type: 'postgres',
+          host: 'localhost',
+          port: 5433,
+          username: 'postgres',
+          password: 'root',
+          database: 'TFM-GT',
+          autoLoadEntities: true,
+          synchronize: true,
+        };
+      },
+      inject: [ConfigService],
     }),
 
     UserModule,
