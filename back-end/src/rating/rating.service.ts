@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Not, IsNull } from 'typeorm';
-import { UserGame } from 'src/user-game/user-game.entity';
+import { UserGame } from '../user-game/user-game.entity';
 
 @Injectable()
 export class RatingService {
