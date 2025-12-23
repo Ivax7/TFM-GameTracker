@@ -1,4 +1,5 @@
 import { Controller, Get, Patch, Delete, Body, Req, UseGuards, UnauthorizedException, UseInterceptors, UploadedFile, Query, Param } from '@nestjs/common';
+import { File } from 'multer';
 import { UserService } from './user.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -62,7 +63,8 @@ export class UserController {
   @Patch('profile')
   async updateProfile(
     @Req() req,
-    @UploadedFile() file: Express.Multer.File,
+  @UploadedFile() file: File
+    // @UploadedFile() file: Express.Multer.File,
     @Body() body: any,
   ) {
     if (!req.user) throw new UnauthorizedException('User not authenticated');
