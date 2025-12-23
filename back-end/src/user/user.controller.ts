@@ -63,7 +63,7 @@ export class UserController {
   @Patch('profile')
   async updateProfile(
     @Req() req,
-  @UploadedFile() file: File
+  @UploadedFile() file: File,
     // @UploadedFile() file: Express.Multer.File,
     @Body() body: any,
   ) {
