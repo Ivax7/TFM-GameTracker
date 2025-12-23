@@ -5,7 +5,7 @@ import { CustomList } from './custom-list.entity';
 import { CustomListGame } from './custom-list-game.entity';
 import { CustomListsService } from './custom-list.service';
 import { CustomListController } from './custom-list.controller';
-import { User } from 'src/user/user.entity';
+import { User } from './user/user.entity';
 
 @Module({
   imports: [
