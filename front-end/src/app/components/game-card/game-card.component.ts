@@ -2,8 +2,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { WishlistService } from '../../services/wishlist.service';
-import { AuthService } from '../../auth/auth.service';
 import { GameActionsComponent } from "../game-actions/game-actions.component";
 
 @Component({
