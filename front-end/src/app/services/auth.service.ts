@@ -1,7 +1,8 @@
+import { environment } from '../../environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
-import { environment } from '../../environments/environment';
+import { BehaviorSubject, Observable, tap, catchError, throwError } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 export interface User {
   username: string;
   email: string;
@@ -41,26 +42,60 @@ export class AuthService {
   }
 
   // Login
-  login(email: string, password: string): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, { email, password })
-      .pipe(
-        tap(res => {
-          // Guardamos token y usuario en localStorage
-          localStorage.setItem('token', res.access_token);
-          localStorage.setItem('username', res.username);
-          localStorage.setItem('email', res.email);
+  // login(email: string, password: string): Observable<LoginResponse> {
+  //   return this.http.post<LoginResponse>(`${this.apiUrl}/login`, { email, password })
+  //     .pipe(
+  //       tap(res => {
+  //         // Guardamos token y usuario en localStorage
+  //         localStorage.setItem('token', res.access_token);
+  //         localStorage.setItem('username', res.username);
+  //         localStorage.setItem('email', res.email);
 
-          // Actualizamos BehaviorSubjects
-          this.tokenSubject.next(res.access_token);
-          this.userSubject.next({ username: res.username, email: res.email });
-        })
-      );
+  //         // Actualizamos BehaviorSubjects
+  //         this.tokenSubject.next(res.access_token);
+  //         this.userSubject.next({ username: res.username, email: res.email });
+  //       })
+  //     );
+  // }
+
+  login(email: string, password: string): Observable<LoginResponse> {
+  return this.http.post<LoginResponse>(`${this.apiUrl}/login`, { email, password })
+    .pipe(
+      tap(res => {
+        console.log('✅ LOGIN OK', res);
+        localStorage.setItem('token', res.access_token);
+        localStorage.setItem('username', res.username);
+        localStorage.setItem('email', res.email);
+
+        this.tokenSubject.next(res.access_token);
+        this.userSubject.next({ username: res.username, email: res.email });
+      }),
+      catchError(err => {
+        console.error('❌ LOGIN ERROR', err);
+        throw err;
+      })
+    );
   }
+
 
   // Registro
+  // register(email: string, password: string, username: string): Observable<any> {
+  //   return this.http.post(`${this.apiUrl}/register`, { email, password, username });
+  // }
+
   register(email: string, password: string, username: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/register`, { email, password, username });
-  }
+  return this.http.post(`${this.apiUrl}/register`, { email, password, username })
+    .pipe(
+      tap(res => {
+        console.log('✅ REGISTER OK', res);
+      }),
+      catchError((err: HttpErrorResponse) => {
+        console.error('❌ REGISTER ERROR', err);
+        return throwError(() => err);
+      })
+    );
+}
+
 
   // Logout
   logout() {
