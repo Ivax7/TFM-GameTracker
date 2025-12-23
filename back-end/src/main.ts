@@ -7,7 +7,7 @@ async function bootstrap() {
 
   const allowedOrigins = [
     'http://localhost:4200', // tu frontend local
-    'https://tu-app-frontend.vercel.app', // tu frontend en Vercel
+    'https://tfm-game-tracker-cjp8z7bem-xavis-projects-379e9d0e.vercel.app/', // tu frontend en Vercel
   ];
 
   app.enableCors({
