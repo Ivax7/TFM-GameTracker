@@ -41,7 +41,10 @@ onSubmit() {
   } else {
     this.authService.register(this.email, this.password, this.username).subscribe({
       next: () => this.message = '✅ Account created! You can log in now.',
-      error: err => this.message = '❌ Registration failed'
+      error: err => {
+        console.error('REGISTER ERROR:', err);
+        this.message = err?.error?.message || '❌ Registration failed';
+      }
     });
   }
 }
