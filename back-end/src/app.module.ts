@@ -88,7 +88,6 @@ import { SuggestionsModule } from './suggestions/suggestions.module';
             synchronize: configService.get<string>('NODE_ENV') !== 'production',
           };
         }
-        
         // Configuración para desarrollo local (fallback)
         return {
           type: 'postgres',

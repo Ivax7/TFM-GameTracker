@@ -3,7 +3,7 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { UserGame } from '../user-game/user-game.entity';
 import { Follow } from '../follow/follow.entity';
 import { CustomList } from '../custom-list/custom-list.entity';
-@Entity()
+@Entity('users')
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
