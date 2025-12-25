@@ -1,10 +1,12 @@
+
 .reviews-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 16px; /* espacio entre tarjetas */
-  margin: 32px auto; /* margen superior/inferior + centrado horizontal */
-  max-width: 800px; /* ancho máximo del contenedor */
-  justify-content: center; /* centra las columnas si hay espacio extra */
+  gap: 16px;
+  margin: 32px auto;
+  max-width: 800px;
+  justify-content: center;
+  min-height: 250px;
   color: var(--text-main);
 }
 

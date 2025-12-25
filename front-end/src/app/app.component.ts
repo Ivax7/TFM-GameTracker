@@ -16,11 +16,10 @@ export class AppComponent {
   showNav = false;
 
   constructor(private router: Router) {
-    // Suscribirse a cambios de ruta
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
-        // Mostrar nav en todas las rutas excepto "/"
+        // mostrar nav en todas las rutas excepto "/"
         this.showNav = event.urlAfterRedirects !== '/';
       });
   }
