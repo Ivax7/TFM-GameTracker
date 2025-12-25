@@ -85,7 +85,8 @@ import { SuggestionsModule } from './suggestions/suggestions.module';
               ? { rejectUnauthorized: false } 
               : false,
             autoLoadEntities: true,
-            synchronize: configService.get<string>('NODE_ENV') !== 'production',
+            synchronize: true,
+            // synchronize: configService.get<string>('NODE_ENV') !== 'production',
           };
         }
         // Configuración para desarrollo local (fallback)
