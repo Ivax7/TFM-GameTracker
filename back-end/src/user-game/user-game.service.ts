@@ -219,6 +219,7 @@ async setReview(
   // ------------------------------------------
   // GET REVIEWS FOR GAME
   // ------------------------------------------
+// En user-game.service.ts (backend)
 async getReviewsForGame(gameId: number) {
   const reviews = await this.repo.find({
     where: { game: { id: gameId }, review: Not('') },
@@ -226,11 +227,11 @@ async getReviewsForGame(gameId: number) {
     order: { createdAt: 'DESC' },
   });
 
-  const baseUrl = 'http://localhost:3000/uploads/profile/';
-
   return reviews.map(r => ({
     id: r.id,
+    userId: r.user?.id,
     username: r.user?.username,
+    displayName: r.user?.displayName || r.user?.username,
     review: r.review,
     rating: r.rating,
     playtime: r.playtime,
@@ -238,7 +239,7 @@ async getReviewsForGame(gameId: number) {
     gameName: r.gameName ?? r.game.name,
     backgroundImage: r.game.backgroundImage,
     createdAt: r.createdAt,
-    profileImage: r.user?.profileImage ? baseUrl + r.user.profileImage : null, // <--- aquí
+    profileImage: r.user?.profileImage || null,
   }));
 }
 
@@ -256,6 +257,7 @@ async getReviewsForGame(gameId: number) {
     return reviews.map(r => ({
       id: r.id,
       username: r.user.username,
+      displayName: r.user.displayName || r.user.username,
       gameId: r.game.id,
       gameName: r.gameName ?? r.game.name,
       backgroundImage: r.game.backgroundImage,
@@ -263,6 +265,8 @@ async getReviewsForGame(gameId: number) {
       rating: r.rating,
       playtime: r.playtime,
       createdAt: r.updatedAt,
+      // URL completa de Cloudinary o null
+      profileImage: r.user.profileImage || null,
     }));
   }
 

@@ -1,3 +1,4 @@
+// En game-detail.component.ts
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { RawgService } from '../../../services/rawg.service';
@@ -22,6 +23,9 @@ export class GameDetailComponent implements OnInit {
   limitedReviews: any[] = [];
   showAll = false;
   loading = true;
+  
+  // Placeholder para imagen de perfil
+  placeholderImage = 'assets/images/icons/profile.svg';
 
   constructor(
     private route: ActivatedRoute,
@@ -32,25 +36,39 @@ export class GameDetailComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-  const gameId$ = this.route.paramMap.pipe(
-    map(params => Number(params.get('id')))
-  );
+    const gameId$ = this.route.paramMap.pipe(
+      map(params => Number(params.get('id')))
+    );
 
-  combineLatest([gameId$, this.authService.token$]).subscribe(
-    ([gameId, _token]) => {
-      this.gameId = gameId;
-      this.loadGame();
-      this.loadReviews();
-    }
-  );
+    combineLatest([gameId$, this.authService.token$]).subscribe(
+      ([gameId, _token]) => {
+        this.gameId = gameId;
+        this.loadGame();
+        this.loadReviews();
+      }
+    );
 
-  this.modalManager.reviewAdded$.subscribe((newReview: any) => {
-    if (!newReview) return;
-    this.reviews.unshift(newReview);
-    this.limitedReviews = this.reviews.slice(0, 4);
-  });
-}
+    this.modalManager.reviewAdded$.subscribe((newReview: any) => {
+      if (!newReview) return;
+      // Procesa la nueva review para asegurar la imagen de perfil
+      const processedReview = this.handleReviewImage(newReview);
+      this.reviews.unshift(processedReview);
+      this.limitedReviews = this.reviews.slice(0, 4);
+    });
+  }
 
+  // --------------------
+  // UTILIDAD PARA IMÁGENES DE PERFIL EN REVIEWS
+  // --------------------
+  private handleReviewImage(review: any) {
+    return {
+      ...review,
+      // Usa la URL de Cloudinary si existe, si no usa el placeholder
+      profileImage: review.profileImage || this.placeholderImage,
+      // Usa displayName si existe, si no usa username
+      displayName: review.displayName || review.username
+    };
+  }
 
   loadGame() {
     this.rawgService.getGameById(this.gameId).subscribe({
@@ -68,39 +86,41 @@ export class GameDetailComponent implements OnInit {
   loadReviews() {
     this.userGameService.getGameReviews(this.gameId).subscribe({
       next: (reviews) => {
-        this.reviews = reviews;
-        this.limitedReviews = reviews.slice(0, 4);
+        // Procesa cada review para asegurar que tenga imagen de perfil
+        this.reviews = reviews.map(review => this.handleReviewImage(review));
+        this.limitedReviews = this.reviews.slice(0, 4);
       },
       error: (err) => console.error('Error cargando reviews:', err)
     });
   }
 
-submitReview(data: { review: string, game: any }) {
-  const { review, game } = data;
+  submitReview(data: { review: string, game: any }) {
+    const { review, game } = data;
 
-  if (!game || !game.name) {
-    console.log("No game loaded yet");
-    return;
-  }
-
-  this.userGameService.setGameReview(
-    game.id,
-    review,
-    game.name,
-    game.background_image, // <- aquí enviamos el background
-    game.released,
-    game.rating
-  ).subscribe({
-    next: (newReview) => {
-      this.reviews.unshift(newReview);
-      this.limitedReviews = this.reviews.slice(0, 4);
-      alert('Review added successfully!');
-    },
-    error: (err) => {
-      console.error(err);
-      alert('Error submitting review');
+    if (!game || !game.name) {
+      console.log("No game loaded yet");
+      return;
     }
-  });
-}
 
+    this.userGameService.setGameReview(
+      game.id,
+      review,
+      game.name,
+      game.background_image,
+      game.released,
+      game.rating
+    ).subscribe({
+      next: (newReview) => {
+        // Procesa la nueva review para asegurar la imagen de perfil
+        const processedReview = this.handleReviewImage(newReview);
+        this.reviews.unshift(processedReview);
+        this.limitedReviews = this.reviews.slice(0, 4);
+        alert('Review added successfully!');
+      },
+      error: (err) => {
+        console.error(err);
+        alert('Error submitting review');
+      }
+    });
+  }
 }
