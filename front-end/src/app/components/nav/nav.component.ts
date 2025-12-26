@@ -42,20 +42,25 @@ export class NavComponent implements OnInit {
       distinctUntilChanged(),
       switchMap(query => {
         const trimmed = query.trim();
+        console.log('🔹 Buscando:', trimmed);
+      
         if (!trimmed) return of([]);
-
+      
         if (trimmed.startsWith('@')) {
           const username = trimmed.slice(1).trim();
+          console.log('🔹 Buscando usuarios con:', username);
           if (!username) return of([]);
           this.searchingUsers = true;
           return this.userService.searchUsers(username);
         } else {
           this.searchingUsers = false;
+          console.log('🔹 Buscando juegos con:', trimmed);
           return this.rawgService.getGamesByName(trimmed);
         }
       })
     ).subscribe({
       next: res => {
+        console.log('🔹 Resultados de búsqueda:', res);
         if (this.searchingUsers) {
           this.searchResults = Array.isArray(res)
             ? res.slice(0, 5).map(u => ({
@@ -66,9 +71,11 @@ export class NavComponent implements OnInit {
         } else {
           this.searchResults = res.results?.slice(0, 5) || [];
         }
-        this.showSuggestions = this.searchResults.length > 0;
+        this.showSuggestions = true;
+        console.log('🔹 showSuggestions:', this.showSuggestions);
       },
-      error: () => {
+      error: err => {
+        console.log('❌ Error en búsqueda:', err);
         this.searchResults = [];
         this.showSuggestions = false;
       }

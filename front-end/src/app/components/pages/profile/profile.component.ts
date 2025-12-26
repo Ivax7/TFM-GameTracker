@@ -41,14 +41,7 @@ export class ProfileComponent implements OnInit {
   selectedTab: 'ratings' | 'reviews' = 'ratings';
   placeholderImage = 'assets/images/icons/profile.svg'; // Placeholder fijo
 
-  ratingChart: any;
-  ratingCounts: {1:number,2:number,3:number,4:number,5:number} = {
-    1: 0,
-    2: 0,
-    3: 0,
-    4: 0,
-    5: 0
-  };
+  ratingCounts: {1:number,2:number,3:number,4:number,5:number} = {1:0,2:0,3:0,4:0,5:0};
 
   visitedUserId!: number;
 
@@ -75,15 +68,24 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  selectTab(tab: 'ratings' | 'reviews') {
-    this.selectedTab = tab;
+  // --------------------
+  // UTILIDAD PARA IMÁGENES
+  // --------------------
+  private setProfileImage(user: any) {
+    return {
+      ...user,
+      profileImage: user.profileImage || this.placeholderImage
+    };
   }
 
+  // --------------------
+  // PERFIL
+  // --------------------
   loadProfile() {
     this.loading = true;
     this.userService.getProfile().subscribe({
       next: user => {
-        this.profile = { ...user, profileImage: user.profileImage || this.placeholderImage };
+        this.profile = this.setProfileImage(user);
         this.visitedUserId = user.id;
 
         this.loadUserRatings(user.id);
@@ -99,7 +101,7 @@ export class ProfileComponent implements OnInit {
     this.loading = true;
     this.userService.getUserByUsername(username).subscribe({
       next: user => {
-        this.profile = { ...user, profileImage: user.profileImage || this.placeholderImage };
+        this.profile = this.setProfileImage(user);
         this.visitedUserId = user.id;
 
         this.loadUserRatings(user.id);
@@ -111,29 +113,31 @@ export class ProfileComponent implements OnInit {
           error: () => { this.isFollowing = false; this.loading = false; }
         });
       },
-      error: () => this.loading = false
+      error: (err) => {
+        console.error('Error cargando perfil:', err);
+        this.loading = false;
+      }
     });
   }
 
-// En profile.component.ts
-openFollowers() {
-  this.loadingFollowers = true;
-  this.showFollowersModal = true;
+  // --------------------
+  // FOLLOWERS / FOLLOWING
+  // --------------------
+  openFollowers() {
+    this.loadingFollowers = true;
+    this.showFollowersModal = true;
 
-  this.followService.getFollowers(this.profile.id).subscribe({
-    next: list => {
-      this.followers = list.map(u => ({
-        ...u,
-        profileImage: u.profileImage || this.placeholderImage
-      }));
-      this.loadingFollowers = false;
-    },
-    error: (err) => {
-      console.log(err);
-      this.loadingFollowers = false;
-    }
-  });
-}
+    this.followService.getFollowers(this.profile.id).subscribe({
+      next: list => {
+        this.followers = list.map(u => this.setProfileImage(u));
+        this.loadingFollowers = false;
+      },
+      error: (err) => {
+        console.log(err);
+        this.loadingFollowers = false;
+      }
+    });
+  }
 
   openFollowing() {
     this.loadingFollowing = true;
@@ -141,10 +145,7 @@ openFollowers() {
 
     this.followService.getFollowing(this.profile.id).subscribe({
       next: list => {
-        this.following = list.map(u => ({
-          ...u,
-          profileImage: u.profileImage || this.placeholderImage
-        }));
+        this.following = list.map(u => this.setProfileImage(u));
         this.loadingFollowing = false;
       },
       error: () => this.loadingFollowing = false
@@ -179,6 +180,9 @@ openFollowers() {
     this.router.navigate(['/user', username]);
   }
 
+  // --------------------
+  // RATINGS
+  // --------------------
   loadUserRatings(userId: number) {
     this.userService.getUserRatings(userId).subscribe({ 
       next: (games: any[]) => {
@@ -189,6 +193,13 @@ openFollowers() {
     });
   }
 
+  selectTab(tab: 'ratings' | 'reviews') {
+    this.selectedTab = tab;
+  }
+
+  // --------------------
+  // WISHLIST / COLLECTION
+  // --------------------
   goToWishlist() {
     if (this.isOwnProfile) this.router.navigate(['/wishlist']);
     else this.router.navigate(['/wishlist'], { queryParams: { userId: this.visitedUserId } });

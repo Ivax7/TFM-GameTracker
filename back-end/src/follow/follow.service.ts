@@ -45,31 +45,44 @@ export class FollowService {
   }
 
   // En follow.service.ts (backend)
-  async getFollowers(userId: number) {
-    const follows = await this.followRepo.find({
-      where: { following: { id: userId } },
-      relations: ['follower'],
-    });
-    return follows.map(f => ({
-      ...f.follower,
-      profileImage: f.follower.profileImage
-        ? `${process.env.UPLOADS_URL || 'http://localhost:3000/uploads/'}profile/${f.follower.profileImage}` // Añade 'profile/'
-        : null
-    }));
-  }
+// En follow.service.ts (backend)
+async getFollowers(userId: number) {
+  const follows = await this.followRepo.find({
+    where: { following: { id: userId } },
+    relations: ['follower'],
+  });
+  
+  // Usar la misma lógica que en UserController.mapUser()
+  return follows.map(f => ({
+    id: f.follower.id,
+    username: f.follower.username,
+    displayName: f.follower.displayName || '',
+    email: f.follower.email || null,
+    bio: f.follower.bio || '',
+    profileImage: f.follower.profileImage, // Deja la URL como está (Cloudinary o null)
+    followersCount: f.follower.followers?.length || 0,
+    followingCount: f.follower.following?.length || 0,
+  }));
+}
 
-  async getFollowing(userId: number) {
-    const follows = await this.followRepo.find({
-      where: { follower: { id: userId } },
-      relations: ['following'],
-    });
-    return follows.map(f => ({
-      ...f.following,
-      profileImage: f.following.profileImage
-        ? `${process.env.UPLOADS_URL || 'http://localhost:3000/uploads/'}profile/${f.following.profileImage}` // Añade 'profile/'
-        : null
-    }));
-  }
+async getFollowing(userId: number) {
+  const follows = await this.followRepo.find({
+    where: { follower: { id: userId } },
+    relations: ['following'],
+  });
+  
+  // Usar la misma lógica que en UserController.mapUser()
+  return follows.map(f => ({
+    id: f.following.id,
+    username: f.following.username,
+    displayName: f.following.displayName || '',
+    email: f.following.email || null,
+    bio: f.following.bio || '',
+    profileImage: f.following.profileImage, // Deja la URL como está (Cloudinary o null)
+    followersCount: f.following.followers?.length || 0,
+    followingCount: f.following.following?.length || 0,
+  }));
+}
 
 
   async isFollowing(followerId: number, followingId: number) {

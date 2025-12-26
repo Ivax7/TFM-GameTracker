@@ -69,6 +69,8 @@ import { SuggestionsModule } from './suggestions/suggestions.module';
     // Configurar variables de entorno
     ConfigModule.forRoot({
       isGlobal: true,
+      envFilePath: '.env',
+      cache: true,
     }),
     
     TypeOrmModule.forRootAsync({
