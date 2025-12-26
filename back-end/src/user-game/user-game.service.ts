@@ -219,25 +219,29 @@ async setReview(
   // ------------------------------------------
   // GET REVIEWS FOR GAME
   // ------------------------------------------
-  async getReviewsForGame(gameId: number) {
-    const reviews = await this.repo.find({
-      where: { game: { id: gameId }, review: Not('') },
-      relations: ['user', 'game'],
-      order: { createdAt: 'DESC' },
-    });
+async getReviewsForGame(gameId: number) {
+  const reviews = await this.repo.find({
+    where: { game: { id: gameId }, review: Not('') },
+    relations: ['user', 'game'],
+    order: { createdAt: 'DESC' },
+  });
 
-    return reviews.map(r => ({
-      id: r.id,
-      username: r.user?.username,
-      review: r.review,
-      rating: r.rating,
-      playtime: r.playtime,
-      gameId: r.game.id,
-      gameName: r.gameName ?? r.game.name,
-      backgroundImage: r.game.backgroundImage,
-      createdAt: r.createdAt,
-    }));
-  }
+  const baseUrl = 'http://localhost:3000/uploads/profile/';
+
+  return reviews.map(r => ({
+    id: r.id,
+    username: r.user?.username,
+    review: r.review,
+    rating: r.rating,
+    playtime: r.playtime,
+    gameId: r.game.id,
+    gameName: r.gameName ?? r.game.name,
+    backgroundImage: r.game.backgroundImage,
+    createdAt: r.createdAt,
+    profileImage: r.user?.profileImage ? baseUrl + r.user.profileImage : null, // <--- aquí
+  }));
+}
+
 
   // ------------------------------------------
   // GET USER REVIEWS

@@ -132,7 +132,7 @@
       <p>No reviews yet.</p>
     } @else {
       
-      <div class="reviews-grid">
+      <!-- <div class="reviews-grid">
         @for (r of limitedReviews; track r) {
           <div class="review-card">
             <h4>{{ r.username }}</h4>
@@ -153,8 +153,52 @@
             <p class="comment">"{{ r.review }}"</p>
           </div>
         }
-      </div>
+      </div> -->
       
+      <div class="reviews-grid">
+  @for (r of limitedReviews; track r) {
+    <div class="review-card">
+
+      <!-- HEADER -->
+      <div class="review-header">
+        <img
+          class="avatar"
+          [src]="r.profileImage || 'assets/images/icons/profile.svg'"
+          alt="User avatar"
+        />
+
+        <div class="user-meta">
+          <h4>{{ r.username }}</h4>
+          <small class="date">
+            {{ r.createdAt | date:'mediumDate' }}
+          </small>
+        </div>
+      </div>
+
+      <!-- META INFO -->
+      <div class="review-meta">
+        @if (r.rating) {
+          <span class="badge rating">
+            ⭐ {{ r.rating }}/10
+          </span>
+        }
+
+        @if (r.playtime) {
+          <span class="badge playtime">
+            ⏱ {{ r.playtime }}h
+          </span>
+        }
+      </div>
+
+      <!-- COMMENT -->
+      <p class="comment">
+        {{ r.review }}
+      </p>
+
+    </div>
+  }
+</div>
+
     }
     
   } @else {

@@ -79,7 +79,7 @@ submitReview(data: { review: string, game: any }) {
   const { review, game } = data;
 
   if (!game || !game.name) {
-    console.log("⚠ No game loaded yet");
+    console.log("No game loaded yet");
     return;
   }
 

@@ -57,16 +57,15 @@ export class NavComponent implements OnInit {
     ).subscribe({
       next: res => {
         if (this.searchingUsers) {
-          this.searchResults = Array.isArray(res) 
+          this.searchResults = Array.isArray(res)
             ? res.slice(0, 5).map(u => ({
-            ...u,
-            profileImage: u.profileImage ? `http://localhost:3000/uploads/${u.profileImage}` : 'assets/images/icons/profile.svg'
-          }))
-          : [];
+                ...u,
+                profileImage: u.profileImage || 'assets/images/icons/profile.svg'
+              }))
+            : [];
         } else {
           this.searchResults = res.results?.slice(0, 5) || [];
-        }     
-
+        }
         this.showSuggestions = this.searchResults.length > 0;
       },
       error: () => {
@@ -112,9 +111,19 @@ search() {
     this.showSuggestions = false;
   }
 
-  toggleAuthModal() { this.showAuthModal = !this.showAuthModal; }
-  logout() { this.auth.logout(); }
-  toggleDropdown() { this.isDropdownOpen = !this.isDropdownOpen; }
+  logout() {
+  this.auth.logout();
+  this.router.navigate(['']);
+}
+
+
+  toggleAuthModal() {
+    this.showAuthModal = !this.showAuthModal;
+  }
+  
+  toggleDropdown() {
+    this.isDropdownOpen = !this.isDropdownOpen;
+  }
 
   @HostListener('document:click', ['$event'])
   onClickOutside(event: MouseEvent) {

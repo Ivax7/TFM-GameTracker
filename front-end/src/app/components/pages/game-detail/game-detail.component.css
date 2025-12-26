@@ -264,11 +264,8 @@ p{
 
 
 /* REVIEWS */
+/* 
 
-.reviews {
-  padding: 2rem;
-  background-color: #111;
-}
 
 h2 {
   color: var(--secondary-color);
@@ -288,6 +285,21 @@ h2 {
   font-weight: bold;
 }
 
+
+
+.review-card {
+  background: #1c1c1c;
+  padding: 16px;
+  border-radius: 10px;
+  color: white;
+} */
+
+.reviews {
+  padding: 2rem;
+  background-color: #111;
+  color: var(--secondary-color);
+}
+
 .reviews-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -297,10 +309,78 @@ h2 {
 
 .review-card {
   background: #1c1c1c;
-  padding: 16px;
-  border-radius: 10px;
+  padding: 18px;
+  border-radius: 14px;
   color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
+
+.review-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+/* HEADER */
+.review-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.review-header .avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #222;
+}
+
+.user-meta h4 {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.user-meta .date {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+/* BADGES */
+.review-meta {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.badge {
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #2a2a2a;
+  color: #ddd;
+}
+
+.badge.rating {
+  color: #ffd700;
+}
+
+.badge.playtime {
+  color: #7ec8ff;
+}
+
+/* COMMENT */
+.comment {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #ccc;
+  border-left: 3px solid var(--secondary-color);
+  padding-left: 12px;
+}
+
 
 
 

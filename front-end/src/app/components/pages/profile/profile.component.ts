@@ -9,7 +9,6 @@ import { ReviewsSummaryComponent } from '../../reviews-summary/reviews-summary.c
 import { WishlistService } from '../../../services/wishlist.service';
 import { UserGameService } from '../../../services/user-game.service';
 
-
 @Component({
   selector: 'app-profile',
   standalone: true,
@@ -39,16 +38,10 @@ export class ProfileComponent implements OnInit {
   isOwnProfile = true;
   routeUsername: string | null = null;
 
-
-  // Manú navegación ratings/reviews
   selectedTab: 'ratings' | 'reviews' = 'ratings';
+  placeholderImage = 'assets/images/icons/profile.svg'; // Placeholder fijo
 
-  selectTab(tab: 'ratings' | 'reviews') {
-    this.selectedTab = tab;
-  }
-
-  // Ratings
-  ratingChart: any
+  ratingChart: any;
   ratingCounts: {1:number,2:number,3:number,4:number,5:number} = {
     1: 0,
     2: 0,
@@ -57,10 +50,7 @@ export class ProfileComponent implements OnInit {
     5: 0
   };
 
-
-  // Reviews
   visitedUserId!: number;
-
 
   constructor(
     private userService: UserService,
@@ -72,14 +62,12 @@ export class ProfileComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Detectar cambios en la URL dinámicamente
     this.route.paramMap.subscribe(params => {
       this.routeUsername = params.get('username');
 
       if (this.routeUsername) {
         this.isOwnProfile = false;
         this.loadPublicProfile(this.routeUsername);
-        
       } else {
         this.isOwnProfile = true;
         this.loadProfile();
@@ -87,11 +75,15 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  selectTab(tab: 'ratings' | 'reviews') {
+    this.selectedTab = tab;
+  }
+
   loadProfile() {
     this.loading = true;
     this.userService.getProfile().subscribe({
       next: user => {
-        this.profile = { ...user, profileImage: user.profileImage || 'assets/images/icons/profile.svg' };
+        this.profile = { ...user, profileImage: user.profileImage || this.placeholderImage };
         this.visitedUserId = user.id;
 
         this.loadUserRatings(user.id);
@@ -103,12 +95,11 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-
   loadPublicProfile(username: string) {
     this.loading = true;
     this.userService.getUserByUsername(username).subscribe({
       next: user => {
-        this.profile = { ...user, profileImage: user.profileImage || 'assets/images/icons/profile.svg' };
+        this.profile = { ...user, profileImage: user.profileImage || this.placeholderImage };
         this.visitedUserId = user.id;
 
         this.loadUserRatings(user.id);
@@ -124,17 +115,16 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-
+// En profile.component.ts
 openFollowers() {
   this.loadingFollowers = true;
   this.showFollowersModal = true;
 
   this.followService.getFollowers(this.profile.id).subscribe({
     next: list => {
-      const baseUrl = 'http://localhost:3000/uploads/';
       this.followers = list.map(u => ({
         ...u,
-        profileImage: u.profileImage ? baseUrl + u.profileImage : 'assets/images/icons/profile.svg'
+        profileImage: u.profileImage || this.placeholderImage
       }));
       this.loadingFollowers = false;
     },
@@ -145,25 +135,21 @@ openFollowers() {
   });
 }
 
-openFollowing() {
-  this.loadingFollowing = true;
-  this.showFollowingModal = true;
+  openFollowing() {
+    this.loadingFollowing = true;
+    this.showFollowingModal = true;
 
-  this.followService.getFollowing(this.profile.id).subscribe({
-    next: list => {
-      const baseUrl = 'http://localhost:3000/uploads/';
-      this.following = list.map(u => ({
-        ...u,
-        profileImage: u.profileImage ? baseUrl + u.profileImage : 'assets/images/icons/profile.svg'
-      }));
-      this.loadingFollowing = false;
-    },
-    error: (err) => {
-      console.log(err);
-      this.loadingFollowing = false;
-    }
-  });
-}
+    this.followService.getFollowing(this.profile.id).subscribe({
+      next: list => {
+        this.following = list.map(u => ({
+          ...u,
+          profileImage: u.profileImage || this.placeholderImage
+        }));
+        this.loadingFollowing = false;
+      },
+      error: () => this.loadingFollowing = false
+    });
+  }
 
   closeModal() {
     this.showFollowersModal = false;
@@ -193,35 +179,25 @@ openFollowing() {
     this.router.navigate(['/user', username]);
   }
 
-  // Cargar ratings usuarios
   loadUserRatings(userId: number) {
-    this.userService.getUserRatings(userId).subscribe({ next: (games: any[]) => {
-      const counts: Record<1|2|3|4|5, number> = {1:0,2:0,3:0,4:0,5:0};
-      games.forEach(g => { const r = Number(g.rating) as 1|2|3|4|5; if(r>=1&&r<=5) counts[r]++; });
-      this.ratingCounts = counts;
-    }});
+    this.userService.getUserRatings(userId).subscribe({ 
+      next: (games: any[]) => {
+        const counts: Record<1|2|3|4|5, number> = {1:0,2:0,3:0,4:0,5:0};
+        games.forEach(g => { const r = Number(g.rating) as 1|2|3|4|5; if(r>=1&&r<=5) counts[r]++; });
+        this.ratingCounts = counts;
+      }
+    });
   }
 
-
-  // Go to Wishlist
   goToWishlist() {
-    if (this.isOwnProfile) {
-      this.router.navigate(['/wishlist']);
-    } else {
-      this.router.navigate(['/wishlist'], { queryParams: { userId: this.visitedUserId } });
-    }
+    if (this.isOwnProfile) this.router.navigate(['/wishlist']);
+    else this.router.navigate(['/wishlist'], { queryParams: { userId: this.visitedUserId } });
   }
-
 
   goToCollection() {
-    if (this.isOwnProfile) {
-      this.router.navigate(['/collection']);
-    } else {
-      this.router.navigate(['/collection'], { queryParams: { userId: this.visitedUserId } });
-    }
+    if (this.isOwnProfile) this.router.navigate(['/collection']);
+    else this.router.navigate(['/collection'], { queryParams: { userId: this.visitedUserId } });
   }
-
-
 
   loadWishlistCount() {
     this.wishlistService.getWishlist().subscribe({ next: items => this.wishlistCount = items.length });
@@ -246,6 +222,5 @@ openFollowing() {
       this.userGameService.getUserGamesByStatus(userId, status).subscribe({ next: games => { total += games.length; this.collectionCount = total; }});
     });
   }
-
 
 }

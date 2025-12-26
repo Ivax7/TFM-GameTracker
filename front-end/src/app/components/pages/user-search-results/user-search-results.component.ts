@@ -34,9 +34,7 @@ export class UserSearchResultsComponent implements OnInit {
       next: (res: any[]) => {
         this.users = res.map(u => ({
           ...u,
-          profileImage: u.profileImage
-            ? `http://localhost:3000/uploads/${u.profileImage}`
-            : 'assets/images/icons/profile.svg'
+          profileImage: u.profileImage || 'assets/images/icons/profile.svg'
         }));
         this.loading = false;
       },

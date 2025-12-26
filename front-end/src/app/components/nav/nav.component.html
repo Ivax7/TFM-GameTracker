@@ -1,33 +1,29 @@
 <nav class="nav">
-  <img routerLink="/trending"  class="logo" src="assets/images/kratos2.png" alt="GT">
-  <img routerLink="/trending"  class="logo" src="assets/images/kratos.png" alt="GT">
+  <img routerLink="/trending" class="logo" src="assets/images/gtlogo.png" alt="GT">
 
-<div class="search-bar">
-  <input
-    type="text"
-    placeholder="Search games or @username..."
-    [(ngModel)]="query"
-    (input)="onSearchChange()"
-    (keyup.enter)="search()"
-  />
-  <button (click)="search()">Search</button>
+  <div class="search-bar">
+    <input
+      type="text"
+      placeholder="Search games or @username..."
+      [(ngModel)]="query"
+      (input)="onSearchChange()"
+      (keyup.enter)="search()"
+    />
+    <button (click)="search()">Search</button>
 
-  <ul class="suggestions" *ngIf="showSuggestions">
-  <li *ngFor="let result of searchResults" (click)="selectItem(result)">
-    <img *ngIf="!searchingUsers" [src]="result.background_image" width="40" height="40" />
-    <img *ngIf="searchingUsers" [src]="result.profileImage || 'assets/images/icons/profile.svg'" width="40" height="40" />
-    <span>
-      {{ searchingUsers ? result.displayName + ' (@' + result.username + ')' : result.name }}
-    </span>
-  </li>
-</ul>
-
-</div>
-
+    <ul class="suggestions" *ngIf="showSuggestions">
+      <li *ngFor="let result of searchResults" (click)="selectItem(result)">
+        <img *ngIf="!searchingUsers" [src]="result.background_image" width="40" height="40" />
+        <img *ngIf="searchingUsers" [src]="result.profileImage || 'assets/images/icons/profile.svg'" width="40" height="40" />
+        <span>
+          {{ searchingUsers ? result.displayName + ' (@' + result.username + ')' : result.name }}
+        </span>
+      </li>
+    </ul>
+  </div>
 
   <div class="user-section">
     @if (!currentUser) {
-
       <div class="user-icon" (click)="toggleAuthModal()">
         <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 24 24">
           <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
@@ -37,13 +33,16 @@
 
     @if (currentUser) {
       <div class="dropdown" [class.open]="isDropdownOpen">
-        <button 
-          class="user-dropdown" 
-          type="button" 
-          (click)="toggleDropdown()"
-        >
+        <button class="user-dropdown" type="button" (click)="toggleDropdown()">
           <div class="user-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 24 24">
+            <img 
+              *ngIf="currentUser.profileImage" 
+              [src]="currentUser.profileImage" 
+              width="28" 
+              height="28" 
+              style="border-radius: 50%;" 
+            />
+            <svg *ngIf="!currentUser.profileImage" xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 24 24">
               <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
             </svg>
           </div>
@@ -51,7 +50,7 @@
             <path d="M1.5 5.5l6 6 6-6h-12z"/>
           </svg>
         </button>
-      
+
         @if (isDropdownOpen) {
           <ul class="dropdown-menu show">
             <button class="close-dropdown" (click)="toggleDropdown()">✕</button>
@@ -65,7 +64,7 @@
           </ul>
         }
       </div>
-      }
+    }
   </div>
 </nav>
 

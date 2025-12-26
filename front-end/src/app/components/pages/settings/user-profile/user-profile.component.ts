@@ -63,21 +63,28 @@ saveProfile() {
 
   this.userService.updateProfileFormData(formData).subscribe({
     next: updatedUser => {
-      this.authService.updateCurrentUser({
-        username: updatedUser.username,
-        email: updatedUser.email,
-        displayName: updatedUser.displayName,
-        profileImage: updatedUser.profileImage
-          ? 'http://localhost:3000/uploads/profile/' + updatedUser.profileImage
-          : '../../../../../assets/images/icons/profile.svg'
-      });
+  const imageUrl = updatedUser.profileImage
+    ? 'http://localhost:3000/uploads/profile/' + updatedUser.profileImage
+    : 'assets/images/icons/profile.svg';
 
-      this.originalDisplayName = updatedUser.displayName;
-      this.originalBio = updatedUser.bio;
-      this.originalImage = this.profileImageUrl;
+  this.profileImageUrl = imageUrl;
 
-      alert('Profile updated successfully');
-    },
+  this.authService.updateCurrentUser({
+    username: updatedUser.username,
+    email: updatedUser.email,
+    displayName: updatedUser.displayName,
+    profileImage: imageUrl
+  });
+
+  this.originalDisplayName = updatedUser.displayName;
+  this.originalBio = updatedUser.bio;
+  this.originalImage = imageUrl;
+
+  this.selectedImageFile = null;
+
+  alert('Profile updated successfully');
+}
+,
     error: err => console.log('Error updating profile', err)
   });
 }

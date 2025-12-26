@@ -44,23 +44,33 @@ export class FollowService {
     });
   }
 
+  // En follow.service.ts (backend)
   async getFollowers(userId: number) {
-    // Devuelve directamente los usuarios que siguen a este user
     const follows = await this.followRepo.find({
       where: { following: { id: userId } },
       relations: ['follower'],
     });
-    return follows.map(f => f.follower);
+    return follows.map(f => ({
+      ...f.follower,
+      profileImage: f.follower.profileImage
+        ? `${process.env.UPLOADS_URL || 'http://localhost:3000/uploads/'}profile/${f.follower.profileImage}` // Añade 'profile/'
+        : null
+    }));
   }
 
   async getFollowing(userId: number) {
-    // Devuelve directamente los usuarios que este user sigue
     const follows = await this.followRepo.find({
       where: { follower: { id: userId } },
       relations: ['following'],
     });
-    return follows.map(f => f.following);
+    return follows.map(f => ({
+      ...f.following,
+      profileImage: f.following.profileImage
+        ? `${process.env.UPLOADS_URL || 'http://localhost:3000/uploads/'}profile/${f.following.profileImage}` // Añade 'profile/'
+        : null
+    }));
   }
+
 
   async isFollowing(followerId: number, followingId: number) {
     const exists = await this.followRepo.findOne({
