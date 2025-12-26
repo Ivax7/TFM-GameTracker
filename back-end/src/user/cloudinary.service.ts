@@ -1,49 +1,58 @@
-// cloudinary.service.ts - Versión simplificada y funcional
+// cloudinary.service.ts - Versión sin streamifier
 import { Injectable } from '@nestjs/common';
-import { v2 as cloudinary } from 'cloudinary';
-import * as dotenv from 'dotenv';
-
-// Carga las variables de entorno
-dotenv.config();
+import { UploadApiResponse, v2 as cloudinary } from 'cloudinary';
+import { Express } from 'express';
 
 @Injectable()
 export class CloudinaryService {
   constructor() {
-    // Configura Cloudinary directamente
     cloudinary.config({
       cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
       api_key: process.env.CLOUDINARY_API_KEY,
       api_secret: process.env.CLOUDINARY_API_SECRET,
-      secure: true,
-    });
-
-    // Log para debug
-    console.log('✅ Cloudinary configurado:', {
-      cloud: process.env.CLOUDINARY_CLOUD_NAME,
-      key: process.env.CLOUDINARY_API_KEY ? '***' + process.env.CLOUDINARY_API_KEY.slice(-4) : 'NO',
     });
   }
 
+  // Versión usando base64 en lugar de streamifier
   async uploadProfileImage(file: Express.Multer.File): Promise<string> {
-    return new Promise((resolve, reject) => {
-      cloudinary.uploader.upload(
-        `data:${file.mimetype};base64,${file.buffer.toString('base64')}`,
+    try {
+      // Convierte el buffer a base64
+      const base64Image = `data:${file.mimetype};base64,${file.buffer.toString('base64')}`;
+      
+      const uploadResult: UploadApiResponse = await cloudinary.uploader.upload(
+        base64Image,
         {
-          folder: 'profiles',
-          transformation: [
-            { width: 256, height: 256, crop: 'fill', gravity: 'face' },
-          ],
-        },
-        (error, result) => {
-          if (error) {
-            console.error('❌ Cloudinary error:', error.message);
-            reject(error);
-          } else {
-            console.log('✅ Imagen subida:', result.secure_url);
-            resolve(result.secure_url);
-          }
+          folder: 'profile_images',
+          public_id: `profile_${Date.now()}`,
+          resource_type: 'image',
         }
       );
-    });
+
+      // Devuelve la URL segura (HTTPS)
+      return uploadResult.secure_url;
+    } catch (error) {
+      console.error('Error uploading to Cloudinary:', error);
+      throw new Error('Failed to upload image');
+    }
+  }
+
+  async uploadImage(
+    file: Express.Multer.File,
+    folder: string = 'uploads'
+  ): Promise<string> {
+    try {
+      const base64Image = `data:${file.mimetype};base64,${file.buffer.toString('base64')}`;
+      
+      const result = await cloudinary.uploader.upload(base64Image, {
+        folder,
+        public_id: `${folder}_${Date.now()}`,
+        resource_type: 'auto',
+      });
+
+      return result.secure_url;
+    } catch (error) {
+      console.error('Error uploading to Cloudinary:', error);
+      throw new Error(`Failed to upload image: ${error.message}`);
+    }
   }
 }
