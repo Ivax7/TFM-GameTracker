@@ -51,6 +51,18 @@ export class AlertService {
     USER_UNFOLLOWED: {
       type: 'error',
       message: 'You unfollowed this user ❌'
+    },
+    CUSTOM_LIST_CREATED: {
+      type: 'success',
+      message: 'Custom list created ✅'
+    },
+    CUSTOM_LIST_EDITED: {
+      type: 'info',
+      message: 'Custom list edited ✏️'
+    },
+    CUSTOM_LIST_DELETED: {
+      type: 'error',
+      message: 'Custom list deleted 🗑️'
     }
   };
 

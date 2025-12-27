@@ -2,6 +2,7 @@ import { Component, EventEmitter, Output, Input, OnInit } from '@angular/core';
 import { CustomList } from '../../../../models/custom-list.model';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { AlertService } from '../../../../services/alert.service';
 
 @Component({
   selector: 'app-custom-list-modal',
@@ -24,8 +25,11 @@ export class CustomListModalComponent implements OnInit {
   
   title = '';
   description = '';
+  
+  constructor(private alertService: AlertService) {}
 
-    ngOnInit() {
+
+  ngOnInit() {
     if (this.list) {
       this.title = this.list.title;
       this.description = this.list.description ?? '';
@@ -45,8 +49,11 @@ export class CustomListModalComponent implements OnInit {
         id: this.list.id,
         ...payload
       });
+      this.alertService.show('CUSTOM_LIST_EDITED');
     } else {
       this.create.emit(payload);
+      this.alertService.show('CUSTOM_LIST_CREATED');
+
     }
   }
 

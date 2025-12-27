@@ -4,6 +4,7 @@ import { CustomListModalComponent } from './custom-list-modal/custom-list-modal.
 import { CustomListService } from '../../../services/custom-list.service';
 import { CustomList } from '../../../models/custom-list.model';
 import { Router, RouterLink } from '@angular/router';
+import { AlertService } from '../../../services/alert.service';
 
 @Component({
   selector: 'app-custom-lists',
@@ -13,14 +14,16 @@ import { Router, RouterLink } from '@angular/router';
   styleUrls: ['./custom-lists.component.css']
 })
 export class CustomListsComponent implements OnInit {
-
   showCreateModal = false;
+  showDeleteModal = false; // Propiedad para controlar el modal de eliminación
   lists: CustomList[] = [];
   listToEdit?: CustomList;
+  listToDelete?: { id: number; title: string }; // Para almacenar la lista a eliminar
 
   constructor(
     private customListService: CustomListService,
-    private router: Router
+    private router: Router,
+    private alertService: AlertService
   ) {}
 
   ngOnInit() {
@@ -42,6 +45,35 @@ export class CustomListsComponent implements OnInit {
     this.listToEdit = undefined;
   }
 
+  // Métodos para manejar el modal de confirmación de eliminación
+  openDeleteModal(list: CustomList, event: MouseEvent) {
+    event.stopPropagation();
+    this.listToDelete = { id: list.id, title: list.title };
+    this.showDeleteModal = true;
+  }
+
+  closeDeleteModal() {
+    this.showDeleteModal = false;
+    this.listToDelete = undefined;
+  }
+
+  confirmDelete() {
+    if (!this.listToDelete) return;
+
+    this.customListService.deleteList(this.listToDelete.id).subscribe({
+      next: () => {
+        this.lists = this.lists.filter(list => list.id !== this.listToDelete!.id);
+        this.alertService.show('CUSTOM_LIST_DELETED');
+        this.closeDeleteModal();
+      },
+      error: err => {
+        console.error(err);
+        // Podrías mostrar un alert de error aquí también
+        this.closeDeleteModal();
+      }
+    });
+  }
+
   onCreateList(data: { title: string; description: string }) {
     this.customListService.createList(data).subscribe(list => {
       this.lists = [...this.lists, list];
@@ -53,22 +85,13 @@ export class CustomListsComponent implements OnInit {
     return list.id;
   }
 
+  // Método para el botón de eliminar (usa el modal)
   deleteList(listId: number, event: MouseEvent) {
     event.stopPropagation();
-
-    if (!confirm('Are you sure you want to delete this list?')) {
-      return;
+    const list = this.lists.find(l => l.id === listId);
+    if (list) {
+      this.openDeleteModal(list, event);
     }
-
-    this.customListService.deleteList(listId).subscribe({
-      next: () => {
-        this.lists = this.lists.filter(list => list.id !== listId);
-      },
-      error: err => {
-        console.error(err);
-        alert('Error deleting list');
-      }
-    });
   }
 
   editList(list: CustomList, event: MouseEvent) {
@@ -85,5 +108,4 @@ export class CustomListsComponent implements OnInit {
       this.closeModal();
     });
   }
-
 }

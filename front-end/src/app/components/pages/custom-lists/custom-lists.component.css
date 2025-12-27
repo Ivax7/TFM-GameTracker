@@ -175,6 +175,141 @@ h2 {
 }
 
 
+/* DELETE CUSTOM LIST MODAL */
+
+/* Estilos para el modal de confirmación */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  backdrop-filter: blur(2px);
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  color: var(--text-secondary);
+  background-color: var(--background-secondary);
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  animation: modalFadeIn 0.3s ease-out;
+}
+
+.confirm-modal {
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  padding: 2rem;
+}
+
+.modal-icon {
+  margin-bottom: 1.5rem;
+}
+
+.icon-large {
+  width: 48px;
+  height: 48px;
+  filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);
+}
+
+.confirm-message {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  color: var(--text-color);
+  line-height: 1.4;
+}
+
+.confirm-message strong {
+  color: var(--primary-color);
+  word-break: break-word;
+}
+
+.warning-text {
+  color: #e74c3c;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+  padding: 0.75rem;
+  background-color: rgba(231, 76, 60, 0.1);
+  border-radius: 8px;
+  border-left: 4px solid #e74c3c;
+  line-height: 1.4;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.action-btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 120px;
+  font-size: 0.95rem;
+}
+
+.action-btn.cancel {
+  background-color: var(--gray-200, #e9ecef);
+  color: var(--gray-700, #495057);
+}
+
+.action-btn.cancel:hover {
+  background-color: var(--gray-300, #dee2e6);
+  transform: translateY(-2px);
+}
+
+.action-btn.delete {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.action-btn.delete:hover {
+  background-color: #c0392b;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+}
+
+/* Animación */
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -60%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+/* Responsive */
+
+@media (max-width: 480px) {
+  .confirm-modal {
+    padding: 1.5rem;
+    width: 95%;
+  }
+  
+  .actions {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .action-btn {
+    width: 100%;
+    min-width: auto;
+  }
+}
 
 @media (max-width: 600px) {
   .lists-header {

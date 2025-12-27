@@ -11,7 +11,10 @@ export type AlertAction =
   | 'USERNAME_UPDATED_SUCCESSFULLY'
   | 'EMAIL_UPDATED_SUCCESSFULLY'
   | 'USER_FOLLOWED'
-  | 'USER_UNFOLLOWED';
+  | 'USER_UNFOLLOWED'
+  | 'CUSTOM_LIST_CREATED'
+  | 'CUSTOM_LIST_EDITED'
+  | 'CUSTOM_LIST_DELETED'
   ;
 
 export interface AlertPayload {

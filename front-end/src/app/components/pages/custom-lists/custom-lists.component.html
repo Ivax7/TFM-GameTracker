@@ -10,17 +10,16 @@
       *ngFor="let list of lists; trackBy: trackById"
       [routerLink]="['/custom-lists', list.id]"
     >
-
       <!-- DELETE BUTTON -->
       <button
         class="delete-btn"
-        (click)="deleteList(list.id, $event)"
+        (click)="openDeleteModal(list, $event)"
         title="Delete list"
       >
         <img src="../../../../assets/images/icons/delete.svg" alt="🗑">
       </button>
 
-            <!-- EDIT BUTTON -->
+      <!-- EDIT BUTTON -->
       <button
         class="edit-btn"
         (click)="editList(list, $event)"
@@ -28,7 +27,6 @@
       >
         <img src="../../../../assets/images/icons/review.svg" alt="✏️">
       </button>
-
       
       <h3>{{ list.title }}</h3>
 
@@ -69,6 +67,7 @@
   </section>
 </section>
 
+<!-- Modal de creación/edición -->
 @if (showCreateModal) {
   <app-custom-list-modal
     [list]="listToEdit"
@@ -76,4 +75,34 @@
     (create)="onCreateList($event)"
     (update)="onUpdateList($event)">
   </app-custom-list-modal>
+}
+
+<!-- Modal de confirmación de eliminación (añadido directamente) -->
+@if (showDeleteModal && listToDelete) {
+<div class="modal-backdrop" (click)="closeDeleteModal()"></div>
+
+<div class="modal confirm-modal">
+  <div class="modal-icon">
+    <img src="assets/images/icons/delete.svg" alt="🗑️" class="icon-large">
+  </div>
+  
+  <h3>Delete List</h3>
+  
+  <p class="confirm-message">
+    Are you sure you want to delete <strong>"{{ listToDelete.title }}"</strong>?
+  </p>
+  
+  <p class="warning-text">
+    This action cannot be undone. All games in this list will be removed.
+  </p>
+
+  <div class="actions">
+    <button class="action-btn cancel" (click)="closeDeleteModal()">
+      Cancel
+    </button>
+    <button class="action-btn delete" (click)="confirmDelete()">
+      Delete
+    </button>
+  </div>
+</div>
 }
