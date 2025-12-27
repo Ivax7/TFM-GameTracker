@@ -41,19 +41,30 @@
   border: 1px solid var(--primary-color);
 }
 
+/* Botón de búsqueda */
 .search-bar button {
-  padding: 0.5rem 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
   border: none;
   background-color: var(--primary-color, #5b9af7);
-  color: white;
   border-radius: 6px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  width: 40px;
   height: 40px;
+  transition: all 0.3s ease;
 }
 
 .search-bar button:hover {
   background-color: var(--hover-color, #7ab4ff);
+}
+
+/* Imagen de la lupa */
+.search-bar .search-icon {
+  width: 20px;
+  height: 20px;
+  display: block;
 }
 
 /* Suggestions */

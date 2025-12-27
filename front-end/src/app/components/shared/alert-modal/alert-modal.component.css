@@ -1,0 +1,50 @@
+.alert-modal {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background: var(--background-secondary-dark);
+  color: var(--text-main);
+  padding: 0.8rem 1.2rem;
+  border-radius: 8px;
+  min-width: 220px;
+  max-width: 300px;
+  text-align: center;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  opacity: 0;
+  transform: translateY(20px);
+  animation: slideIn 0.3s forwards, fadeOut 0.5s 4.5s forwards;
+  z-index: 9999;
+}
+
+.alert-modal.success {
+  border-left: 5px solid var(--success-color);
+}
+
+.alert-modal.error {
+  border-left: 5px solid var(--error-color);
+}
+
+.alert-modal.info {
+  border-left: 5px solid var(--primary-color);
+}
+
+/* Animaciones */
+@keyframes slideIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+.alert-modal p {
+  margin: 0;
+  font-size: 0.9rem;
+}

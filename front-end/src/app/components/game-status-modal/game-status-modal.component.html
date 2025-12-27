@@ -12,10 +12,14 @@
 
     <div class="modal-content">
       <div class="modal-left">
-        <div 
-        class="background-layer"
-        [style.backgroundImage]="'url(' + game.background_image + ')'"
+        <div
+          class="background-layer"
+          [style.backgroundImage]="'url(' + game.background_image + ')'"
         ></div>
+
+        <div class="game-title">
+          {{ game?.name }}
+        </div>
       </div>
       
       <div class="modal-right">
@@ -37,7 +41,7 @@
         <div class="action-btns">
           <button class="action-btn clear-btn" (click)="onClear($event)">Clear</button>
           <button class="action-btn submit-btn" (click)="onSubmit
-        ($event)">Submit</button>
+          ($event)">Submit</button>
         </div>
       </div>
     </div>

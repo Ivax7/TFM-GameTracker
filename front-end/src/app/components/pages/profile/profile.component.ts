@@ -8,6 +8,7 @@ import { RatingsChartComponent } from '../../ratings-chart/ratings-chart.compone
 import { ReviewsSummaryComponent } from '../../reviews-summary/reviews-summary.component';
 import { WishlistService } from '../../../services/wishlist.service';
 import { UserGameService } from '../../../services/user-game.service';
+import { AlertService } from '../../../services/alert.service';
 
 @Component({
   selector: 'app-profile',
@@ -52,6 +53,7 @@ export class ProfileComponent implements OnInit {
     private router: Router,
     private wishlistService: WishlistService,
     private userGameService: UserGameService,
+    private alertService: AlertService
   ) {}
 
   ngOnInit() {
@@ -163,6 +165,7 @@ export class ProfileComponent implements OnInit {
         next: () => {
           this.isFollowing = true;
           this.profile.followersCount = (this.profile.followersCount || 0) + 1;
+          this.alertService.show('USER_FOLLOWED'); // alerta verde
         }
       });
     } else {
@@ -170,10 +173,12 @@ export class ProfileComponent implements OnInit {
         next: () => {
           this.isFollowing = false;
           this.profile.followersCount = Math.max(0, (this.profile.followersCount || 1) - 1);
+          this.alertService.show('USER_UNFOLLOWED'); // alerta roja
         }
       });
     }
   }
+
 
   goToUser(username: string) {
     this.closeModal();

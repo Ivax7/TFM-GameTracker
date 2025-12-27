@@ -115,7 +115,6 @@ export class GameDetailComponent implements OnInit {
         const processedReview = this.handleReviewImage(newReview);
         this.reviews.unshift(processedReview);
         this.limitedReviews = this.reviews.slice(0, 4);
-        alert('Review added successfully!');
       },
       error: (err) => {
         console.error(err);

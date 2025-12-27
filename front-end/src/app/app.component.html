@@ -7,6 +7,11 @@
   <router-outlet></router-outlet>
 </main>
 
+<app-alert-modal
+  [alert]="alertService.alert$ | async"
+  (close)="alertService.close()"
+></app-alert-modal>
+
 @if (showNav) {
   <app-footer></app-footer>
 }

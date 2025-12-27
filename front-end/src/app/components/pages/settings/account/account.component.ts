@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../../auth/auth.service';
 import { UserService } from '../../../../services/user.service';
+import { AlertService } from '../../../../services/alert.service';
 
 @Component({
   selector: 'app-account',
@@ -18,7 +19,8 @@ export class AccountComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private userService: UserService
+    private userService: UserService,
+    private alertService: AlertService
   ) {}
 
   ngOnInit() {
@@ -36,7 +38,7 @@ export class AccountComponent implements OnInit {
       next: updatedUser => {
         this.authService.updateCurrentUser({ username: updatedUser.username });
         this.closeModal();
-        alert('Username updated successfully');
+        this.alertService.show('USERNAME_UPDATED_SUCCESSFULLY');
       },
       error: err => console.error('Error updating username', err)
     });

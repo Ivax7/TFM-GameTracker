@@ -155,7 +155,6 @@ export class ModalManagerController implements OnInit {
       next: (updatedReview) => {
         this.currentGame.review = updatedReview.review;
         this.showReviewModal = false;
-        alert('Review added successfully!');
 
         this.modalManager.notifyReviewAdded(updatedReview);
       },

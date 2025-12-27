@@ -7,9 +7,9 @@
       placeholder="Search games or @username..."
       [(ngModel)]="query"
       (input)="onSearchChange()"
-      (keyup.enter)="search()"
+      (keyup.enter)="onEnterSearch()"
     />
-    <button (click)="search()">Search</button>
+    <button (click)="search()"><img class="search-icon" src="assets/images/icons/search.svg" alt="🔍"></button>
 
     <ul class="suggestions" *ngIf="showSuggestions">
       <li *ngFor="let result of searchResults" (click)="selectItem(result)">
@@ -52,16 +52,16 @@
         </button>
 
         @if (isDropdownOpen) {
-          <ul class="dropdown-menu show">
-            <button class="close-dropdown" (click)="toggleDropdown()">✕</button>
-            <li><a class="dropdown-item" routerLink="/profile">Profile</a></li>
-            <li><a class="dropdown-item" routerLink="/wishlist">Wishlist</a></li>
-            <li><a class="dropdown-item" routerLink="/collection">Collection Status</a></li>
-            <li><a class="dropdown-item" routerLink="/custom-lists">Lists</a></li>
-            <li><a class="dropdown-item" routerLink="/settings">Settings</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
-          </ul>
+        <ul class="dropdown-menu show" (click)="closeDropdown()">
+          <button class="close-dropdown" (click)="toggleDropdown()">✕</button>
+          <li><a class="dropdown-item" routerLink="/profile">Profile</a></li>
+          <li><a class="dropdown-item" routerLink="/wishlist">Wishlist</a></li>
+          <li><a class="dropdown-item" routerLink="/collection">Collection Status</a></li>
+          <li><a class="dropdown-item" routerLink="/custom-lists">Lists</a></li>
+          <li><a class="dropdown-item" routerLink="/settings">Settings</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
+        </ul>
         }
       </div>
     }

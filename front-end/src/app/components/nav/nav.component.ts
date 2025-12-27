@@ -118,10 +118,15 @@ search() {
     this.showSuggestions = false;
   }
 
+  onEnterSearch() {
+    this.showSuggestions = false;
+    this.search();
+  }
+
   logout() {
-  this.auth.logout();
-  this.router.navigate(['']);
-}
+    this.auth.logout();
+    this.router.navigate(['']);
+  }
 
 
   toggleAuthModal() {
@@ -132,9 +137,26 @@ search() {
     this.isDropdownOpen = !this.isDropdownOpen;
   }
 
-  @HostListener('document:click', ['$event'])
-  onClickOutside(event: MouseEvent) {
-    const dropdown = this.elementRef.nativeElement.querySelector('.dropdown');
-    if (this.isDropdownOpen && !dropdown?.contains(event.target)) this.isDropdownOpen = false;
+@HostListener('document:click', ['$event'])
+onClickOutside(event: MouseEvent) {
+  const dropdown = this.elementRef.nativeElement.querySelector('.dropdown');
+  const searchBar = this.elementRef.nativeElement.querySelector('.search-bar');
+  const suggestions = this.elementRef.nativeElement.querySelector('.suggestions');
+  
+  // Cerrar dropdown si está abierto y se hace clic fuera
+  if (this.isDropdownOpen && !dropdown?.contains(event.target)) {
+    this.isDropdownOpen = false;
   }
+  
+  // Cerrar sugerencias si están abiertas y se hace clic fuera del área de búsqueda
+  if (this.showSuggestions && !searchBar?.contains(event.target)) {
+    this.showSuggestions = false;
+  }
+}
+  
+
+  closeDropdown() {
+    this.isDropdownOpen = false;
+  }
+
 }

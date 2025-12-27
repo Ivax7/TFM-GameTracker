@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../../auth/auth.service';
 import { UserService } from '../../../../services/user.service';
-
+import { AlertService } from '../../../../services/alert.service';
 @Component({
   selector: 'app-user-profile',
   standalone: true,
@@ -24,7 +24,8 @@ export class UserProfileComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private userService: UserService
+    private userService: UserService,
+    private alertService: AlertService
   ) {}
   
   ngOnInit() {
@@ -45,7 +46,6 @@ export class UserProfileComponent implements OnInit {
       });
     });
   }
-
 
 saveProfile() {
   const user = this.authService.getUser();
@@ -81,8 +81,9 @@ saveProfile() {
   this.originalImage = imageUrl;
 
   this.selectedImageFile = null;
+  
+  this.alertService.show('PROFILE_UPDATED_SUCCESSFULLY');
 
-  alert('Profile updated successfully');
 }
 ,
     error: err => console.log('Error updating profile', err)

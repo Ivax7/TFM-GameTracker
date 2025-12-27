@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../../auth/auth.service';
 import { UserService } from '../../../../services/user.service';
+import { AlertService } from '../../../../services/alert.service';
 
 @Component({
   selector: 'app-email',
@@ -17,7 +18,8 @@ export class EmailComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private userService: UserService
+    private userService: UserService,
+    private alertService: AlertService
   ) {}
 
   ngOnInit() {
@@ -33,7 +35,7 @@ export class EmailComponent implements OnInit {
       next: updatedUser => {
         // Actualizamos usuario global
         this.authService.updateCurrentUser({ email: updatedUser.email });
-        alert('Email updated successfully');
+        this.alertService.show('EMAIL_UPDATED_SUCCESSFULLY');
       },
       error: err => console.error('Email cannot be updated:', err)
     });

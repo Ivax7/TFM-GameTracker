@@ -6,7 +6,7 @@ import { ModalManagerService } from '../../services/modal-manager.service';
 import { UserGameService } from '../../services/user-game.service';
 import { WishlistService } from '../../services/wishlist.service';
 import { RatingModalComponent } from '../rating-modal/rating-modal.component';
-
+import { AlertService } from '../../services/alert.service';
 @Component({
   selector: 'app-game-actions',
   standalone: true,
@@ -32,6 +32,7 @@ export class GameActionsComponent implements OnInit {
     private userGameService: UserGameService,
     private router: Router,
     private modalManager: ModalManagerService,
+    private alertService: AlertService
   ) {}
 
   ngOnInit() {
@@ -75,6 +76,12 @@ export class GameActionsComponent implements OnInit {
       next: () => {
         this.isBookmarked = !this.isBookmarked;
         this.bookmarkToggled.emit(this.isBookmarked);
+
+        if (this.isBookmarked) {
+          this.alertService.show('GAME_ADDED_TO_WISHLIST');
+        } else {
+          this.alertService.show('GAME_REMOVED_FROM_WISHLIST');
+        }
       },
       error: (err) => this.handleAuthError(err),
     });

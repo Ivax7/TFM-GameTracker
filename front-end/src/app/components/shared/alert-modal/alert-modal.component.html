@@ -1,0 +1,8 @@
+@if (alert){
+  <div class="alert-modal" 
+      [class.success]="alert.type === 'success'"
+      [class.error]="alert.type === 'error'"
+      [class.info]="alert.type === 'info'">
+    <p>{{ alert.message }}</p>
+  </div>
+}

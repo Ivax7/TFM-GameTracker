@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'app-review-modal',
@@ -21,9 +22,22 @@ export class ReviewModalComponent {
 
   reviewText = '';
 
+  constructor(private alertService: AlertService) {}
+
+
   ngOnChanges(changes: SimpleChanges) {
     if(changes['showReview'] && this.showReview) {
       this.reviewText = '';
     }
+  }
+
+    onSubmit() {
+    if (!this.reviewText.trim()) return;
+
+    this.save.emit(this.reviewText.trim());
+
+    this.alertService.show('REVIEW_PUBLISHED');
+
+    this.close.emit();
   }
 }
