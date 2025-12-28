@@ -3,21 +3,20 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: #222;
-  color: #fff;
+  background-color: var(--background-secondary);
+  color: var(--text-main);
   border-radius: 10px;
   z-index: 11;
   width: 700px;
   max-width: 90vw;
-  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  box-shadow: 0 0 20px var(--background);
 }
 
 .modal-content {
   display: flex;
   gap: 1rem;
-  height: 400px; /* ajusta según necesites */
+  height: 400px;
 }
-
 
 /* IZQUIERDA */
 .modal-left {
@@ -35,19 +34,18 @@
   z-index: 2;
   font-size: 1.1rem;
   font-weight: 600;
-  color: white;
+  color: var(--text-main);
   text-align: center;
-  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+  text-shadow: 0 2px 6px var(--background);
   pointer-events: none;
 }
-
 
 .background-layer {
   position: absolute;
   inset: 0;
   background-size: cover;
   background-position: center;
-  filter: brightness(0.4); /* oscurece */
+  filter: brightness(0.4);
 }
 
 .vertical-img {
@@ -82,7 +80,7 @@
 }
 
 .modal li {
-  background: #333;
+  background-color: var(--background-secondary-dark);
   padding: 0.6rem;
   border-radius: 6px;
   cursor: pointer;
@@ -90,12 +88,12 @@
 }
 
 .modal li:hover {
-  background: #00bcd4;
+  background-color: var(--hover-color);
 }
 
 li.selected {
   background-color: var(--success-color) !important;
-  color: white;
+  color: var(--text-main);
   font-weight: bold;
 }
 
@@ -111,7 +109,7 @@ li.selected {
   padding: 0.5rem 1rem;
   border-radius: 6px;
   cursor: pointer;
-  transition: all .2s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 
 .submit-btn:hover {
@@ -135,4 +133,3 @@ li.selected {
   border: none;
   padding: 0;
 }
-

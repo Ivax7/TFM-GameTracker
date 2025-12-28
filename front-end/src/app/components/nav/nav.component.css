@@ -4,7 +4,7 @@
   align-items: center;
   background-color: var(--background-secondary-dark);
   padding-inline: 2rem;
-  color: white;
+  color: var(--text-main);
   flex-wrap: wrap;
 }
 
@@ -28,17 +28,16 @@
   color: var(--text-main);
   padding: 0.5rem 1rem;
   border-radius: 6px;
-  border: none;
+  border: 1px solid transparent;
   outline: none;
   width: 350px;
   height: 40px;
-  border: 1px solid transparent;
-  transition: .2s ease-in-out;
+  transition: 0.2s ease-in-out;
 }
 
 .search-bar input:focus {
   filter: brightness(1.2);
-  border: 1px solid var(--primary-color);
+  border-color: var(--primary-color);
 }
 
 /* Botón de búsqueda */
@@ -48,7 +47,7 @@
   align-items: center;
   padding: 0;
   border: none;
-  background-color: var(--primary-color, #5b9af7);
+  background-color: var(--primary-color);
   border-radius: 6px;
   cursor: pointer;
   width: 40px;
@@ -57,7 +56,7 @@
 }
 
 .search-bar button:hover {
-  background-color: var(--hover-color, #7ab4ff);
+  background-color: var(--hover-color);
 }
 
 /* Imagen de la lupa */
@@ -68,7 +67,6 @@
 }
 
 /* Suggestions */
-
 .suggestions {
   position: absolute;
   top: 100%;
@@ -76,8 +74,8 @@
   width: 100%;
   max-height: 250px;
   overflow-y: auto;
-  background: #1c1c1c;
-  border: 1px solid #333;
+  background-color: var(--background-secondary-dark);
+  border: 1px solid var(--text-secondary);
   border-radius: 6px;
   z-index: 1000;
   list-style: none;
@@ -91,18 +89,17 @@
   gap: 10px;
   padding: 8px 12px;
   cursor: pointer;
-  color: #fff;
+  color: var(--text-main);
 }
 
 .suggestions li:hover {
-  background-color: #2a2a2a;
+  background-color: var(--background-secondary);
 }
 
 .suggestions img {
   border-radius: 4px;
   object-fit: cover;
 }
-
 
 /* --- USER SECTION --- */
 .user-section {
@@ -118,8 +115,8 @@
 .username {
   font-weight: 500;
   font-size: 1rem;
-  color: white;
-  margin-right: auto; /* 👈 Empuja el icono hacia la derecha */
+  color: var(--text-main);
+  margin-right: auto;
 }
 
 /* --- ICONO USUARIO --- */
@@ -133,8 +130,6 @@
   transform: scale(1.1);
   color: var(--hover-color);
 }
-
-
 
 /* DROPDOWN */
 .dropdown {
@@ -155,7 +150,7 @@
   position: absolute;
   right: 0;
   width: 200px;
-  background: var(--background-secondary);
+  background-color: var(--background-secondary);
   border-radius: 8px;
   margin-top: 10px;
   padding: 8px 0;
@@ -171,13 +166,13 @@
 
 .dropdown-menu a {
   display: block;
-  color: white;
+  color: var(--text-main);
   padding: 8px 16px;
   text-decoration: none;
 }
 
 .dropdown-menu a:hover {
-  background-color: #333;
+  background-color: var(--background-secondary-dark);
 }
 
 /* Logout */
@@ -189,7 +184,6 @@
   display: none;
 }
 
-
 /* MEDIA QUERIES */
 
 @media (max-width: 1600px) {
@@ -200,15 +194,11 @@
 
 @media (max-width: 1200px) {
   .nav {
-    flex-wrap: wrap;
     justify-content: center;
     text-align: center;
   }
 
-  .search-bar {
-    margin-top: 10px;
-  }
-
+  .search-bar,
   .user-section {
     margin-top: 10px;
   }
@@ -226,10 +216,7 @@
     width: 100%;
   }
 
-  .search-bar input {
-    width: 80%;
-  }
-  
+  .search-bar input,
   .search-bar button {
     width: 80%;
   }
@@ -240,29 +227,24 @@
   }
 
   .dropdown-menu {
-    position: absolute;
     left: 50%;
     transform: translateX(-50%);
     width: 300px;
-    max-width: 400px;
-    height: auto;
-    background-color: #222;
+    background-color: var(--background-secondary-dark);
     border-radius: 12px;
     padding: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    z-index: 9999;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 8px 20px var(--background);
   }
-  
-  
+
   .dropdown-menu a {
     padding: 12px 0;
     font-size: 1rem;
     width: 100%;
     text-align: center;
-  } 
+  }
 }
 
 @media (max-width: 480px) {
@@ -270,10 +252,7 @@
     padding: 1rem;
   }
 
-  .search-bar input {
-    width: 100%;
-  }
-
+  .search-bar input,
   .search-bar button {
     width: 100%;
   }
@@ -287,22 +266,14 @@
     display: none;
   }
 
-
   /* --- DROPDOWN FULL SCREEN --- */
   .dropdown-menu {
     position: fixed;
-    top: 0;
-    left: 0;
-    min-width: 100%;
-    height: 100%;
-    transform: translateX(0%);
-    background-color: #222;
+    inset: 0;
+    background-color: var(--background-secondary-dark);
     border-radius: 0;
     margin: 0;
     padding-top: 80px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     z-index: 9999;
   }
 
@@ -314,7 +285,7 @@
     background: none;
     border: none;
     font-size: 2rem;
-    color: white;
+    color: var(--text-main);
     cursor: pointer;
     z-index: 10000;
   }

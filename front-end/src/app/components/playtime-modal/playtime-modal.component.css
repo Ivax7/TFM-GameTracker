@@ -1,3 +1,7 @@
+/* =========================
+  MODAL
+========================= */
+
 .modal-backdrop {
   position: fixed;
   inset: 0;
@@ -11,7 +15,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: #151515;
+  background: var(--background-secondary-dark);
   padding: 22px;
   border-radius: 12px;
   width: 340px;
@@ -42,9 +46,9 @@
 input[type="number"] {
   padding: 8px;
   border-radius: 6px;
-  border: 1px solid #333;
-  background: #222;
-  color: #fff;
+  border: 1px solid var(--background-secondary);
+  background: var(--background-secondary);
+  color: var(--text-main);
 }
 
 .modal-buttons {
@@ -60,14 +64,13 @@ input[type="number"] {
   padding: 0.5rem 1rem;
   border-radius: 6px;
   cursor: pointer;
-  transition: all .2s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
-
 
 .save-btn:hover {
   background-color: var(--primary-color);
 }
 
-.cancel-btn:hover  {
+.cancel-btn:hover {
   background-color: var(--error-color);
 }

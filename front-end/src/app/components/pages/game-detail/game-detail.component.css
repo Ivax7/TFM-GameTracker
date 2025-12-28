@@ -1,12 +1,12 @@
-p{
+p {
   color: var(--text-secondary);
 }
 
 .game-detail {
   display: flex;
   flex-direction: column;
-  color: #f0f0f0;
-  background-color: #111;
+  color: var(--text-main);
+  background-color: var(--background-secondary);
   min-height: 100vh;
   font-family: 'Poppins', sans-serif;
 }
@@ -15,7 +15,7 @@ p{
 .header {
   position: relative;
   width: 100%;
-  height: 45vh; /* ajustable */
+  height: 45vh;
   object-fit: cover;
   object-position: center;
   overflow: hidden;
@@ -28,7 +28,6 @@ p{
   object-position: center;
   filter: brightness(0.7);
 }
-
 
 /* Info del juego */
 .info {
@@ -48,7 +47,7 @@ p{
 }
 
 .info a {
-  color: #00bfff;
+  color: var(--primary-color);
   text-decoration: none;
 }
 
@@ -62,7 +61,6 @@ p{
   align-items: center;
   justify-content: flex-start;
 }
-
 
 /* Write a review */
 .btn-review {
@@ -85,7 +83,7 @@ p{
 }
 
 .btn-review:hover {
-  background: var(--text-primary);
+  background: var(--primary-color);
   color: var(--text-main);
 }
 
@@ -120,12 +118,11 @@ p{
   height: 24px;
 }
 
-
 /* Descripción */
 .description {
   width: 90%;
   margin-inline: 2rem;
-  color: #ccc;
+  color: var(--text-secondary);
   overflow: visible;
 }
 
@@ -143,7 +140,7 @@ p{
 }
 
 .description .text p {
-  color: #ccc;
+  color: var(--text-secondary);
   font-size: 1rem;
   text-align: justify;
 }
@@ -185,7 +182,7 @@ p{
   margin-top: 15px;
   width: 250px;
   align-items: center;
-  background-color: none;
+  background-color: transparent;
   border-radius: 6px;
 }
 
@@ -216,7 +213,6 @@ p{
   font-weight: bold;
 }
 
-
 /* ADDITIONAL INFO GRID */
 .additional-info {
   display: grid;
@@ -225,13 +221,12 @@ p{
   width: 60%;
   margin: 3rem 0 3rem 2rem;
   padding: 2rem;
-  background-color: #181818;
+  background-color: var(--secondary-color);
   border-radius: 16px;
-  color: #f0f0f0;
+  color: var(--text-main);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   justify-content: start;
 }
-
 
 .info-item {
   text-align: center;
@@ -240,7 +235,7 @@ p{
 .info-item h3 {
   font-size: 1rem;
   margin-bottom: 0.5rem;
-  color: var(--primary-color);
+  color: var(--background-secondary);
   text-transform: uppercase;
   font-weight: 600;
   letter-spacing: 0.5px;
@@ -250,7 +245,7 @@ p{
   margin: 0;
   font-size: 0.95rem;
   line-height: 1.4;
-  color: #ccc;
+  color: var(--primary-color);
 }
 
 .info-item a {
@@ -262,41 +257,10 @@ p{
   text-decoration: underline;
 }
 
-
 /* REVIEWS */
-/* 
-
-
-h2 {
-  color: var(--secondary-color);
-}
-
-.reviews-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.see-all {
-  background: none;
-  border: none;
-  color: #4A90E2;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-
-
-.review-card {
-  background: #1c1c1c;
-  padding: 16px;
-  border-radius: 10px;
-  color: white;
-} */
-
 .reviews {
   padding: 2rem;
-  background-color: #111;
+  background-color: var(--background-secondary-dark);
   color: var(--secondary-color);
 }
 
@@ -308,10 +272,10 @@ h2 {
 }
 
 .review-card {
-  background: #1c1c1c;
+  background: var(--background-secondary);
   padding: 18px;
   border-radius: 14px;
-  color: white;
+  color: var(--text-main);
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -335,7 +299,7 @@ h2 {
   height: 44px;
   border-radius: 50%;
   object-fit: cover;
-  background: #222;
+  background: var(--background-secondary);
 }
 
 .user-meta h4 {
@@ -360,8 +324,8 @@ h2 {
   font-size: 0.75rem;
   padding: 4px 10px;
   border-radius: 999px;
-  background: #2a2a2a;
-  color: #ddd;
+  background: var(--background-secondary);
+  color: var(--text-secondary);
 }
 
 .badge.rating {
@@ -374,16 +338,13 @@ h2 {
 
 /* COMMENT */
 .comment {
+  font-style: italic;
   font-size: 0.9rem;
   line-height: 1.6;
-  color: #ccc;
+  color: var(--text-secondary);
   border-left: 3px solid var(--secondary-color);
   padding-left: 12px;
 }
-
-
-
-
 
 /* Responsive */
 @media (max-width: 1200px) {
@@ -411,7 +372,6 @@ h2 {
     font-size: 1.6rem;
   }
 
-    
   .description-content {
     flex-direction: column;
     align-items: center;

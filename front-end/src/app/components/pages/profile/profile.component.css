@@ -5,7 +5,7 @@
   align-items: center;
   margin: 50px;
   gap: 2rem;
-  color: #f0f0f0;
+  color: var(--text-main);
 }
 
 /* Izquierda: foto + info */
@@ -40,12 +40,10 @@
 
 .profile-right {
   display: flex;
-  flex-direction: row ;
+  flex-direction: row;
   gap: 10px;
   margin-right: 400px;
 }
-
-/* Toggle Follow */
 
 /* Toggle Follow Minimalista */
 .toggle-follow {
@@ -54,25 +52,22 @@
   font-size: 14px;
   font-weight: 500;
   border-radius: 20px;
-  border: 1px solid #aaa;
+  border: 1px solid var(--text-secondary);
   background-color: transparent;
-  color: #333;
+  color: var(--text-main);
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 }
 
-/* Hover cuando aún no sigues */
 .toggle-follow:not(.following):hover {
   background-color: var(--success-color-hover);
   color: #fff;
 }
 
-/* Hover cuando sigues */
 .toggle-follow.following:hover {
-  color: #fff;
   background-color: var(--error-color-strong);
+  color: #fff;
 }
-
 
 /* Botón */
 .btn-action {
@@ -85,7 +80,7 @@
   gap: 2px;
   padding: 12px 20px;
   background: transparent;
-  color: #fff;
+  color: var(--text-main);
   border: none;
   font-weight: bold;
   font-size: 14px;
@@ -118,7 +113,6 @@
   z-index: -1;
 }
 
-/* Hover */
 .btn-action:hover::after {
   height: 100%;
 }
@@ -126,7 +120,6 @@
 .btn-action:active {
   transform: translateY(0);
 }
-
 
 /* MODAL */
 .modal {
@@ -166,19 +159,17 @@
 
 .user-box {
   padding: 8px 12px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--text-secondary);
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .user-box:hover {
-  background-color: #f5f5f5;
+  background-color: rgba(255,255,255,0.05);
 }
 
-
 /* FOLLOWERS/FOLLOWING MODAL STYLE */
-
 .modal-title {
   margin-top: 0;
   text-align: center;
@@ -196,13 +187,13 @@
   display: flex;
   align-items: center;
   padding: 10px 12px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--text-secondary);
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 }
 
 .user-item:hover {
-  background: #ffffff2a;
+  background: rgba(255,255,255,0.15);
 }
 
 .user-left {
@@ -216,7 +207,7 @@
   height: 48px;
   border-radius: 50%;
   object-fit: cover;
-  background: #ddd;
+  background: var(--background-secondary);
 }
 
 .user-info {
@@ -228,15 +219,14 @@
   margin: 0;
   font-size: 16px;
   font-weight: bold;
+  color: var(--text-main);
 }
 
 .user-info .email {
   margin: 0;
   font-size: 13px;
-  color: #777;
+  color: var(--text-secondary);
 }
-
-
 
 /* NAV RATING / REVIEWS */
 .ratings-reviews-nav {

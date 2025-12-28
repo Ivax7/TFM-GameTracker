@@ -4,9 +4,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-
   text-align: center;
-
   background-image: url('../../../../assets/images/elden-ring-wallpaper.jpeg');
   background-size: cover;
   background-position: center;
@@ -14,7 +12,7 @@
 
 /* Card container */
 .apps-card {
-  background-color: rgba(108, 117, 125, 0.75);
+  background-color: var(--background-secondary);
   padding: 3rem;
   border-radius: 0.75rem;
   max-width: 700px;
@@ -22,17 +20,17 @@
 
 /* Title */
 .apps-title {
-  font-weight: 700; /* fw-bold */
+  font-weight: 700;
   margin-bottom: 1rem;
-  color: #ffffff;
+  color: var(--text-main);
   font-size: 2rem;
 }
 
 /* Description */
 .apps-description {
-  font-weight: 700; /* fw-bold */
-  color: #ffffff;
-  font-size: 1.25rem; /* lead */
+  font-weight: 700;
+  color: var(--text-secondary);
+  font-size: 1.25rem;
   margin-bottom: 2rem;
 }
 
@@ -51,11 +49,11 @@
   gap: 0.5rem;
 
   padding: 0.75rem 1.5rem;
-  font-size: 1.25rem; /* btn-lg */
+  font-size: 1.25rem;
   font-weight: 500;
 
-  background-color: #212529; /* btn-dark */
-  color: #ffffff;
+  background-color: var(--background-secondary-dark);
+  color: var(--text-main);
   text-decoration: none;
 
   border-radius: 0.5rem;
@@ -63,10 +61,10 @@
 }
 
 .store-btn:hover {
-  background-color: #000000;
+  background-color: var(--background);
 }
 
 /* Icons */
 .store-icon {
-  font-size: 1.5rem; /* fs-4 */
+  font-size: 1.5rem;
 }

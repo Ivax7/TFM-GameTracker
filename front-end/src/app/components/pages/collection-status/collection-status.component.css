@@ -1,8 +1,7 @@
 .collection-status {
   max-width: 100%;
   padding: 1rem 2rem;
-  color: #f0f0f0;
-
+  color: var(--text-main);
   font-family: 'Inter', sans-serif;
 }
 
@@ -10,7 +9,7 @@
   text-align: center;
   font-size: 2rem;
   margin-bottom: 2rem;
-  color: #ffb347;
+  color: var(--secondary-color);
   letter-spacing: 1px;
 }
 
@@ -20,8 +19,8 @@
 
 .status-section h3 {
   font-size: 1.5rem;
-  color: #ffcc70;
-  border-left: 5px solid #ffcc70;
+  color: var(--secondary-color);
+  border-left: 5px solid var(--secondary-color);
   padding-left: 10px;
   margin-bottom: 1rem;
   text-transform: uppercase;
@@ -35,7 +34,7 @@
 
 .empty {
   text-align: center;
-  color: #777;
+  color: var(--text-secondary);
   font-style: italic;
   margin-top: 1rem;
 }
@@ -53,6 +52,7 @@
   padding: 0.5rem 1rem;
   cursor: pointer;
   border-bottom: 2px solid transparent;
+  color: var(--text-main);
 }
 
 .tabs li.active {
@@ -66,6 +66,7 @@
   gap: 1rem;
 }
 
+/* RESPONSIVE */
 
 @media (max-width: 1400px) {
   .games-grid {
@@ -82,7 +83,6 @@
     height: 200px;
   }
 }
-
 
 @media (max-width: 500px) {
   .games-grid {

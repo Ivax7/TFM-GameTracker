@@ -6,13 +6,13 @@ h2 {
   text-align: left;
   margin: 20px;
   font-size: 2rem;
-  color: var(--text-main, #fff);
+  color: var(--text-main);
 }
 
 .loading {
   padding: 1rem;
   text-align: center;
-  color: white;
+  color: var(--text-main);
 }
 
 .games-grid {
@@ -24,8 +24,8 @@ h2 {
 
 .game-card {
   position: relative;
-  background-color: #1e1e1e;
-  color: #fff;
+  background-color: var(--background-secondary);
+  color: var(--text-main);
   border-radius: 8px;
   overflow: hidden;
   text-align: center;
@@ -51,7 +51,7 @@ h2 {
   left: 0;
   width: 100%;
   font-size: 11px;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0,0,0,0.4);
   padding: 5px;
   border-radius: 0 0 8px 8px;
   opacity: 0;
@@ -64,7 +64,7 @@ h2 {
 
 .game-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.4);
 }
 
 .icons {
@@ -79,7 +79,7 @@ h2 {
   filter: invert(1);
 }
 
-/* Responsivo */
+/* Responsive */
 @media (max-width: 1600px) {
   .games-grid {
     grid-template-columns: repeat(6, 1fr);

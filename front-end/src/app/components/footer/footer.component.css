@@ -37,9 +37,9 @@
 }
 
 .footer-link:hover {
-  color: #f8f9fa;
+  color: var(--text-main);
   text-decoration: underline;
-  text-decoration-color: rgba(248, 249, 250, 0.75);
+  text-decoration-color: var(--text-main);
 }
 
 footer small {
@@ -55,7 +55,7 @@ footer small {
 .footer-bottom {
   display: flex;
   align-items: center;
-  border-top: 1px solid #495057;
+  border-top: 1px solid var(--text-secondary);
   padding-top: 1rem;
   margin-top: 1rem;
 }
@@ -68,12 +68,12 @@ footer small {
 
 /* Icons */
 .footer-icon {
-  color: #6c757d;
+  color: var(--text-secondary);
   cursor: pointer;
   transition: color 0.3s ease, transform 0.3s ease;
 }
 
 .footer-icon:hover {
-  color: #ffffff;
+  color: var(--text-main);
   transform: scale(1.1);
 }

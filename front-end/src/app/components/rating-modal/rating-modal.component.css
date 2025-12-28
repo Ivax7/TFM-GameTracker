@@ -1,3 +1,7 @@
+/* =========================
+  RATINGS / STARS
+========================= */
+
 h3 {
   margin: 0;
 }
@@ -14,6 +18,11 @@ h3 {
   height: 32px;
   cursor: pointer;
   filter: drop-shadow(0 0 3px rgba(255, 215, 0, 0.4));
+  transition: transform 0.2s ease;
+}
+
+.star:hover {
+  transform: scale(1.1);
 }
 
 .user-rating {
@@ -24,7 +33,7 @@ h3 {
   margin: 1rem 0;
   font-size: 1.1rem;
   font-weight: 500;
-  color: #ffcc00;
+  color: #ffcc00; /* dorado */
 }
 
 .user-rating .rating-value {
@@ -37,29 +46,30 @@ h3 {
   height: 22px;
   vertical-align: middle;
   filter: drop-shadow(0 0 3px rgba(255, 215, 0, 0.4));
-  transition: transform 0.2s ease;
 }
 
-.user-rating .star:hover {
-  transform: scale(1.1);
-}
-
-
+/* =========================
+  MODAL
+========================= */
 
 .modal-backdrop {
   position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(2px);
   z-index: 1000;
 }
 
 .modal {
   position: fixed;
-  top: 50%; left: 50%;
+  top: 50%;
+  left: 50%;
   transform: translate(-50%, -50%);
-  background: #222;
-  color: #fff;
+  background: var(--background-secondary);
+  color: var(--text-main);
   padding: 2rem;
   border-radius: 10px;
   z-index: 1001;
@@ -93,13 +103,13 @@ button {
   padding: 0.5rem 1rem;
   border-radius: 6px;
   cursor: pointer;
-  transition: all .2s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 
 .submit-btn:hover {
   background-color: var(--primary-color);
 }
 
-.cancel-btn:hover  {
+.cancel-btn:hover {
   background-color: var(--error-color);
 }

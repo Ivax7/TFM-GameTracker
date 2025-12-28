@@ -50,7 +50,6 @@ export class GameDetailComponent implements OnInit {
 
     this.modalManager.reviewAdded$.subscribe((newReview: any) => {
       if (!newReview) return;
-      // Procesa la nueva review para asegurar la imagen de perfil
       const processedReview = this.handleReviewImage(newReview);
       this.reviews.unshift(processedReview);
       this.limitedReviews = this.reviews.slice(0, 4);
@@ -63,9 +62,7 @@ export class GameDetailComponent implements OnInit {
   private handleReviewImage(review: any) {
     return {
       ...review,
-      // Usa la URL de Cloudinary si existe, si no usa el placeholder
       profileImage: review.profileImage || this.placeholderImage,
-      // Usa displayName si existe, si no usa username
       displayName: review.displayName || review.username
     };
   }
@@ -86,7 +83,6 @@ export class GameDetailComponent implements OnInit {
   loadReviews() {
     this.userGameService.getGameReviews(this.gameId).subscribe({
       next: (reviews) => {
-        // Procesa cada review para asegurar que tenga imagen de perfil
         this.reviews = reviews.map(review => this.handleReviewImage(review));
         this.limitedReviews = this.reviews.slice(0, 4);
       },

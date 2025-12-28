@@ -165,7 +165,7 @@ export class ProfileComponent implements OnInit {
         next: () => {
           this.isFollowing = true;
           this.profile.followersCount = (this.profile.followersCount || 0) + 1;
-          this.alertService.show('USER_FOLLOWED'); // alerta verde
+          this.alertService.show('USER_FOLLOWED');
         }
       });
     } else {
@@ -173,7 +173,7 @@ export class ProfileComponent implements OnInit {
         next: () => {
           this.isFollowing = false;
           this.profile.followersCount = Math.max(0, (this.profile.followersCount || 1) - 1);
-          this.alertService.show('USER_UNFOLLOWED'); // alerta roja
+          this.alertService.show('USER_UNFOLLOWED');
         }
       });
     }

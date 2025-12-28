@@ -33,14 +33,13 @@ body, html {
   width: 90%;
   margin: 20px auto;
   text-align: center;
-  background-color: rgba(34, 34, 34, 0.9); /* --background-secondary */
+  background-color: var(--background-secondary);
   color: var(--text-main);
   padding: 3rem;
   border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 8px 24px var(--background);
   transition: transform 0.2s ease;
 }
-
 
 .suggestions-container h2 {
   margin-bottom: 1rem;
@@ -53,7 +52,7 @@ body, html {
   padding: 0.5rem 1.5rem;
   font-size: 1rem;
   font-weight: 600;
-  color: #fff;
+  color: var(--text-main);
   background-color: var(--primary-color);
   border: none;
   border-radius: 8px;
@@ -72,10 +71,10 @@ body, html {
   width: 90%;
   margin: 20px auto;
   text-align: left;
-  background-color: rgba(33, 37, 41, 0.9);
+  background-color: var(--background-secondary-dark);
   padding: 2rem;
   border-radius: 12px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+  box-shadow: 0 6px 20px var(--background);
 }
 
 .suggestions-list h4 {
@@ -93,10 +92,10 @@ body, html {
 
 /* Card de cada sugerencia */
 .suggestion-card {
-  background-color: #1f1f1f; /* más oscuro para contraste */
+  background-color: var(--background-secondary-dark);
   color: var(--text-main);
   border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  box-shadow: 0 4px 12px var(--background);
   margin-bottom: 1rem;
   padding: 1rem;
   max-height: 200px;
@@ -112,7 +111,6 @@ body, html {
 
 .suggestion-card p {
   margin-bottom: 0.5rem;
-  word-wrap: break-word;
   overflow-wrap: break-word;
   white-space: normal;
 }
@@ -125,17 +123,15 @@ body, html {
 /* Modal */
 .suggestion-modal {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.75);
+  inset: 0;
+  background-color: var(--background);
   color: var(--text-main);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 1rem;
 }
+
 .modal-body {
   padding: 10px;
 }
@@ -149,10 +145,9 @@ body, html {
   background-color: var(--background-secondary-dark);
   border-radius: 6px;
   overflow: hidden;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.7);
+  box-shadow: 0 10px 40px var(--background);
   animation: modalFadeIn 0.3s ease;
 }
-
 
 /* Header y footer del modal */
 .suggestion-modal .modal-header,
@@ -174,11 +169,11 @@ body, html {
   border-top: 1px solid var(--hover-color);
 }
 
-/* Inputs y textarea del modal estilizados tipo profile-form */
+/* Inputs y textarea */
 .suggestion-modal input,
 .suggestion-modal textarea {
   padding: 0.6rem;
-  border: 1px solid #333;
+  border: 1px solid var(--text-secondary);
   border-radius: 6px;
   background-color: var(--background-secondary);
   color: var(--text-main);
@@ -191,21 +186,19 @@ body, html {
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* Focus para inputs y textarea */
+/* Focus */
 .suggestion-modal input:focus,
 .suggestion-modal textarea:focus {
   outline: none;
   border-color: var(--primary-color);
-  box-shadow: 0 0 5px rgba(6, 130, 157, 0.5);
+  box-shadow: 0 0 5px var(--primary-color);
 }
 
-/* Si quieres un textarea específico con id bio */
 #bio {
   box-sizing: border-box;
   margin: 4px 2px;
   resize: none;
 }
-
 
 /* Botón cerrar modal */
 .suggestion-modal .btn-close {
@@ -217,8 +210,7 @@ body, html {
   transition: transform 0.2s ease, color 0.2s ease;
 }
 
-
-/* Botones genéricos tipo action-btn */
+/* Botones genéricos */
 .suggestion-modal .action-btn {
   background: none;
   color: var(--text-main);
@@ -230,21 +222,20 @@ body, html {
   font-size: 14px;
 }
 
-
-/* Hover para enviar */
+/* Hover enviar */
 .suggestion-modal .submit-btn:hover {
   background-color: var(--primary-color);
   border-color: var(--primary-color);
-  color: #fff;
+  color: var(--text-main);
 }
 
-/* Hover para limpiar o cancelar */
+/* Hover cancelar */
 .suggestion-modal .clear-btn:hover {
   background-color: var(--error-color);
-  color: #fff;
+  color: var(--text-main);
 }
 
-/* Botón de cerrar modal */
+/* Botón cerrar modal superior */
 .suggestion-modal .close-btn {
   color: var(--primary-color);
   position: absolute;

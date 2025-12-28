@@ -1,6 +1,6 @@
 .user-search-page {
   margin: 2rem;
-  color: #f0f0f0;
+  color: var(--text-main);
 }
 
 .user-box {
@@ -8,10 +8,11 @@
   align-items: center;
   gap: 10px;
   padding: 8px 12px;
-  border-bottom: 1px solid #444;
+  border-bottom: 1px solid var(--background-secondary-dark);
   cursor: pointer;
+  transition: background-color 0.2s;
 }
 
 .user-box:hover {
-  background-color: #333;
+  background-color: var(--background-secondary);
 }
