@@ -36,6 +36,6 @@ export class MainPageComponent {
   }
 
   startTracking() {
-    this.router.navigate(['/trending']);
+    this.router.navigate(['/home']);
   }
 }

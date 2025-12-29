@@ -21,7 +21,7 @@ type HomeSection = 'trending' | 'top250' | 'indies';
 })
 export class HomeComponent {
 
-  selectedSection: HomeSection = 'top250';
+  selectedSection: HomeSection = 'trending';
   isSidebarVisible = true; // Cambié el nombre para claridad
   
   // Para móvil: controlar si el sidebar está abierto
