@@ -1,5 +1,5 @@
 /* =========================
-   GRID DE JUEGOS
+  GRID DE JUEGOS
 ========================= */
 
 h2 {
@@ -11,7 +11,7 @@ h2 {
 
 .games-grid {
   display: grid;
-  grid-template-columns: repeat(8, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   gap: 20px;
   padding: 20px;
 }

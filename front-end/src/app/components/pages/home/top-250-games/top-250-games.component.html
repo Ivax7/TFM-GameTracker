@@ -1,0 +1,25 @@
+<!-- top-250-games.component.html -->
+<div class="container">
+  @if (loading) {
+    <div>Loading Top 250 games...</div>
+  }
+
+  <h2>Top 250 Games</h2>
+
+  @if (!loading) {
+    <div class="games-grid">
+      @for (game of displayedGames; track game.id) {
+        <app-game-card
+          [game]="game"
+          [initialBookmarked]="game.isBookmarked"
+          (cardClicked)="seeGameDetail($event)"
+        ></app-game-card>
+      }
+    </div>
+
+    <!-- Botón para cargar más -->
+    @if (displayedGames.length < topGames.length) {
+      <button (click)="loadMore()" class="load-more-btn">Load More</button>
+    }
+  }
+</div>

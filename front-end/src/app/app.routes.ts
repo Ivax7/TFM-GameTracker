@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { GameDetailComponent } from './components/pages/game-detail/game-detail.component';
 import { SearchResultsComponent } from './components/pages/search-results/search-results.component';
-import { TrendingGamesComponent } from './components/pages/trending-games/trending-games.component';
+import { TrendingGamesComponent } from './components/pages/home/trending-games/trending-games.component';
 import { WishlistComponent } from './components/pages/wishlist/wishlist.component';
 import { MainPageComponent } from './main-page/main-page.component';
 import { CollectionStatusComponent } from './components/pages/collection-status/collection-status.component';
@@ -13,9 +13,11 @@ import { CustomListsComponent } from './components/pages/custom-lists/custom-lis
 import { CustomListDetailComponent } from './components/pages/custom-lists/custom-list-detail/custom-list-detail.component';
 import { AppsComponent } from './components/footer/apps/apps.component';
 import { SuggestionsComponent } from './components/footer/suggestions/suggestions.component';
+import { HomeComponent } from './components/pages/home/home.component';
 
 export const routes: Routes = [
   { path: '', component: MainPageComponent },
+  { path: 'home', component: HomeComponent },
   { path: 'trending', component: TrendingGamesComponent },
   { path: 'search/:query', component: SearchResultsComponent },
   { path: 'detail/:id', component: GameDetailComponent },

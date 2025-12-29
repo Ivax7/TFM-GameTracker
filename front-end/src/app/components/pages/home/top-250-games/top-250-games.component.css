@@ -1,0 +1,18 @@
+@import '../trending-games/trending-games.component.css';
+
+.load-more-btn {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  border: none;
+  background-color: var(--primary-color);
+  color: #fff;
+  border-radius: 6px;
+  transition: all 0.2s ease-in-out;
+}
+
+.load-more-btn:hover {
+  background-color: var(--hover-color);
+}

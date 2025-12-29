@@ -1,0 +1,37 @@
+<div class="home-container" [class.sidebar-hidden]="!isSidebarVisible && !isMobile">
+
+  <!-- Hamburger con SVG -->
+  <button class="hamburger" 
+          (click)="toggleSidebar()">
+    <img src="assets/images/icons/menu.svg" alt="Menu">
+  </button>
+
+  <!-- Overlay solo móvil -->
+  <div 
+    class="sidebar-overlay"
+    *ngIf="isMobileSidebarOpen && isMobile"
+    (click)="toggleSidebar()">
+  </div>
+
+  <!-- Sidebar -->
+  <aside class="home-sidebar" 
+        [class.hidden]="!isSidebarVisible && !isMobile"
+        [class.open]="isMobileSidebarOpen && isMobile">
+    <ul>
+      <li [class.active]="selectedSection === 'trending'" (click)="selectSection('trending')">Trending Games</li>
+      <li [class.active]="selectedSection === 'top250'" (click)="selectSection('top250')">Top 250 Games</li>
+      <li [class.active]="selectedSection === 'indies'" (click)="selectSection('indies')">Best Indies</li>
+    </ul>
+  </aside>
+
+  <!-- Contenido -->
+  <section class="home-content" 
+    [class.full-width]="(!isSidebarVisible && !isMobile) || (isMobile && !isMobileSidebarOpen)">
+    <ng-container [ngSwitch]="selectedSection">
+      <app-trending-games *ngSwitchCase="'trending'"></app-trending-games>
+      <app-top-250-games *ngSwitchCase="'top250'"></app-top-250-games>
+      <app-top-indie-games *ngSwitchCase="'indies'"></app-top-indie-games>
+    </ng-container>
+  </section>
+
+</div>

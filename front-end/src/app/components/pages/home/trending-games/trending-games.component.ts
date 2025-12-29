@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RawgService } from '../../../services/rawg.service';
-import { WishlistService } from '../../../services/wishlist.service';
+import { RawgService } from '../../../../services/rawg.service';
+import { WishlistService } from '../../../../services/wishlist.service';
 import { Router } from '@angular/router';
-import { GameCardComponent } from '../../game-card/game-card.component';
+import { GameCardComponent } from '../../../game-card/game-card.component';
 
 @Component({
   selector: 'app-trending-games',

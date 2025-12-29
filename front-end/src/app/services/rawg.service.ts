@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, combineLatest } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class RawgService {
@@ -10,7 +11,6 @@ export class RawgService {
   constructor(private http: HttpClient) {}
 
   getTrendingGames(): Observable<any> {
-    // "TRENDING GAMES"
     const today = new Date();
     const lastMonth = new Date();
     lastMonth.setMonth(today.getMonth() - 1);
@@ -22,16 +22,67 @@ export class RawgService {
     return this.http.get(url);
   }
 
-  // SEARCH RESULTS
+  // TOP 250 GAMES
+  getTop250Games(minRatingsCount: number = 50): Observable<any> {
+    const pageSize = 40;
+    const totalPages = 10; // Aumentamos un poco para asegurarnos de llegar a 250 juegos filtrados
+    const requests: Observable<any>[] = [];
+
+    for (let page = 1; page <= totalPages; page++) {
+      const url = `${this.apiUrl}/games?key=${this.apiKey}&ordering=-rating&page_size=${pageSize}&page=${page}`;
+      requests.push(this.http.get(url));
+    }
+
+    return combineLatest(requests).pipe(
+      map((responses: any[]) => {
+        const allGames = responses.flatMap((r: any) => r.results);
+        
+        const filteredGames = allGames.filter(g => g.ratings_count >= minRatingsCount);
+
+        filteredGames.sort((a, b) => b.rating - a.rating);
+
+        return { results: filteredGames.slice(0, 250) };
+      })
+    );
+  }
+
+  // TOP INDIE GAMES
+  getTopIndieGames(minRatingsCount: number = 50): Observable<any> {
+    const pageSize = 40;
+    const totalPages = 5;
+    const requests: Observable<any>[] = [];
+
+
+    for (let page = 1; page <= totalPages; page++) {
+      const url = `${this.apiUrl}/games?key=${this.apiKey}&genres=indie&ordering=-rating&page_size=${pageSize}&page=${page}`;
+      requests.push(this.http.get(url));
+    }
+
+    return combineLatest(requests).pipe(
+      map((responses: any[]) => {
+        const allGames = responses.flatMap((r: any) => r.results);
+
+        // Filtrar por número mínimo de valoraciones
+        const filteredGames = allGames.filter(g => g.ratings_count >= minRatingsCount);
+
+        // Ordenar por rating descendente
+        filteredGames.sort((a, b) => b.rating - a.rating);
+
+        // Tomar solo los 100 mejores
+        return { results: filteredGames.slice(0, 100) };
+      })
+    );
+  }
+
+
+
   getGamesByName(query: string): Observable<any> {
     const url = `${this.apiUrl}/games?key=${this.apiKey}&search=${encodeURIComponent(query)}&page_size=20`;
     return this.http.get(url);
   }
-  
-  // GET DETAIL
+
   getGameById(id: number): Observable<any> {
     const url = `${this.apiUrl}/games/${id}?key=${this.apiKey}`;
     return this.http.get(url);
   }
-
 }

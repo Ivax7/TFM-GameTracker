@@ -1,0 +1,26 @@
+<div class="container">
+  <!-- Mensaje de carga -->
+  @if (loading) {
+    <div>Loading Top Indie Games...</div>
+  }
+
+  <h2>Top Indie Games</h2>
+
+  @if (!loading) {
+    <!-- Grid de juegos -->
+    <div class="games-grid">
+      @for (game of displayedGames; track game.id) {
+        <app-game-card
+          [game]="game"
+          [initialBookmarked]="game.isBookmarked"
+          (cardClicked)="seeGameDetail($event)"
+        ></app-game-card>
+      }
+    </div>
+
+    <!-- Botón para cargar más -->
+    @if (displayedGames.length < indieGames.length) {
+      <button (click)="loadMore()" class="load-more-btn">Load More</button>
+    }
+  }
+</div>
