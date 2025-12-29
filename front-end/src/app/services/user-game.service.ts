@@ -83,8 +83,9 @@ export class UserGameService {
     rating?: number
   ): Observable<any> {
     const headers = this.getAuthHeaders();
-  
-    return this.http.post(
+    
+    // Ahora enviamos la review como un registro independiente
+    return this.http.post<any>(
       `${this.apiUrl}/review`,
       {
         gameId,

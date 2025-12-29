@@ -90,32 +90,35 @@ export class GameDetailComponent implements OnInit {
     });
   }
 
-  submitReview(data: { review: string, game: any }) {
-    const { review, game } = data;
+submitReview(data: { review: string, game: any }) {
+  const { review, game } = data;
 
-    if (!game || !game.name) {
-      console.log("No game loaded yet");
-      return;
+  if (!game || !game.name) return;
+
+  this.userGameService.setGameReview(
+    game.id,
+    review,
+    game.name,
+    game.background_image,
+    game.released,
+    game.rating
+  ).subscribe({
+    next: (newReview) => {
+      const processedReview = this.handleReviewImage({
+        ...newReview,
+        createdAt: new Date()
+      });
+
+      this.reviews = [processedReview, ...this.reviews];
+
+      this.limitedReviews = this.reviews.slice(0, 4);
+
+    },
+    error: (err) => {
+      console.error('Error submitting review:', err);
+      alert('Error submitting review');
     }
+  });
+}
 
-    this.userGameService.setGameReview(
-      game.id,
-      review,
-      game.name,
-      game.background_image,
-      game.released,
-      game.rating
-    ).subscribe({
-      next: (newReview) => {
-        // Procesa la nueva review para asegurar la imagen de perfil
-        const processedReview = this.handleReviewImage(newReview);
-        this.reviews.unshift(processedReview);
-        this.limitedReviews = this.reviews.slice(0, 4);
-      },
-      error: (err) => {
-        console.error(err);
-        alert('Error submitting review');
-      }
-    });
-  }
 }

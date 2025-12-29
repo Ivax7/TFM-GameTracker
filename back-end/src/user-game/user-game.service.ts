@@ -136,84 +136,66 @@ export class UserGameService {
 // SET REVIEW (SIN DUPLICADOS, guarda backgroundImage correctamente)
 // ------------------------------------------
 
-async setReview(
-  userId: number,
-  gameId: number,
-  review: string,
-  gameName?: string,
-  backgroundImage?: string,
-  released?: string,
-  rating?: number,
-) {
-  if (!review?.trim()) throw new Error('Review cannot be empty');
+  async setReview(
+    userId: number,
+    gameId: number,
+    review: string,
+    gameName?: string,
+    backgroundImage?: string,
+    released?: string,
+    rating?: number,
+  ) {
+    if (!review?.trim()) throw new Error('Review cannot be empty');
 
-  const user = await this.getUser(userId);
+    const user = await this.getUser(userId);
+    const game = await this.getGame(gameId, { name: gameName, backgroundImage, rating, released });
 
-  // Recupera o crea el juego
-  let game = await this.getGame(gameId, { name: gameName, backgroundImage, rating, released });
+    // --- Actualiza Game si vienen nuevos datos ---
+    let shouldSaveGame = false;
+    if (backgroundImage && backgroundImage !== game.backgroundImage) {
+      game.backgroundImage = backgroundImage;
+      shouldSaveGame = true;
+    }
+    if (gameName && gameName !== game.name) {
+      game.name = gameName;
+      shouldSaveGame = true;
+    }
+    if (rating != null && rating !== game.rating) {
+      game.rating = rating;
+      shouldSaveGame = true;
+    }
+    if (released && released !== game.released) {
+      game.released = released;
+      shouldSaveGame = true;
+    }
+    if (shouldSaveGame) {
+      await this.gameService.save(game);
+    }
 
-  // --- Actualiza Game si vienen nuevos datos ---
-  let shouldSaveGame = false;
-
-  if (backgroundImage && backgroundImage !== game.backgroundImage) {
-    game.backgroundImage = backgroundImage;
-    shouldSaveGame = true;
-  }
-
-  if (gameName && gameName !== game.name) {
-    game.name = gameName;
-    shouldSaveGame = true;
-  }
-
-  if (rating != null && rating !== game.rating) {
-    game.rating = rating;
-    shouldSaveGame = true;
-  }
-
-  if (released && released !== game.released) {
-    game.released = released;
-    shouldSaveGame = true;
-  }
-
-  if (shouldSaveGame) {
-    await this.gameService.save(game); // Guarda la info completa en la tabla Game
-  }
-
-  // --- Crear o actualizar UserGame ---
-  let userGame = await this.findUserGame(userId, game.id);
-
-  if (!userGame) {
-    userGame = this.repo.create({
+    // --- Crear un nuevo registro de review ---
+    const userGame = this.repo.create({
       user: user as any,
       game: game as any,
-      status: 'Playing',
-      gameName: game.name ?? undefined,
+      status: 'Playing', // o null si quieres
       review,
+      gameName: game.name ?? undefined,
       backgroundImage: game.backgroundImage ?? undefined,
       rating: game.rating ?? undefined,
-      playtime: undefined,
     });
-  } else {
-    userGame.review = review;
-    userGame.gameName = game.name ?? userGame.gameName;
-    userGame.backgroundImage = game.backgroundImage ?? userGame.backgroundImage ?? undefined;
-    userGame.rating = game.rating ?? userGame.rating ?? undefined;
+
+    const saved = await this.repo.save(userGame);
+
+    return {
+      id: saved.id,
+      gameId: game.id,
+      username: user.username,
+      gameName: saved.gameName,
+      review: saved.review,
+      rating: saved.rating,
+      backgroundImage: saved.backgroundImage,
+      createdAt: saved.createdAt,
+    };
   }
-
-  const saved = await this.repo.save(userGame);
-
-  return {
-    id: saved.id,
-    gameId: game.id,
-    username: user.username,
-    gameName: saved.gameName,
-    review: saved.review,
-    playtime: saved.playtime,
-    rating: saved.rating,
-    backgroundImage: saved.backgroundImage,
-    createdAt: saved.createdAt,
-  };
-}
 
 
   // ------------------------------------------

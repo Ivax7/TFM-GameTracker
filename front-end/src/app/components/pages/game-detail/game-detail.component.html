@@ -111,108 +111,66 @@
   <p>Loading game details...</p>
 }
 
-
 <!-- USER REVIEWS -->
-
 <div class="reviews">
 
   <div class="reviews-header">
     <h2>Reviews</h2>
-    
-    @if (reviews.length > 4) {
-      <button class="see-all" (click)="showAll = true">
-        See all reviews →
-      </button>
-    }
+
+    <button
+      *ngIf="reviews.length > 4 && !showAll"
+      class="see-all-btn"
+      (click)="showAll = true"
+    >
+      See all reviews →
+    </button>
+
+    <button
+      *ngIf="showAll"
+      class="see-all-btn back"
+      (click)="showAll = false"
+    >
+      ← Show less
+    </button>
   </div>
-  
-  @if (!showAll) {
-    
-    @if (limitedReviews.length === 0) {
-      <p>No reviews yet.</p>
-    } @else {
-      
-      <!-- <div class="reviews-grid">
-        @for (r of limitedReviews; track r) {
-          <div class="review-card">
-            <h4>{{ r.username }}</h4>
-            <small class="date">{{ r.createdAt | date:'mediumDate' }}</small>
-            
-            @if (r.rating) {
-              <p class="rating">
-                Rating: <strong>{{ r.rating }}</strong>/10
-              </p>
-            }
-            
-            @if (r.playtime) {
-              <p class="playtime">
-                Played: {{ r.playtime }} hours
-              </p>
-            }
-            
-            <p class="comment">"{{ r.review }}"</p>
-          </div>
-        }
-      </div> -->
-      
-      <div class="reviews-grid">
-  @for (r of limitedReviews; track r) {
-    <div class="review-card">
 
-      <!-- HEADER -->
-      <div class="review-header">
-        <img
-          class="avatar"
-          [src]="r.profileImage || 'assets/images/icons/profile.svg'"
-          alt="User avatar"
-        />
+  <p *ngIf="reviews.length === 0" class="no-reviews">No reviews yet.</p>
 
-        <div class="user-meta">
-          <h4>{{ r.username }}</h4>
-          <small class="date">
-            {{ r.createdAt | date:'mediumDate' }}
-          </small>
-        </div>
+  <!-- REVIEWS GRID -->
+<div class="reviews-grid" *ngIf="!showAll && limitedReviews.length > 0">
+  <div class="review-card" *ngFor="let r of limitedReviews">
+    <div class="review-header">
+      <img class="avatar" [src]="r.profileImage || placeholderImage" alt="User avatar" />
+      <div class="user-meta">
+        <h4>{{ r.username }}</h4>
+        <small class="date">{{ r.createdAt | date:'mediumDate' }}</small>
       </div>
-
-      <!-- META INFO -->
-      <div class="review-meta">
-        @if (r.rating) {
-          <span class="badge rating">
-            ⭐ {{ r.rating }}/10
-          </span>
-        }
-
-        @if (r.playtime) {
-          <span class="badge playtime">
-            ⏱ {{ r.playtime }}h
-          </span>
-        }
-      </div>
-
-      <!-- COMMENT -->
-      <p class="comment">
-        {{ r.review }}
-      </p>
-
     </div>
-  }
+    <div class="review-meta">
+      <span *ngIf="r.rating" class="badge rating">⭐ {{ r.rating }}/10</span>
+      <span *ngIf="r.playtime" class="badge playtime">⏱ {{ r.playtime }}h</span>
+    </div>
+    <p class="comment">{{ r.review }}</p>
+  </div>
 </div>
 
-    }
-    
-  } @else {
-    
-    <!-- Vista expandida -->
-    <div class="reviews-list">
-      @for (r of reviews; track r) {
-        <div class="review-card expanded">
-          <h4>{{ r.username }}</h4>
-          <small class="date">{{ r.createdAt }}</small>
-          <p>{{ r.review }}</p>
-        </div>
-      }
+<div class="reviews-grid" *ngIf="showAll && reviews.length > 0">
+  <div class="review-card" *ngFor="let r of reviews">
+    <div class="review-header">
+      <img class="avatar" [src]="r.profileImage || placeholderImage" alt="User avatar" />
+      <div class="user-meta">
+        <h4>{{ r.username }}</h4>
+        <small class="date">{{ r.createdAt | date:'mediumDate' }}</small>
+      </div>
     </div>
-    
-  }
+    <div class="review-meta">
+      <span *ngIf="r.rating" class="badge rating">⭐ {{ r.rating }}/10</span>
+      <span *ngIf="r.playtime" class="badge playtime">⏱ {{ r.playtime }}h</span>
+    </div>
+    <p class="comment">{{ r.review }}</p>
+  </div>
 </div>
+
+
+</div>
+
