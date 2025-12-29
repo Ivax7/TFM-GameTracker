@@ -7,7 +7,7 @@
       placeholder="Search games or @username..."
       [(ngModel)]="query"
       (input)="onSearchChange()"
-      (keyup.enter)="onEnterSearch()"
+      (keyup.enter)="search()"
     />
     <button (click)="search()"><img class="search-icon" src="assets/images/icons/search.svg" alt="🔍"></button>
 
@@ -34,17 +34,19 @@
     @if (currentUser) {
       <div class="dropdown" [class.open]="isDropdownOpen">
         <button class="user-dropdown" type="button" (click)="toggleDropdown()">
-          <div class="user-icon">
-            <img 
-              *ngIf="currentUser.profileImage" 
-              [src]="currentUser.profileImage" 
-              width="28" 
-              height="28" 
-              style="border-radius: 50%;" 
+          <div class="avatar">
+            <img
+              *ngIf="currentUser.profileImage; else defaultAvatar"
+              [src]="currentUser.profileImage"
+              alt="User avatar"
+              (error)="onAvatarError()"
             />
-            <svg *ngIf="!currentUser.profileImage" xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
-            </svg>
+          
+            <ng-template #defaultAvatar>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
+              </svg>
+            </ng-template>
           </div>
           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
             <path d="M1.5 5.5l6 6 6-6h-12z"/>

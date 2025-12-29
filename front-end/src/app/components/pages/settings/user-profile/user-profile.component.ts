@@ -63,32 +63,31 @@ saveProfile() {
 
   this.userService.updateProfileFormData(formData).subscribe({
     next: updatedUser => {
-    const imageUrl = updatedUser.profileImage
-      ? 'http://localhost:3000/uploads/profile/' + updatedUser.profileImage
-      : 'assets/images/icons/profile.svg';
 
-    this.profileImageUrl = imageUrl;
+      const imageUrl =
+        updatedUser.profileImage || 'assets/images/icons/profile.svg';
 
-    this.authService.updateCurrentUser({
-      username: updatedUser.username,
-      email: updatedUser.email,
-      displayName: updatedUser.displayName,
-      profileImage: imageUrl
-    });
+      // 🔥 preview del perfil
+      this.profileImageUrl = imageUrl;
 
-    this.originalDisplayName = updatedUser.displayName;
-    this.originalBio = updatedUser.bio;
-    this.originalImage = imageUrl;
+      // 🔥 CLAVE: avisamos a toda la app (NAV incluido)
+      this.authService.updateCurrentUser({
+        username: updatedUser.username,
+        email: updatedUser.email,
+        displayName: updatedUser.displayName,
+        profileImage: imageUrl
+      });
 
-    this.selectedImageFile = null;
-    
-    this.alertService.show('PROFILE_UPDATED_SUCCESSFULLY');
-  }
-  ,
-  error: err => console.log('Error updating profile', err)
+      this.originalDisplayName = updatedUser.displayName;
+      this.originalBio = updatedUser.bio;
+      this.originalImage = imageUrl;
+      this.selectedImageFile = null;
+
+      this.alertService.show('PROFILE_UPDATED_SUCCESSFULLY');
+    },
+    error: err => console.log('Error updating profile', err)
   });
 }
-
 
   onImageSelected(event: any) {
     const file = event.target.files[0];
