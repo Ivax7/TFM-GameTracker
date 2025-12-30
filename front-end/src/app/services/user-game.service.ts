@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
+
 @Injectable({ providedIn: 'root' })
 export class UserGameService {
-  // private apiUrl = 'http://localhost:3000/user-games';
   private apiUrl = `${environment.apiUrl}/user-games`;
+  
+  private reviewAddedSubject = new BehaviorSubject<any>(null);
+  reviewAdded$ = this.reviewAddedSubject.asObservable();
 
   constructor(private http: HttpClient) {}
 
@@ -96,6 +99,11 @@ export class UserGameService {
         rating
       },
       { headers }
+    ).pipe(
+      tap(newReview => {
+        console.log('Review created', newReview);
+        this.reviewAddedSubject.next(newReview);
+      })
     );
   }
 

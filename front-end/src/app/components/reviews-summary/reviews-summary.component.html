@@ -1,5 +1,17 @@
 <div class="reviews-container">
 
+  <div style="color: #fff; background: #333; padding: 10px; margin-bottom: 10px;">
+    <p>DEBUG: UserId = {{userId}}</p>
+    <p>Total Reviews: {{reviews.length || 0}}</p>
+  </div>
+
+  <div *ngIf="loading">Loading...</div>
+
+  <div *ngIf="!loading && reviews.length === 0">
+    <p style="color: #fff;">No reviews written yet.</p>
+  </div>
+
+
   <div *ngIf="loading">Loading...</div>
 
   <div *ngIf="!loading && reviews.length === 0">
