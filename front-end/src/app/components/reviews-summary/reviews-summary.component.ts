@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserGameService } from '../../services/user-game.service';
-import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
@@ -14,26 +13,35 @@ import { Subscription } from 'rxjs';
 })
 export class ReviewsSummaryComponent implements OnInit {
   @Input() userId!: number;
+  @Input() isOwnProfile = false;
+
   reviews: any[] = [];
   loading = true;
+  errorMessage: string = '';
   private reviewSubscription?: Subscription;
 
   constructor(
     private userGameService: UserGameService,
-    private http: HttpClient,
     private router: Router
   ) {}
 
   ngOnInit() {
-    this.loadReviews();
+    console.log('ReviewsSummary init - userId:', this.userId, 'isOwnProfile:', this.isOwnProfile);
     
+    if (!this.userId) {
+      console.error('ERROR: userId no está definido!');
+      this.errorMessage = 'Error: User ID no está disponible';
+      this.loading = false;
+      return;
+    }
+    
+    this.loadReviews();
+
+    // Suscribirse a nuevas reviews (solo si es el perfil propio)
     this.reviewSubscription = this.userGameService.reviewAdded$.subscribe(
       (newReview) => {
-        console.log('Nueva review detectada:', newReview);
-        
-        // Solo actualizar si la review es del usuario actual
-        if (newReview && newReview.userId === this.userId) {
-          console.log('Recargando reviews para usuario:', this.userId);
+        console.log('Nueva review detectada, actualizando lista...', newReview);
+        if (this.isOwnProfile) {
           this.loadReviews();
         }
       }
@@ -41,23 +49,47 @@ export class ReviewsSummaryComponent implements OnInit {
   }
 
   loadReviews() {
-    if (!this.userId) {
-      console.log('No se ha proporcionado userId para cargar las reviews.');
-      this.loading = false;
-      return;
-    }
+    this.loading = true;
+    this.errorMessage = '';
+    console.log('Cargando reviews para userId:', this.userId);
 
-    this.userGameService.getUserReviewsByUser(this.userId).subscribe({
+    // IMPORTANTE: Usar siempre el endpoint público
+    // El endpoint autenticado (/user-reviews) parece no funcionar correctamente
+    this.userGameService.getReviewsByUserId(this.userId).subscribe({
       next: (data) => {
-        // Ordenar por fecha más reciente primero
-        this.reviews = data.sort((a, b) => 
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        );
-        console.log('Reviews cargadas:', this.reviews.length);
+        console.log('Reviews recibidas:', data.length, 'items');
+        
+        // Depuración detallada
+        data.forEach((review, index) => {
+          console.log(`Review ${index}:`, {
+            id: review.id,
+            gameName: review.gameName,
+            reviewPreview: review.review?.substring(0, 30) + '...',
+            createdAt: review.createdAt,
+            userId: review.userId // Verificar si viene userId
+          });
+        });
+
+        // Filtrar para asegurar que son del usuario correcto
+        this.reviews = data
+          .filter(review => {
+            // Algunas verificaciones
+            const isValid = review && review.gameId && review.review;
+            if (!isValid) {
+              console.warn('Review inválida filtrada:', review);
+            }
+            return isValid;
+          })
+          .sort((a, b) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          );
+        
+        console.log('Reviews después de filtrar/ordenar:', this.reviews.length);
         this.loading = false;
       },
       error: (err) => {
-        console.error('Error al cargar reviews:', err);
+        console.error('Error cargando reviews:', err);
+        this.errorMessage = `Error loading reviews: ${err.status} ${err.statusText}`;
         this.loading = false;
       }
     });
@@ -67,5 +99,9 @@ export class ReviewsSummaryComponent implements OnInit {
     this.router.navigate(['/detail', gameId]);
   }
 
+  ngOnDestroy() {
+    if (this.reviewSubscription) {
+      this.reviewSubscription.unsubscribe();
+    }
+  }
 }
-

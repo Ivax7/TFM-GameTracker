@@ -83,7 +83,6 @@ export class UserGameService {
     return this.repo.save(userGame);
   }
 
-
   // ------------------------------------------
   // SET RATING
   // ------------------------------------------
@@ -132,51 +131,27 @@ export class UserGameService {
     return this.repo.save(userGame);
   }
 
-// ------------------------------------------
-// SET REVIEW (SIN DUPLICADOS, guarda backgroundImage correctamente)
-// ------------------------------------------
-
+  // ------------------------------------------
+  // SET REVIEW
+  // ------------------------------------------
   async setReview(
     userId: number,
     gameId: number,
     review: string,
     gameName?: string,
     backgroundImage?: string,
-    released?: string,
     rating?: number,
   ) {
     if (!review?.trim()) throw new Error('Review cannot be empty');
 
     const user = await this.getUser(userId);
-    const game = await this.getGame(gameId, { name: gameName, backgroundImage, rating, released });
+    const game = await this.getGame(gameId, { name: gameName, backgroundImage, rating });
 
-    // --- Actualiza Game si vienen nuevos datos ---
-    let shouldSaveGame = false;
-    if (backgroundImage && backgroundImage !== game.backgroundImage) {
-      game.backgroundImage = backgroundImage;
-      shouldSaveGame = true;
-    }
-    if (gameName && gameName !== game.name) {
-      game.name = gameName;
-      shouldSaveGame = true;
-    }
-    if (rating != null && rating !== game.rating) {
-      game.rating = rating;
-      shouldSaveGame = true;
-    }
-    if (released && released !== game.released) {
-      game.released = released;
-      shouldSaveGame = true;
-    }
-    if (shouldSaveGame) {
-      await this.gameService.save(game);
-    }
-
-    // --- Crear un nuevo registro de review ---
+    // Crear un nuevo registro de review
     const userGame = this.repo.create({
       user: user as any,
       game: game as any,
-      status: 'Playing', // o null si quieres
+      status: 'Playing',
       review,
       gameName: game.name ?? undefined,
       backgroundImage: game.backgroundImage ?? undefined,
@@ -197,44 +172,46 @@ export class UserGameService {
     };
   }
 
-
   // ------------------------------------------
-  // GET REVIEWS FOR GAME
+  // GET REVIEWS FOR GAME (público)
   // ------------------------------------------
-// En user-game.service.ts (backend)
-async getReviewsForGame(gameId: number) {
-  const reviews = await this.repo.find({
-    where: { game: { id: gameId }, review: Not('') },
-    relations: ['user', 'game'],
-    order: { createdAt: 'DESC' },
-  });
+  async getReviewsForGame(gameId: number) {
+    const reviews = await this.repo.find({
+      where: { game: { id: gameId }, review: Not('') },
+      relations: ['user', 'game'],
+      order: { createdAt: 'DESC' },
+    });
 
-  return reviews.map(r => ({
-    id: r.id,
-    userId: r.user?.id,
-    username: r.user?.username,
-    displayName: r.user?.displayName || r.user?.username,
-    review: r.review,
-    rating: r.rating,
-    playtime: r.playtime,
-    gameId: r.game.id,
-    gameName: r.gameName ?? r.game.name,
-    backgroundImage: r.game.backgroundImage,
-    createdAt: r.createdAt,
-    profileImage: r.user?.profileImage || null,
-  }));
-}
-
+    return reviews.map(r => ({
+      id: r.id,
+      userId: r.user?.id,
+      username: r.user?.username,
+      displayName: r.user?.displayName || r.user?.username,
+      review: r.review,
+      rating: r.rating,
+      playtime: r.playtime,
+      gameId: r.game.id,
+      gameName: r.gameName ?? r.game.name,
+      backgroundImage: r.game.backgroundImage,
+      createdAt: r.createdAt,
+      profileImage: r.user?.profileImage || null,
+    }));
+  }
 
   // ------------------------------------------
   // GET USER REVIEWS
   // ------------------------------------------
   async getReviewsByUser(userId: number) {
     const reviews = await this.repo.find({
-      where: { user: { id: userId }, review: Not('') },
+      where: { 
+        user: { id: userId }, 
+        review: Not('')  // Solo reviews con texto
+      },
       relations: ['user', 'game'],
       order: { createdAt: 'DESC' },
     });
+
+    console.log(`[DEBUG] Found ${reviews.length} reviews for user ${userId}`);
 
     return reviews.map(r => ({
       id: r.id,
@@ -246,8 +223,7 @@ async getReviewsForGame(gameId: number) {
       review: r.review,
       rating: r.rating,
       playtime: r.playtime,
-      createdAt: r.updatedAt,
-      // URL completa de Cloudinary o null
+      createdAt: r.createdAt,  // ¡Usar createdAt en lugar de updatedAt!
       profileImage: r.user.profileImage || null,
     }));
   }
@@ -273,6 +249,4 @@ async getReviewsForGame(gameId: number) {
       order: { updatedAt: 'DESC' }
     });
   }
-
-
 }

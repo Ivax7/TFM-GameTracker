@@ -1,40 +1,46 @@
 <div class="reviews-container">
 
-  <div style="color: #fff; background: #333; padding: 10px; margin-bottom: 10px;">
-    <p>DEBUG: UserId = {{userId}}</p>
-    <p>Total Reviews: {{reviews.length || 0}}</p>
+  <!-- LOADING STATE -->
+  <div *ngIf="loading" class="loading-state">
+    <p>Loading reviews...</p>
   </div>
 
-  <div *ngIf="loading">Loading...</div>
-
-  <div *ngIf="!loading && reviews.length === 0">
-    <p style="color: #fff;">No reviews written yet.</p>
+  <!-- NO REVIEWS STATE -->
+  <div *ngIf="!loading && !errorMessage && reviews.length === 0" class="no-reviews-state">
+    <p class="no-reviews-message">No reviews written yet.</p>
+    <p class="no-reviews-hint">Start reviewing games to see them here!</p>
   </div>
 
-
-  <div *ngIf="loading">Loading...</div>
-
-  <div *ngIf="!loading && reviews.length === 0">
-    <p style="color: #fff;">No reviews written yet.</p>
+  <!-- ERROR STATE -->
+  <div *ngIf="errorMessage" class="error-state">
+    <p>{{errorMessage}}</p>
   </div>
 
-  <div class="review-card" 
-    *ngFor="let r of reviews" 
-    (click)="seeGameDetail(r.gameId)">
-    <img [src]="r.backgroundImage" class="game-img">
-
-    <div class="content">
-      <h3>{{ r.name }}</h3>
-
-      <p class="rating">{{ r.rating }} 
-        <img class="star" src="../../../assets/images/icons/star-filled.svg" 
-        alt="⭐"></p>
-
-      <p class="review-text">
-        "{{ r.review }}"
-      </p>
-
-      <p class="date">{{ r.updatedAt | date:'medium' }}</p>
+  <!-- REVIEWS LIST -->
+  <div *ngIf="!loading && !errorMessage && reviews.length > 0" class="reviews-list">
+    <div class="review-card" *ngFor="let r of reviews" (click)="seeGameDetail(r.gameId)">
+      
+      <img [src]="r.backgroundImage || 'assets/images/game-placeholder.jpg'" 
+          class="game-img"
+          alt="{{ r.gameName || 'Game' }}">
+      
+      <div class="content">
+        <h3>{{ r.gameName || 'Unknown Game' }}</h3>
+        
+        <p class="rating" *ngIf="r.rating">
+          {{ r.rating }} 
+          <img class="star" src="assets/images/icons/star-filled.svg" alt="⭐">
+        </p>
+        
+        <p class="review-text">
+          "{{ r.review }}"
+        </p>
+        
+        <p class="date">
+          {{ r.createdAt | date:'mediumDate' }}
+        </p>
+      </div>
+      
     </div>
   </div>
 

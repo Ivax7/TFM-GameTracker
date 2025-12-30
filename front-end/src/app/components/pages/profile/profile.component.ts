@@ -88,14 +88,18 @@ export class ProfileComponent implements OnInit {
     this.userService.getProfile().subscribe({
       next: user => {
         this.profile = this.setProfileImage(user);
-        this.visitedUserId = user.id;
-
+        this.visitedUserId = user.id; // ¡IMPORTANTE!
+        console.log('✅ Perfil propio - User ID:', this.visitedUserId);
+        
         this.loadUserRatings(user.id);
         this.loadWishlistCount();
         this.loadCollectionCount();
         this.loading = false;
       },
-      error: () => this.loading = false
+      error: (err) => {
+        console.error('Error cargando perfil:', err);
+        this.loading = false;
+      }
     });
   }
 
@@ -104,19 +108,26 @@ export class ProfileComponent implements OnInit {
     this.userService.getUserByUsername(username).subscribe({
       next: user => {
         this.profile = this.setProfileImage(user);
-        this.visitedUserId = user.id;
-
+        this.visitedUserId = user.id; // ¡IMPORTANTE!
+        console.log('✅ Perfil público - User ID:', this.visitedUserId, 'Username:', username);
+        
         this.loadUserRatings(user.id);
         this.loadPublicWishlistCount(user.id);
         this.loadPublicCollectionCount(user.id);
 
         this.followService.isFollowing(user.id).subscribe({
-          next: res => { this.isFollowing = res.following; this.loading = false; },
-          error: () => { this.isFollowing = false; this.loading = false; }
+          next: res => { 
+            this.isFollowing = res.following; 
+            this.loading = false; 
+          },
+          error: () => { 
+            this.isFollowing = false; 
+            this.loading = false; 
+          }
         });
       },
       error: (err) => {
-        console.error('Error cargando perfil:', err);
+        console.error('Error cargando perfil público:', err);
         this.loading = false;
       }
     });

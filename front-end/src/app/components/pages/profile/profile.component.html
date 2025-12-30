@@ -129,7 +129,8 @@
   <div class="profile-content">
     <ng-container [ngSwitch]="selectedTab">
       <app-ratings-chart *ngSwitchCase="'ratings'" [counts]="ratingCounts"></app-ratings-chart>
-      <app-reviews-summary *ngSwitchCase="'reviews'" [userId]="visitedUserId"></app-reviews-summary>
+      <app-reviews-summary *ngSwitchCase="'reviews'" [userId]="visitedUserId" [isOwnProfile]="isOwnProfile">
+      </app-reviews-summary>
     </ng-container>
   </div>
 
