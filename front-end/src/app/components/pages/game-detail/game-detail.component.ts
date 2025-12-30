@@ -1,4 +1,3 @@
-// En game-detail.component.ts
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { RawgService } from '../../../services/rawg.service';
@@ -8,6 +7,7 @@ import { ModalManagerService } from '../../../services/modal-manager.service';
 import { UserGameService } from '../../../services/user-game.service';
 import { AuthService } from '../../../services/auth.service';
 import { map, combineLatest } from 'rxjs';
+import { ProfileSyncService } from '../../../services/profile-sync.service';
 
 @Component({
   selector: 'app-game-detail',
@@ -26,6 +26,9 @@ export class GameDetailComponent implements OnInit {
   
   // Placeholder para imagen de perfil
   placeholderImage = 'assets/images/icons/profile.svg';
+  
+  // Guardar datos del usuario actual
+  currentUser: any = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -33,6 +36,8 @@ export class GameDetailComponent implements OnInit {
     private userGameService: UserGameService,
     public modalManager: ModalManagerService,
     public authService: AuthService,
+    private profileSync: ProfileSyncService
+
   ) {}
 
   ngOnInit() {
@@ -48,11 +53,41 @@ export class GameDetailComponent implements OnInit {
       }
     );
 
+    // Obtener datos del usuario actual
+    this.authService.currentUser$.subscribe(user => {
+      this.currentUser = user;
+    });
+
     this.modalManager.reviewAdded$.subscribe((newReview: any) => {
       if (!newReview) return;
       const processedReview = this.handleReviewImage(newReview);
       this.reviews.unshift(processedReview);
       this.limitedReviews = this.reviews.slice(0, 4);
+    });
+
+    this.profileSync.profileUpdated$.subscribe(updatedUser => {
+      if (updatedUser && this.currentUser?.id === updatedUser.id) {
+        // Actualizar datos del usuario actual
+        this.currentUser = {
+          ...this.currentUser,
+          profileImage: updatedUser.profileImage,
+          displayName: updatedUser.displayName
+        };
+        
+        // Actualizar todas las reviews de este usuario
+        this.reviews = this.reviews.map(review => {
+          if (review.username === this.currentUser.username) {
+            return {
+              ...review,
+              profileImage: updatedUser.profileImage || this.placeholderImage,
+              displayName: updatedUser.displayName || review.username
+            };
+          }
+          return review;
+        });
+        
+        this.limitedReviews = this.reviews.slice(0, 4);
+      }
     });
   }
 
@@ -62,8 +97,8 @@ export class GameDetailComponent implements OnInit {
   private handleReviewImage(review: any) {
     return {
       ...review,
-      profileImage: review.profileImage || this.placeholderImage,
-      displayName: review.displayName || review.username
+      profileImage: review.profileImage || this.currentUser?.profileImage || this.placeholderImage,
+      displayName: review.displayName || this.currentUser?.displayName || review.username
     };
   }
 
@@ -90,35 +125,37 @@ export class GameDetailComponent implements OnInit {
     });
   }
 
-submitReview(data: { review: string, game: any }) {
-  const { review, game } = data;
 
-  if (!game || !game.name) return;
+  submitReview(data: { review: string, game: any }) {
+    const { review, game } = data;
 
-  this.userGameService.setGameReview(
-    game.id,
-    review,
-    game.name,
-    game.background_image,
-    game.released,
-    game.rating
-  ).subscribe({
-    next: (newReview) => {
-      const processedReview = this.handleReviewImage({
-        ...newReview,
-        createdAt: new Date()
-      });
+    if (!game || !game.name) return;
 
-      this.reviews = [processedReview, ...this.reviews];
+    console.log('🚀 Enviando review...');
 
-      this.limitedReviews = this.reviews.slice(0, 4);
+    this.userGameService.setGameReview(
+      game.id,
+      review,
+      game.name,
+      game.background_image,
+      game.released,
+      game.rating
+    ).subscribe({
+      next: (newReview) => {
+        console.log('✅ Review creada, respuesta:', newReview);
 
-    },
-    error: (err) => {
-      console.error('Error submitting review:', err);
-      alert('Error submitting review');
-    }
-  });
-}
+        const processedReview = this.handleReviewImage(newReview);
+
+        this.reviews = [processedReview, ...this.reviews];
+        this.limitedReviews = this.reviews.slice(0, 4);
+
+        console.log('✅ Review final con imagen:', processedReview.profileImage);
+      },
+      error: (err) => {
+        console.error('Error submitting review:', err);
+        alert('Error submitting review');
+      }
+    });
+  }
 
 }

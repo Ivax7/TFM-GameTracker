@@ -24,7 +24,10 @@ export class UserGameService {
   // HELPERS
   // ------------------------------------------
   private async getUser(userId: number) {
-    const user = await this.userRepo.findOne({ where: { id: userId } });
+    const user = await this.userRepo.findOne({ 
+      where: { id: userId },
+      select: ['id', 'username', 'email', 'displayName', 'profileImage', 'bio'] // Especifica campos
+    });
     if (!user) throw new NotFoundException('User not found');
     return user;
   }
@@ -134,6 +137,7 @@ export class UserGameService {
   // ------------------------------------------
   // SET REVIEW
   // ------------------------------------------
+
   async setReview(
     userId: number,
     gameId: number,
@@ -146,6 +150,14 @@ export class UserGameService {
 
     const user = await this.getUser(userId);
     const game = await this.getGame(gameId, { name: gameName, backgroundImage, rating });
+
+    // SOLUCIÓN TEMPORAL: Obtener el usuario con todos los campos
+    const userWithImage = await this.userRepo.findOne({
+      where: { id: userId },
+      select: ['id', 'username', 'displayName', 'profileImage']
+    });
+
+    console.log('[DEBUG] User con imagen:', userWithImage);
 
     // Crear un nuevo registro de review
     const userGame = this.repo.create({
@@ -160,15 +172,20 @@ export class UserGameService {
 
     const saved = await this.repo.save(userGame);
 
+    // Usar userWithImage que tiene garantizado profileImage
+    const finalUser = userWithImage || user;
+
     return {
       id: saved.id,
       gameId: game.id,
-      username: user.username,
+      username: finalUser.username,
+      displayName: finalUser.displayName || finalUser.username,
       gameName: saved.gameName,
       review: saved.review,
       rating: saved.rating,
       backgroundImage: saved.backgroundImage,
       createdAt: saved.createdAt,
+      profileImage: finalUser.profileImage || null,
     };
   }
 

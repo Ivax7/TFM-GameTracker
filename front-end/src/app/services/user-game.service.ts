@@ -112,7 +112,6 @@ export class UserGameService {
     return this.http.get<any[]>(`${this.apiUrl}/${gameId}/reviews`);
   }
 
-  // 🔐 Reviews del usuario autenticado (para perfil propio)
   getMyReviews(): Observable<any[]> {
     const headers = this.getAuthHeaders();
     return this.http.get<any[]>(
@@ -121,7 +120,6 @@ export class UserGameService {
     );
   }
 
-  // 🌍 Reviews de un usuario específico (para perfiles públicos)
   getReviewsByUserId(userId: number): Observable<any[]> {
     return this.http.get<any[]>(
       `${this.apiUrl}/user/${userId}/reviews`

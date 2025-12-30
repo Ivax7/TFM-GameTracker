@@ -44,7 +44,6 @@ export class NavComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // 🔥 fuente única de verdad
     this.auth.currentUser$.subscribe(user => {
       this.currentUser = user;
     });
