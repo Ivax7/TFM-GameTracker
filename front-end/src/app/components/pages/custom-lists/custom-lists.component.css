@@ -32,9 +32,10 @@ h2 {
 
 .lists-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 1.5rem;
 }
+
 
 .list-card {
   position: relative;
@@ -170,6 +171,7 @@ h2 {
 .edit-btn img {
   width: 18px;
   height: 18px;
+  filter: invert(1);
 }
 
 /* DELETE CUSTOM LIST MODAL */

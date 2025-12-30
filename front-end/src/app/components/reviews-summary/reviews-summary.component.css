@@ -36,11 +36,6 @@
   margin-bottom: 12px;
 }
 
-.no-reviews-hint {
-  color: var(--text-secondary);
-  font-size: 15px;
-  opacity: 0.8;
-}
 
 /* Error State */
 .error-state {
@@ -192,9 +187,6 @@
     font-size: 16px;
   }
   
-  .no-reviews-hint {
-    font-size: 14px;
-  }
 }
 
 @media (max-width: 480px) {

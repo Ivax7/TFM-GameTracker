@@ -29,14 +29,17 @@
       <div class="modal-right">
         <h3>Add to Custom List</h3>
 
-        <ul class="status-list">
-          <li
-            *ngFor="let list of lists"
-            (click)="toggleList(list.id)"
-            [class.selected]="selectedListIds.has(list.id)">
-            {{ list.title }}
-          </li>
-        </ul>
+        <!-- Contenedor con scroll -->
+        <div class="lists-container">
+          <ul class="status-list">
+            <li
+              *ngFor="let list of lists"
+              (click)="toggleList(list.id)"
+              [class.selected]="selectedListIds.has(list.id)">
+              {{ list.title }}
+            </li>
+          </ul>
+        </div>
 
         <div class="action-btns">
           <button

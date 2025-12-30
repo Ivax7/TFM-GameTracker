@@ -1,8 +1,12 @@
 .footer {
+  flex-shrink: 0;
+  width: 100%;
   background-color: var(--background-secondary-dark);
   color: var(--text-main);
   padding: 1.5rem;
+  margin-top: auto;
 }
+
 
 .container-fluid {
   width: 100%;

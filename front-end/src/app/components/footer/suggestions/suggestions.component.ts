@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../services/auth.service';
 import { SuggestionService } from '../../../services/suggestion.service';
 import { Suggestion } from '../../../models/suggestion.model';
-
+import { AlertService } from '../../../services/alert.service';
 @Component({
   selector: 'app-suggestions',
   standalone: true,
@@ -21,7 +21,8 @@ export class SuggestionsComponent implements OnInit {
 
   constructor(
     private suggestionService: SuggestionService,
-    public auth: AuthService
+    public auth: AuthService,
+    private alertService: AlertService
   ) {}
 
   ngOnInit(): void {
@@ -61,7 +62,7 @@ export class SuggestionsComponent implements OnInit {
         this.title = '';
         this.suggestionText = '';
         this.loadSuggestions();
-        alert('Suggestion submitted successfully!');
+        this.alertService.show('SUGGESTION_POSTED');
       },
       error: (err) => {
         console.log(err);

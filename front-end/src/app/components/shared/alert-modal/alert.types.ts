@@ -15,6 +15,7 @@ export type AlertAction =
   | 'CUSTOM_LIST_CREATED'
   | 'CUSTOM_LIST_EDITED'
   | 'CUSTOM_LIST_DELETED'
+  | 'SUGGESTION_POSTED'
   ;
 
 export interface AlertPayload {

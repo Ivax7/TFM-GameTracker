@@ -40,7 +40,7 @@ onSubmit() {
     this.authService.login(this.email, this.password).subscribe({
       next: () => {
         this.message = '✅ Login successful!';
-        this.cd.markForCheck(); // <--- Fuerza actualización
+        this.cd.markForCheck();
         setTimeout(() => this.close.emit(), 800);
         setTimeout(() => this.router.navigate(['/home']), 800);
       },
@@ -48,7 +48,13 @@ onSubmit() {
     });
   } else {
     this.authService.register(this.email, this.password, this.username).subscribe({
-      next: () => this.message = '✅ Account created! You can log in now.',
+      next: () => {
+        this.message = '✅ Account created! You can log in now.',
+        setTimeout(() => {
+          this.isLoginMode = true;
+          this.username = '';
+        }, 1500);
+      },
       error: err => {
         console.error('REGISTER ERROR:', err);
         this.message = err?.error?.message || '❌ Registration failed';

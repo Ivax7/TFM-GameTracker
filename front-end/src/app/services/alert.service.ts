@@ -63,6 +63,10 @@ export class AlertService {
     CUSTOM_LIST_DELETED: {
       type: 'error',
       message: 'Custom list deleted 🗑️'
+    },
+    SUGGESTION_POSTED: {
+      type: 'success',
+      message: 'Suggestion posted ✏️'
     }
   };
 

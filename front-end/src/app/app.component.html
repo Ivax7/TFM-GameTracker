@@ -1,17 +1,23 @@
-@if (showNav) {
-  <app-nav></app-nav>
-}
+<!-- Contenedor principal flex -->
+<div class="app-container">
+  @if (showNav) {
+    <app-nav></app-nav>
+  }
 
-<app-modal-manager></app-modal-manager>
-<main class="app-content">
-  <router-outlet></router-outlet>
-</main>
+  <!-- Contenido principal que crece -->
+  <div class="main-content">
+    <app-modal-manager></app-modal-manager>
+    <main class="router-content">
+      <router-outlet></router-outlet>
+    </main>
+    
+    <app-alert-modal
+      [alert]="alertService.alert$ | async"
+      (close)="alertService.close()"
+    ></app-alert-modal>
+  </div>
 
-<app-alert-modal
-  [alert]="alertService.alert$ | async"
-  (close)="alertService.close()"
-></app-alert-modal>
-
-@if (showNav) {
-  <app-footer></app-footer>
-}
+  @if (showNav) {
+    <app-footer></app-footer>
+  }
+</div>
