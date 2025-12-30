@@ -2,40 +2,49 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { tap, Observable, BehaviorSubject } from 'rxjs';
 import { environment } from '../../environments/environment';
+
 export interface LoginResponse {
   access_token: string;
   username?: string;
   email?: string;
   displayName?: string;
-  profileImage?: string;
+  profileImage?: string | null; // Permitir null
 }
 
 export interface CurrentUser {
   username: string;
   email: string;
   displayName?: string;
-  profileImage?: string;
+  profileImage?: string | null; // Permitir null aquí también
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  
-  // private apiUrl = 'http://localhost:3000/auth';
   private apiUrl = `${environment.apiUrl}/auth`;
 
   private userSubject = new BehaviorSubject<CurrentUser | null>(null);
   currentUser$ = this.userSubject.asObservable();
 
   constructor(private http: HttpClient) {
+    this.loadUserFromStorage();
+  }
+
+  // Método para cargar usuario del localStorage
+  private loadUserFromStorage() {
     const username = localStorage.getItem('username');
     const email = localStorage.getItem('email');
     const displayName = localStorage.getItem('displayName') || '';
-    const profileImage = localStorage.getItem('profileImage') || '';
+    const profileImage = localStorage.getItem('profileImage');
 
     if (username && email) {
-      this.userSubject.next({ username, email, displayName, profileImage });
+      this.userSubject.next({ 
+        username, 
+        email, 
+        displayName: displayName || undefined,
+        profileImage: profileImage || undefined
+      });
     }
   }
 
@@ -46,13 +55,19 @@ export class AuthService {
         localStorage.setItem('username', res.username || '');
         localStorage.setItem('email', res.email || '');
         localStorage.setItem('displayName', res.displayName || '');
-        localStorage.setItem('profileImage', res.profileImage || '');
+        
+        // Guardar profileImage solo si no es null/undefined
+        if (res.profileImage) {
+          localStorage.setItem('profileImage', res.profileImage);
+        } else {
+          localStorage.removeItem('profileImage'); // Limpiar si es null
+        }
 
         this.userSubject.next({
           username: res.username || '',
           email: res.email || '',
           displayName: res.displayName,
-          profileImage: res.profileImage
+          profileImage: res.profileImage || undefined
         });
       })
     );
@@ -63,11 +78,7 @@ export class AuthService {
   }
 
   logout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('username');
-    localStorage.removeItem('email');
-    localStorage.removeItem('displayName');
-    localStorage.removeItem('profileImage');
+    localStorage.clear();
     this.userSubject.next(null);
   }
 
@@ -89,10 +100,22 @@ export class AuthService {
 
     const updatedUser = { ...current, ...user };
 
+    // Actualizar localStorage
     localStorage.setItem('username', updatedUser.username);
     localStorage.setItem('email', updatedUser.email);
-    if (updatedUser.displayName !== undefined) localStorage.setItem('displayName', updatedUser.displayName);
-    if (updatedUser.profileImage !== undefined) localStorage.setItem('profileImage', updatedUser.profileImage);
+    
+    if (updatedUser.displayName !== undefined) {
+      localStorage.setItem('displayName', updatedUser.displayName || '');
+    }
+    
+    if (updatedUser.profileImage !== undefined) {
+      // Solo guardar si no es null/undefined
+      if (updatedUser.profileImage) {
+        localStorage.setItem('profileImage', updatedUser.profileImage);
+      } else {
+        localStorage.removeItem('profileImage');
+      }
+    }
 
     this.userSubject.next(updatedUser);
   }

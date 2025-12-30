@@ -8,7 +8,7 @@ import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthModalComponent } from '../../auth/auth-modal/auth-modal.component';
-import { AuthService, CurrentUser } from '../../auth/auth.service';
+import { AuthService, User } from '../../services/auth.service'; // Importar User
 import { RawgService } from '../../services/rawg.service';
 import { Subject, debounceTime, distinctUntilChanged, switchMap, of } from 'rxjs';
 import { UserService } from '../../services/user.service';
@@ -21,7 +21,6 @@ import { UserService } from '../../services/user.service';
   styleUrls: ['./nav.component.css']
 })
 export class NavComponent implements OnInit {
-
   query = '';
   searchResults: any[] = [];
   searchingUsers = false;
@@ -30,30 +29,24 @@ export class NavComponent implements OnInit {
   private searchSubject = new Subject<string>();
 
   showAuthModal = false;
-  currentUser: CurrentUser | null = null;
   isDropdownOpen = false;
 
   readonly fallbackAvatar = 'assets/images/icons/profile.svg';
 
   constructor(
     private router: Router,
-    private auth: AuthService,
+    public auth: AuthService,
     private rawgService: RawgService,
     private userService: UserService,
     private elementRef: ElementRef
   ) {}
 
   ngOnInit() {
-    this.auth.currentUser$.subscribe(user => {
-      this.currentUser = user;
-    });
-
     this.searchSubject.pipe(
       debounceTime(200),
       distinctUntilChanged(),
       switchMap(query => {
         const trimmed = query.trim();
-
         if (!trimmed) return of([]);
 
         if (trimmed.startsWith('@')) {
@@ -68,7 +61,6 @@ export class NavComponent implements OnInit {
       this.searchResults = this.searchingUsers
         ? res.slice(0, 5)
         : res.results?.slice(0, 5) || [];
-
       this.showSuggestions = true;
     });
   }
@@ -122,7 +114,6 @@ export class NavComponent implements OnInit {
     this.isDropdownOpen = false;
   }
 
-  // 👇 CIERRA dropdown y sugerencias al clicar fuera
   @HostListener('document:click', ['$event'])
   onClickOutside(event: MouseEvent) {
     const dropdown = this.elementRef.nativeElement.querySelector('.dropdown');
@@ -137,9 +128,9 @@ export class NavComponent implements OnInit {
     }
   }
 
-  onAvatarError() {
-    if (this.currentUser) {
-      this.currentUser.profileImage = undefined;
+  onAvatarError(user: User) {
+    if (user) {
+      this.auth.updateCurrentUser({ profileImage: null });
     }
   }
 }

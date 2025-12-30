@@ -3,6 +3,8 @@ import { AuthService } from '../../services/auth.service';
 // import { AuthService } from '../auth.service';
 import { FormsModule } from '@angular/forms';
 import { Output, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-auth-modal',
@@ -21,7 +23,11 @@ export class AuthModalComponent {
   isLoginMode = true;
   message = '';
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private cd: ChangeDetectorRef
+  ) {}
 
   setMode(isLogin: boolean) {
     this.isLoginMode = isLogin;
@@ -34,7 +40,9 @@ onSubmit() {
     this.authService.login(this.email, this.password).subscribe({
       next: () => {
         this.message = '✅ Login successful!';
-        setTimeout(() => this.close.emit(), 800); // Cierra el modal tras 0.8s
+        this.cd.markForCheck(); // <--- Fuerza actualización
+        setTimeout(() => this.close.emit(), 800);
+        setTimeout(() => this.router.navigate(['/home']), 800);
       },
       error: () => this.message = '❌ Invalid credentials'
     });

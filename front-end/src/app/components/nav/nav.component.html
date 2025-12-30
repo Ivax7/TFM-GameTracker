@@ -14,7 +14,7 @@
     <ul class="suggestions" *ngIf="showSuggestions">
       <li *ngFor="let result of searchResults" (click)="selectItem(result)">
         <img *ngIf="!searchingUsers" [src]="result.background_image" width="40" height="40" />
-        <img *ngIf="searchingUsers" [src]="result.profileImage || 'assets/images/icons/profile.svg'" width="40" height="40" />
+        <img *ngIf="searchingUsers" [src]="result.profileImage || fallbackAvatar" width="40" height="40" />
         <span>
           {{ searchingUsers ? result.displayName + ' (@' + result.username + ')' : result.name }}
         </span>
@@ -23,53 +23,51 @@
   </div>
 
   <div class="user-section">
-    @if (!currentUser) {
-      <div class="user-icon" (click)="toggleAuthModal()">
-        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
-        </svg>
-      </div>
-    }
+    <!-- Usuario no logueado -->
+    <div *ngIf="!(auth.currentUser$ | async)" class="user-icon" (click)="toggleAuthModal()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
+      </svg>
+    </div>
 
-    @if (currentUser) {
-      <div class="dropdown" [class.open]="isDropdownOpen">
-        <button class="user-dropdown" type="button" (click)="toggleDropdown()">
-          <div class="avatar">
+    <!-- Usuario logueado -->
+    <div *ngIf="auth.currentUser$ | async as currentUser" class="dropdown" [class.open]="isDropdownOpen">
+      <button class="user-dropdown" type="button" (click)="toggleDropdown()">
+        <div class="avatar">
+          <ng-container *ngIf="currentUser?.profileImage; else defaultAvatar">
             <img
-              *ngIf="currentUser.profileImage; else defaultAvatar"
               [src]="currentUser.profileImage"
               alt="User avatar"
-              (error)="onAvatarError()"
+              (error)="onAvatarError(currentUser)"
             />
+          </ng-container>
           
-            <ng-template #defaultAvatar>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
-              </svg>
-            </ng-template>
-          </div>
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
-            <path d="M1.5 5.5l6 6 6-6h-12z"/>
-          </svg>
-        </button>
+          <ng-template #defaultAvatar>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
+            </svg>
+          </ng-template>
+        </div>
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+          <path d="M1.5 5.5l6 6 6-6h-12z"/>
+        </svg>
+      </button>
 
-        @if (isDropdownOpen) {
-        <ul class="dropdown-menu show" (click)="closeDropdown()">
-          <button class="close-dropdown" (click)="toggleDropdown()">✕</button>
-          <li><a class="dropdown-item" routerLink="/profile">Profile</a></li>
-          <li><a class="dropdown-item" routerLink="/wishlist">Wishlist</a></li>
-          <li><a class="dropdown-item" routerLink="/collection">Collection Status</a></li>
-          <li><a class="dropdown-item" routerLink="/custom-lists">Lists</a></li>
-          <li><a class="dropdown-item" routerLink="/settings">Settings</a></li>
-          <li><hr class="dropdown-divider"></li>
-          <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
-        </ul>
-        }
-      </div>
-    }
+      <ul *ngIf="isDropdownOpen" class="dropdown-menu show" (click)="closeDropdown()">
+        <button class="close-dropdown" (click)="toggleDropdown()">✕</button>
+        <li><a class="dropdown-item" routerLink="/profile">Profile</a></li>
+        <li><a class="dropdown-item" routerLink="/wishlist">Wishlist</a></li>
+        <li><a class="dropdown-item" routerLink="/collection">Collection Status</a></li>
+        <li><a class="dropdown-item" routerLink="/custom-lists">Lists</a></li>
+        <li><a class="dropdown-item" routerLink="/settings">Settings</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
+      </ul>
+    </div>
   </div>
-</nav>
 
-@if (showAuthModal) {
-  <app-auth-modal (close)="toggleAuthModal()"></app-auth-modal>
-}
+  <!-- Modal de auth fuera del nav para mejor manejo -->
+  @if (showAuthModal) {
+    <app-auth-modal (close)="toggleAuthModal()"></app-auth-modal>
+  }
+</nav>
