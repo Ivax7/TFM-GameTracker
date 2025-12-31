@@ -10,7 +10,6 @@ interface ModalState {
 })
 export class ModalManagerService {
 
-  // Estado de cada modal
   private statusModalState = new BehaviorSubject<ModalState>({ show: false, game: null });
   private ratingModalState = new BehaviorSubject<ModalState>({ show: false, game: null });
   private playtimeModalState = new BehaviorSubject<ModalState>({ show: false, game: null });

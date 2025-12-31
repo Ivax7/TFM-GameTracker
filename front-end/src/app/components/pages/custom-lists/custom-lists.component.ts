@@ -15,10 +15,10 @@ import { AlertService } from '../../../services/alert.service';
 })
 export class CustomListsComponent implements OnInit {
   showCreateModal = false;
-  showDeleteModal = false; // Propiedad para controlar el modal de eliminación
+  showDeleteModal = false;
   lists: CustomList[] = [];
   listToEdit?: CustomList;
-  listToDelete?: { id: number; title: string }; // Para almacenar la lista a eliminar
+  listToDelete?: { id: number; title: string };
 
   constructor(
     private customListService: CustomListService,
@@ -45,7 +45,6 @@ export class CustomListsComponent implements OnInit {
     this.listToEdit = undefined;
   }
 
-  // Métodos para manejar el modal de confirmación de eliminación
   openDeleteModal(list: CustomList, event: MouseEvent) {
     event.stopPropagation();
     this.listToDelete = { id: list.id, title: list.title };
@@ -68,7 +67,6 @@ export class CustomListsComponent implements OnInit {
       },
       error: err => {
         console.error(err);
-        // Podrías mostrar un alert de error aquí también
         this.closeDeleteModal();
       }
     });
@@ -84,8 +82,6 @@ export class CustomListsComponent implements OnInit {
   trackById(index: number, list: CustomList) {
     return list.id;
   }
-
-  // Método para el botón de eliminar (usa el modal)
   deleteList(listId: number, event: MouseEvent) {
     event.stopPropagation();
     const list = this.lists.find(l => l.id === listId);

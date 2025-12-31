@@ -1,4 +1,3 @@
-// top-250-games.component.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RawgService } from '../../../../services/rawg.service';

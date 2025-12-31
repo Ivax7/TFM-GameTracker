@@ -51,7 +51,6 @@
 
   </div>
 
-<!-- FOLLOWERS MODAL -->
 <div class="modal" *ngIf="showFollowersModal">
   <div class="modal-content">
     <span class="close" (click)="closeModal()">&times;</span>
@@ -74,13 +73,10 @@
           </div>
         </div>
       </div>
-
     </div>
-
   </div>
 </div>
 
-<!-- FOLLOWING MODAL -->
 <div class="modal" *ngIf="showFollowingModal">
   <div class="modal-content">
     <span class="close" (click)="closeModal()">&times;</span>
@@ -109,7 +105,6 @@
 </div>
 
 
-  <!-- NAV RATING/REVIEWS -->
   <div class="ratings-reviews-nav">
     <ul>
       <li 
@@ -125,7 +120,6 @@
     </ul>
   </div>
 
-    <!-- Content -->
   <div class="profile-content">
     <ng-container [ngSwitch]="selectedTab">
       <app-ratings-chart *ngSwitchCase="'ratings'" [counts]="ratingCounts"></app-ratings-chart>
@@ -133,6 +127,5 @@
       </app-reviews-summary>
     </ng-container>
   </div>
-
 
 }

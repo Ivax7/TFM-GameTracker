@@ -7,7 +7,6 @@
   margin-top: auto;
 }
 
-
 .container-fluid {
   width: 100%;
   padding: 0 0.75rem;
@@ -48,12 +47,6 @@
 
 footer small {
   font-size: 0.875em;
-}
-
-.footer-socials {
-  display: flex;
-  gap: 1rem;
-  font-size: 1.5rem;
 }
 
 .footer-bottom {

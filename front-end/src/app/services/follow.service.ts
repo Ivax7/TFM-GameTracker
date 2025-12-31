@@ -8,7 +8,6 @@ import { environment } from '../../environments/environment';
 })
 export class FollowService {
   
-  // private apiUrl = 'http://localhost:3000/follow';
   private apiUrl = `${environment.apiUrl}/follow`;
 
   constructor(private http: HttpClient) {}
@@ -24,7 +23,7 @@ export class FollowService {
   followUser(targetUserId: number): Observable<any> {
     return this.http.post(
       `${this.apiUrl}/${targetUserId}`,
-      {}, // body vacío
+      {},
       this.getAuthHeaders()
     );
   }
@@ -44,19 +43,17 @@ export class FollowService {
     );
   }
 
-getFollowers(userId: number): Observable<any[]> {
-  return this.http.get<any[]>(
-    `${this.apiUrl}/followers/${userId}`,
-    this.getAuthHeaders()
-  );
-}
+  getFollowers(userId: number): Observable<any[]> {
+    return this.http.get<any[]>(
+      `${this.apiUrl}/followers/${userId}`,
+      this.getAuthHeaders()
+    );
+  }
 
-getFollowing(userId: number): Observable<any[]> {
-  return this.http.get<any[]>(
-    `${this.apiUrl}/following/${userId}`,
-    this.getAuthHeaders()
-  );
-}
-
-
+  getFollowing(userId: number): Observable<any[]> {
+    return this.http.get<any[]>(
+      `${this.apiUrl}/following/${userId}`,
+      this.getAuthHeaders()
+    );
+  }
 }

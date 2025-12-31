@@ -58,11 +58,11 @@ export class RatingsChartComponent implements OnChanges {
                 color: '#ffffff'
               },
               grid: {
-                display: false // ❌ NO grid horizontal
+                display: false
               },
               border: {
                 display: true,
-                color: '#ffffff' // ← ✔ línea vertical blanca
+                color: '#ffffff'
               }
             },
             x: {
@@ -70,11 +70,11 @@ export class RatingsChartComponent implements OnChanges {
                 color: '#ffffff'
               },
               grid: {
-                display: false // ❌ NO grid vertical
+                display: false
               },
               border: {
                 display: true,
-                color: '#ffffff' // ← ✔ línea horizontal blanca
+                color: '#ffffff'
               }
             }
           }

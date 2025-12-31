@@ -1,21 +1,17 @@
 <div class="reviews-container">
 
-  <!-- LOADING STATE -->
   <div *ngIf="loading" class="loading-state">
     <p>Loading reviews...</p>
   </div>
 
-  <!-- NO REVIEWS STATE -->
   <div *ngIf="!loading && !errorMessage && reviews.length === 0" class="no-reviews-state">
     <p class="no-reviews-message">No reviews written yet.</p>
   </div>
 
-  <!-- ERROR STATE -->
   <div *ngIf="errorMessage" class="error-state">
     <p>{{errorMessage}}</p>
   </div>
 
-  <!-- REVIEWS LIST -->
   <div *ngIf="!loading && !errorMessage && reviews.length > 0" class="reviews-list">
     <div class="review-card" *ngFor="let r of reviews" (click)="seeGameDetail(r.gameId)">
       

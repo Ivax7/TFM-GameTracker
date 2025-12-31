@@ -7,7 +7,6 @@ import { environment } from '../../environments/environment';
 export class UserGameService {
   private apiUrl = `${environment.apiUrl}/user-games`;
   
-  // BehaviorSubject para sincronización en tiempo real
   private reviewAddedSubject = new BehaviorSubject<any>(null);
   reviewAdded$ = this.reviewAddedSubject.asObservable();
 

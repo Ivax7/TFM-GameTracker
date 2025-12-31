@@ -37,7 +37,6 @@ export class ReviewsSummaryComponent implements OnInit {
     
     this.loadReviews();
 
-    // Suscribirse a nuevas reviews (solo si es el perfil propio)
     this.reviewSubscription = this.userGameService.reviewAdded$.subscribe(
       (newReview) => {
         console.log('Nueva review detectada, actualizando lista...', newReview);
@@ -53,30 +52,25 @@ export class ReviewsSummaryComponent implements OnInit {
     this.errorMessage = '';
     console.log('Cargando reviews para userId:', this.userId);
 
-    // IMPORTANTE: Usar siempre el endpoint público
-    // El endpoint autenticado (/user-reviews) parece no funcionar correctamente
     this.userGameService.getReviewsByUserId(this.userId).subscribe({
       next: (data) => {
         console.log('Reviews recibidas:', data.length, 'items');
         
-        // Depuración detallada
         data.forEach((review, index) => {
           console.log(`Review ${index}:`, {
             id: review.id,
             gameName: review.gameName,
             reviewPreview: review.review?.substring(0, 30) + '...',
             createdAt: review.createdAt,
-            userId: review.userId // Verificar si viene userId
+            userId: review.userId
           });
         });
 
-        // Filtrar para asegurar que son del usuario correcto
         this.reviews = data
           .filter(review => {
-            // Algunas verificaciones
             const isValid = review && review.gameId && review.review;
             if (!isValid) {
-              console.warn('Review inválida filtrada:', review);
+              console.error('Review inválida filtrada:', review);
             }
             return isValid;
           })

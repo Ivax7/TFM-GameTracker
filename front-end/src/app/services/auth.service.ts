@@ -4,20 +4,19 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap, catchError, throwError } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 
-// Interfaces actualizadas
 export interface User {
   username: string;
   email: string;
-  displayName?: string;      // Agregar
-  profileImage?: string | null; // Agregar
+  displayName?: string;
+  profileImage?: string | null;
 }
 
 interface LoginResponse {
   access_token: string;
   username: string;
   email: string;
-  displayName?: string;      // Agregar
-  profileImage?: string | null; // Agregar
+  displayName?: string;
+  profileImage?: string | null;
 }
 
 @Injectable({
@@ -26,7 +25,6 @@ interface LoginResponse {
 export class AuthService {
   private apiUrl = `${environment.apiUrl}/auth`;
 
-  // Estado actual del usuario
   private userSubject = new BehaviorSubject<User | null>(this.loadUserFromStorage());
   public currentUser$ = this.userSubject.asObservable();
 
@@ -35,7 +33,6 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  // Cargar usuario desde localStorage al iniciar la app
   private loadUserFromStorage(): User | null {
     const username = localStorage.getItem('username');
     const email = localStorage.getItem('email');
@@ -53,31 +50,26 @@ export class AuthService {
     return null;
   }
 
-  // Login
   login(email: string, password: string): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.apiUrl}/login`, { email, password })
       .pipe(
         tap(res => {
           console.log('✅ LOGIN OK', res);
           
-          // Guardar todo en localStorage
           localStorage.setItem('token', res.access_token);
           localStorage.setItem('username', res.username);
           localStorage.setItem('email', res.email);
           
-          // Guardar displayName si existe
           if (res.displayName) {
             localStorage.setItem('displayName', res.displayName);
           }
           
-          // Guardar profileImage si existe
           if (res.profileImage) {
             localStorage.setItem('profileImage', res.profileImage);
           } else {
-            localStorage.removeItem('profileImage'); // Limpiar si es null/undefined
+            localStorage.removeItem('profileImage');
           }
 
-          // Actualizar BehaviorSubjects
           this.tokenSubject.next(res.access_token);
           this.userSubject.next({ 
             username: res.username, 
@@ -93,7 +85,6 @@ export class AuthService {
       );
   }
 
-  // Registro
   register(email: string, password: string, username: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/register`, { email, password, username })
       .pipe(
@@ -107,7 +98,6 @@ export class AuthService {
       );
   }
 
-  // Logout
   logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('username');
@@ -119,29 +109,24 @@ export class AuthService {
     this.userSubject.next(null);
   }
 
-  // Obtener token actual
   getToken(): string | null {
     return localStorage.getItem('token');
   }
 
-  // Comprobar si el usuario está logueado
   isLoggedIn(): boolean {
     return !!this.getToken();
   }
 
-  // Obtener usuario actual de forma síncrona
   getCurrentUser(): User | null {
     return this.userSubject.value;
   }
 
-  // Actualizar el usuario globalmente desde componentes
   updateCurrentUser(user: Partial<User>) {
     const current = this.userSubject.value;
     if (!current) return;
 
     const updatedUser = { ...current, ...user };
     
-    // Actualizar localStorage
     localStorage.setItem('username', updatedUser.username);
     localStorage.setItem('email', updatedUser.email);
     
@@ -150,7 +135,6 @@ export class AuthService {
     }
     
     if (updatedUser.profileImage !== undefined) {
-      // Solo guardar si no es null/undefined
       if (updatedUser.profileImage) {
         localStorage.setItem('profileImage', updatedUser.profileImage);
       } else {
@@ -158,11 +142,9 @@ export class AuthService {
       }
     }
 
-    // Actualizar BehaviorSubject
     this.userSubject.next(updatedUser);
   }
 
-  // Método para refrescar datos del usuario desde el backend
   refreshUserProfile(): Observable<User> {
     return this.http.get<User>(`${environment.apiUrl}/users/profile`).pipe(
       tap(profile => {

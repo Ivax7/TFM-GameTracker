@@ -45,7 +45,6 @@ export class CustomListDetailComponent implements OnInit {
         this.customListService.getListById(id).subscribe(list => {
           this.list = list;
 
-          // Mapear juegos para GameCard
           this.listGames = (list.games || []).map((game: CustomListGame) => ({
             gameId: game.gameId,
             name: game.name,
@@ -57,7 +56,6 @@ export class CustomListDetailComponent implements OnInit {
         });
       },
       error: () => {
-        // Si falla wishlist, igual mapear juegos sin bookmarks
         this.customListService.getListById(id).subscribe(list => {
           this.list = list;
 

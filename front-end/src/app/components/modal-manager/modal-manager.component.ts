@@ -39,7 +39,6 @@ export class ModalManagerController implements OnInit {
   ) {}
 
   ngOnInit() {
-    // ---------------- STATUS ----------------
     this.modalManager.statusModal$.subscribe(async (state) => {
       if (!state.game) return;
 
@@ -68,35 +67,30 @@ export class ModalManagerController implements OnInit {
       this.showStatus = state.show;
     });
 
-    // ---------------- RATING ----------------
     this.modalManager.ratingModal$.subscribe(state => {
       if (!state.game) return;
       this.currentGame = state.game;
       this.showRatingModal = state.show;
     });
 
-    // ---------------- PLAYTIME ----------------
     this.modalManager.playtimeModal$.subscribe(state => {
       if (!state.game) return;
       this.currentGame = state.game;
       this.showPlaytimeModal = state.show;
     });
 
-    // ---------------- REVIEW ----------------
     this.modalManager.reviewModal$.subscribe(state => {
       if (!state.game) return;
       this.currentGame = state.game;
       this.showReviewModal = state.show;
     });
 
-    // ✅ -------- CUSTOM LIST --------
     this.modalManager.customListModal$.subscribe(state => {
       this.currentGame = state.game;
       this.showCustomListModal = state.show;
     });
   }
 
-  // ---------- STATUS ----------
   onSelectStatus(status: string | null) {
     if (!this.currentGame) return;
 
@@ -117,7 +111,6 @@ export class ModalManagerController implements OnInit {
     });
   }
 
-  // ---------- RATING ----------
   onSaveRating(rating: number) {
     if (!this.currentGame) return;
 
@@ -129,7 +122,6 @@ export class ModalManagerController implements OnInit {
       });
   }
 
-  // ---------- PLAYTIME ----------
   onSetPlaytime(playtime: number) {
     if (!this.currentGame) return;
 
@@ -140,7 +132,6 @@ export class ModalManagerController implements OnInit {
       });
   }
 
-  // ---------- REVIEW ----------
   onSaveReview(review: string) {
     if (!this.currentGame) return;
 

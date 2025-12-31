@@ -56,43 +56,42 @@ export class SelectCustomListModalComponent implements OnChanges {
       : this.selectedListIds.add(listId);
   }
 
-save() {
-  const addedLists: number[] = [];
-  const removedLists: number[] = [];
+  save() {
+    const addedLists: number[] = [];
+    const removedLists: number[] = [];
 
-  const requests = this.lists
-    .filter(list => {
-      const wasSelected = this.initialListIds.has(list.id);
-      const isSelected = this.selectedListIds.has(list.id);
+    const requests = this.lists
+      .filter(list => {
+        const wasSelected = this.initialListIds.has(list.id);
+        const isSelected = this.selectedListIds.has(list.id);
 
-      if (!wasSelected && isSelected) addedLists.push(list.id);
-      if (wasSelected && !isSelected) removedLists.push(list.id);
+        if (!wasSelected && isSelected) addedLists.push(list.id);
+        if (wasSelected && !isSelected) removedLists.push(list.id);
 
-      return wasSelected !== isSelected;
-    })
-    .map(list =>
-      this.customListService.toggleGameInList(list.id, {
-        id: this.game.id,
-        name: this.game.name,
-        background_image: this.game.background_image
+        return wasSelected !== isSelected;
       })
-    );
+      .map(list =>
+        this.customListService.toggleGameInList(list.id, {
+          id: this.game.id,
+          name: this.game.name,
+          background_image: this.game.background_image
+        })
+      );
 
-  if (requests.length === 0) {
-    this.modalManager.closeCustomListModal();
-    return;
+    if (requests.length === 0) {
+      this.modalManager.closeCustomListModal();
+      return;
+    }
+
+    forkJoin(requests).subscribe(() => {
+      this.modalManager.closeCustomListModal();
+
+      if (addedLists.length > 0) {
+        this.alertService.show('GAME_ADDED_TO_LIST');
+      }
+      if (removedLists.length > 0) {
+        this.alertService.show('GAME_REMOVED_FROM_LIST');
+      }
+    });
   }
-
-  forkJoin(requests).subscribe(() => {
-    this.modalManager.closeCustomListModal();
-
-    if (addedLists.length > 0) {
-      this.alertService.show('GAME_ADDED_TO_LIST');
-    }
-    if (removedLists.length > 0) {
-      this.alertService.show('GAME_REMOVED_FROM_LIST');
-    }
-  });
-}
-
 }

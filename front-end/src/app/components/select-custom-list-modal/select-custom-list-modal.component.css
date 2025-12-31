@@ -9,16 +9,16 @@
   z-index: 11;
   width: 700px;
   max-width: 90vw;
-  max-height: 90vh; /* Limitar altura máxima */
+  max-height: 90vh;
   box-shadow: 0 0 20px rgba(0,0,0,0.5);
-  overflow: hidden; /* Evitar que contenido sobresalga */
+  overflow: hidden;
 }
 
 .modal-content {
   display: flex;
   gap: 1rem;
   height: 400px;
-  max-height: calc(90vh - 40px); /* Ajustar según padding del modal */
+  max-height: calc(90vh - 40px);
 }
 
 /* IZQUIERDA */
@@ -37,30 +37,27 @@
   filter: brightness(0.4);
 }
 
-/* DERECHA */
 .modal-right {
   flex: 1;
   padding: 1rem 1.5rem;
   display: flex;
   flex-direction: column;
-  min-height: 0; /* Importante para scroll interno */
+  min-height: 0;
 }
 
 .modal-right h3 {
   margin: 0 0 1rem 0;
-  flex-shrink: 0; /* Evitar que el título se reduzca */
+  flex-shrink: 0;
 }
 
-/* Contenedor con scroll */
 .lists-container {
-  flex: 1; /* Ocupa espacio disponible */
-  min-height: 0; /* Importante para scroll */
-  overflow-y: auto; /* Scroll vertical */
-  margin: 0 -0.5rem; /* Compensar padding de lista */
-  padding: 0 0.5rem; /* Para que scrollbar no tape contenido */
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  margin: 0 -0.5rem;
+  padding: 0 0.5rem;
 }
 
-/* Estilos para la barra de scroll */
 .lists-container::-webkit-scrollbar {
   width: 6px;
 }
@@ -117,7 +114,7 @@
   margin-top: 1rem;
   padding-top: 1rem;
   border-top: 1px solid var(--border-color);
-  flex-shrink: 0; /* Evitar que botones se reduzcan */
+  flex-shrink: 0;
 }
 
 .action-btn {
@@ -187,7 +184,6 @@
   pointer-events: none;
 }
 
-/* Responsive para pantallas pequeñas */
 @media (max-width: 768px) {
   .modal-content {
     flex-direction: column;

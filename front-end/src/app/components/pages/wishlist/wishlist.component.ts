@@ -32,12 +32,10 @@ export class WishlistComponent implements OnInit {
       const userId = params.get('userId');
 
       if (userId) {
-        // PERFIL PÚBLICO
         this.visitedUserId = Number(userId);
         this.userName = 'User';
         this.loadPublicWishlist(this.visitedUserId);
       } else {
-        // PERFIL PRIVADO
         this.visitedUserId = null;
 
         this.authService.currentUser$.subscribe(currentUser => {
@@ -48,9 +46,7 @@ export class WishlistComponent implements OnInit {
     });
   }
 
-  // -----------------------------------------
   // PRIVATE WISHLIST (DEL USUARIO LOGUEADO)
-  // -----------------------------------------
   loadPrivateWishlist() {
     this.loading = true;
 
@@ -70,9 +66,7 @@ export class WishlistComponent implements OnInit {
     });
   }
 
-  // -----------------------------------------
   // PUBLIC WISHLIST (DE OTRO USUARIO)
-  // -----------------------------------------
   loadPublicWishlist(userId: number) {
     this.loading = true;
 
@@ -93,11 +87,9 @@ export class WishlistComponent implements OnInit {
     });
   }
 
-  // -----------------------------------------
   // REMOVE (solo si es wishlist propia)
-  // -----------------------------------------
   removeFromWishlist(game: any) {
-    if (this.visitedUserId) return; // Evitar eliminar en perfiles públicos
+    if (this.visitedUserId) return;
 
     this.wishlistService.removeFromWishlist(game.gameId).subscribe({
       next: () => {

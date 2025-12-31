@@ -4,12 +4,10 @@
   </svg>
 </div>
 
-<!-- Modal de autenticación -->
 @if (showAuthModal) {
   <app-auth-modal (close)="toggleAuthModal()"></app-auth-modal>
 }
 
-<!-- CONTENIDO PRINCIPAL -->
 <div [@fadeAnimation]>
   <div class="main-container">
     <h1 class="title">

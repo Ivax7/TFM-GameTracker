@@ -24,10 +24,8 @@ export class GameDetailComponent implements OnInit {
   showAll = false;
   loading = true;
   
-  // Placeholder para imagen de perfil
   placeholderImage = 'assets/images/icons/profile.svg';
   
-  // Guardar datos del usuario actual
   currentUser: any = null;
 
   constructor(
@@ -53,7 +51,6 @@ export class GameDetailComponent implements OnInit {
       }
     );
 
-    // Obtener datos del usuario actual
     this.authService.currentUser$.subscribe(user => {
       this.currentUser = user;
     });
@@ -67,14 +64,12 @@ export class GameDetailComponent implements OnInit {
 
     this.profileSync.profileUpdated$.subscribe(updatedUser => {
       if (updatedUser && this.currentUser?.id === updatedUser.id) {
-        // Actualizar datos del usuario actual
         this.currentUser = {
           ...this.currentUser,
           profileImage: updatedUser.profileImage,
           displayName: updatedUser.displayName
         };
         
-        // Actualizar todas las reviews de este usuario
         this.reviews = this.reviews.map(review => {
           if (review.username === this.currentUser.username) {
             return {
@@ -91,9 +86,8 @@ export class GameDetailComponent implements OnInit {
     });
   }
 
-  // --------------------
   // UTILIDAD PARA IMÁGENES DE PERFIL EN REVIEWS
-  // --------------------
+
   private handleReviewImage(review: any) {
     return {
       ...review,

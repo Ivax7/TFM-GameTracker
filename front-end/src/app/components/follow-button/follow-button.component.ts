@@ -10,7 +10,7 @@ import { FollowService } from '../../services/follow.service';
 })
 export class FollowButtonComponent implements OnInit {
 
-  @Input() userId!: number; // usuario dueño del perfil
+  @Input() userId!: number;
 
   loading = false;
   isFollowing = false;

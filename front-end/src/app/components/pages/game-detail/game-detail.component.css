@@ -11,7 +11,6 @@ p {
   font-family: 'Poppins', sans-serif;
 }
 
-/* Imagen de cabecera */
 .header {
   position: relative;
   width: 100%;
@@ -29,7 +28,6 @@ p {
   filter: brightness(0.7);
 }
 
-/* Info del juego */
 .info {
   padding: 2rem;
   padding-bottom: 0;
@@ -55,14 +53,12 @@ p {
   text-decoration: underline;
 }
 
-/* Contenedor rating + icons */
 .icons {
   display: flex;
   align-items: center;
   justify-content: flex-start;
 }
 
-/* Write a review */
 .btn-review {
   position: relative;
   z-index: 0;
@@ -118,7 +114,6 @@ p {
   height: 24px;
 }
 
-/* Descripción */
 .description {
   width: 90%;
   margin-inline: 2rem;
@@ -145,7 +140,6 @@ p {
   text-align: justify;
 }
 
-/* Imagen del juego */
 .description .image {
   flex: 1;
   display: flex;
@@ -213,7 +207,6 @@ p {
   font-weight: bold;
 }
 
-/* ADDITIONAL INFO GRID */
 .additional-info {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
@@ -253,7 +246,6 @@ p {
   text-decoration: underline;
 }
 
-/* REVIEWS */
 .reviews {
   padding: 2rem;
   background-color: var(--background-secondary-dark);
@@ -283,7 +275,6 @@ p {
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
 }
 
-/* HEADER */
 .review-header {
   display: flex;
   align-items: center;
@@ -309,7 +300,6 @@ p {
   color: var(--text-secondary);
 }
 
-/* BADGES */
 .review-meta {
   display: flex;
   gap: 10px;
@@ -332,7 +322,6 @@ p {
   color: var(--primary-color);
 }
 
-/* COMMENT */
 .comment {
   font-style: italic;
   font-size: 0.9rem;
@@ -342,7 +331,6 @@ p {
   padding-left: 12px;
 }
 
-/* BOTONES "SEE ALL / SHOW LESS" */
 .see-all-btn {
   background-color: var(--primary-color);
   color: #fff;
@@ -363,7 +351,6 @@ p {
   color: var(--text-main);
 }
 
-/* RESPONSIVE */
 @media (max-width: 1200px) {
   .additional-info {
     grid-template-columns: repeat(3, 1fr);

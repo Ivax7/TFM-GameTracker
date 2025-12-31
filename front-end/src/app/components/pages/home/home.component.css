@@ -13,7 +13,6 @@
   gap: 0;
 }
 
-/* --- HAMBURGER --- */
 .hamburger {
   position: absolute;
   top: 0.5rem;
@@ -41,7 +40,6 @@
   transform: scale(1.1);
 }
 
-/* --- SIDEBAR --- */
 .home-sidebar {
   flex: 0 0 260px;
   padding: 1rem;
@@ -86,7 +84,6 @@
   background-color: var(--primary-color);
 }
 
-/* --- CONTENT --- */
 .home-content {
   flex: 1;
   margin-top: 10px;
@@ -99,7 +96,6 @@
   padding-left: 0;
 }
 
-/* --- MOBILE --- */
 @media (max-width: 1024px) {
   .home-sidebar {
     position: fixed;
@@ -130,7 +126,6 @@
   }
 }
 
-/* --- DESKTOP --- */
 @media (min-width: 1025px) {
   .home-sidebar {
     position: static;

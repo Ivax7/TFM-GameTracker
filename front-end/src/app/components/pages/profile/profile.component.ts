@@ -70,9 +70,7 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  // --------------------
   // UTILIDAD PARA IMÁGENES
-  // --------------------
   private setProfileImage(user: any) {
     return {
       ...user,
@@ -80,9 +78,7 @@ export class ProfileComponent implements OnInit {
     };
   }
 
-  // --------------------
   // PERFIL
-  // --------------------
   loadProfile() {
     this.loading = true;
     this.userService.getProfile().subscribe({
@@ -133,9 +129,7 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  // --------------------
   // FOLLOWERS / FOLLOWING
-  // --------------------
   openFollowers() {
     this.loadingFollowers = true;
     this.showFollowersModal = true;
@@ -196,9 +190,7 @@ export class ProfileComponent implements OnInit {
     this.router.navigate(['/user', username]);
   }
 
-  // --------------------
   // RATINGS
-  // --------------------
   loadUserRatings(userId: number) {
     this.userService.getUserRatings(userId).subscribe({ 
       next: (games: any[]) => {
@@ -213,9 +205,7 @@ export class ProfileComponent implements OnInit {
     this.selectedTab = tab;
   }
 
-  // --------------------
   // WISHLIST / COLLECTION
-  // --------------------
   goToWishlist() {
     if (this.isOwnProfile) this.router.navigate(['/wishlist']);
     else this.router.navigate(['/wishlist'], { queryParams: { userId: this.visitedUserId } });

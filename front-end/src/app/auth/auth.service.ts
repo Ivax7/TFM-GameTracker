@@ -8,14 +8,14 @@ export interface LoginResponse {
   username?: string;
   email?: string;
   displayName?: string;
-  profileImage?: string | null; // Permitir null
+  profileImage?: string | null;
 }
 
 export interface CurrentUser {
   username: string;
   email: string;
   displayName?: string;
-  profileImage?: string | null; // Permitir null aquí también
+  profileImage?: string | null;
 }
 
 @Injectable({
@@ -31,7 +31,6 @@ export class AuthService {
     this.loadUserFromStorage();
   }
 
-  // Método para cargar usuario del localStorage
   private loadUserFromStorage() {
     const username = localStorage.getItem('username');
     const email = localStorage.getItem('email');
@@ -56,11 +55,10 @@ export class AuthService {
         localStorage.setItem('email', res.email || '');
         localStorage.setItem('displayName', res.displayName || '');
         
-        // Guardar profileImage solo si no es null/undefined
         if (res.profileImage) {
           localStorage.setItem('profileImage', res.profileImage);
         } else {
-          localStorage.removeItem('profileImage'); // Limpiar si es null
+          localStorage.removeItem('profileImage');
         }
 
         this.userSubject.next({
@@ -100,7 +98,6 @@ export class AuthService {
 
     const updatedUser = { ...current, ...user };
 
-    // Actualizar localStorage
     localStorage.setItem('username', updatedUser.username);
     localStorage.setItem('email', updatedUser.email);
     
@@ -109,7 +106,6 @@ export class AuthService {
     }
     
     if (updatedUser.profileImage !== undefined) {
-      // Solo guardar si no es null/undefined
       if (updatedUser.profileImage) {
         localStorage.setItem('profileImage', updatedUser.profileImage);
       } else {

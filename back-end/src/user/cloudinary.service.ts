@@ -13,10 +13,8 @@ export class CloudinaryService {
     });
   }
 
-  // Versión usando base64 en lugar de streamifier
   async uploadProfileImage(file: Express.Multer.File): Promise<string> {
     try {
-      // Convierte el buffer a base64
       const base64Image = `data:${file.mimetype};base64,${file.buffer.toString('base64')}`;
       
       const uploadResult: UploadApiResponse = await cloudinary.uploader.upload(
@@ -27,8 +25,6 @@ export class CloudinaryService {
           resource_type: 'image',
         }
       );
-
-      // Devuelve la URL segura (HTTPS)
       return uploadResult.secure_url;
     } catch (error) {
       console.error('Error uploading to Cloudinary:', error);

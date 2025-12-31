@@ -25,7 +25,7 @@ export class RawgService {
   // TOP 250 GAMES
   getTop250Games(minRatingsCount: number = 50): Observable<any> {
     const pageSize = 40;
-    const totalPages = 10; // Aumentamos un poco para asegurarnos de llegar a 250 juegos filtrados
+    const totalPages = 10;
     const requests: Observable<any>[] = [];
 
     for (let page = 1; page <= totalPages; page++) {
@@ -68,7 +68,7 @@ export class RawgService {
         // Ordenar por rating descendente
         filteredGames.sort((a, b) => b.rating - a.rating);
 
-        // Tomar solo los 100 mejores
+        // 100 mejores
         return { results: filteredGames.slice(0, 100) };
       })
     );

@@ -27,9 +27,8 @@ export class UserController {
     private readonly cloudinaryService: CloudinaryService,
   ) {}
 
-  // =========================
+
   // PERFIL PRIVADO
-  // =========================
   @UseGuards(JwtAuthGuard)
   @Get('profile')
   async getProfile(@Req() req) {
@@ -45,9 +44,7 @@ export class UserController {
     return this.mapUser(user);
   }
 
-  // =========================
   // ACTUALIZAR PERFIL
-  // =========================
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(
     FileInterceptor('profileImage', {
@@ -78,7 +75,7 @@ export class UserController {
       email: body.email,
     };
 
-    // 👇 SUBIDA A CLOUDINARY
+    // SUBIDA A CLOUDINARY
     if (file) {
       const imageUrl =
         await this.cloudinaryService.uploadProfileImage(file);
@@ -97,9 +94,7 @@ export class UserController {
     return this.mapUser(updated);
   }
 
-  // =========================
   // BORRAR PERFIL
-  // =========================
   @UseGuards(JwtAuthGuard)
   @Delete('profile')
   async deleteProfile(@Req() req) {
@@ -115,9 +110,7 @@ export class UserController {
     return { message: 'User deleted successfully' };
   }
 
-  // =========================
   // BÚSQUEDA DE USUARIOS
-  // =========================
   @Get('search')
   async searchUsers(@Query('q') q: string) {
     const users = await this.userService.searchUsers(q);
@@ -130,9 +123,7 @@ export class UserController {
     return users.map((u) => this.mapUser(u));
   }
 
-  // =========================
   // PERFIL PÚBLICO
-  // =========================
   @Get('username/:username')
   async getPublicProfile(@Param('username') username: string) {
     const user = await this.userService.findByUsername(username);
@@ -143,10 +134,7 @@ export class UserController {
     return this.mapUser(user);
   }
 
-  // =========================
   // MAPEO UNIFICADO
-  // =========================
-// En user.controller.ts
   private mapUser(user: any) {
     return {
       id: user.id,
@@ -154,7 +142,6 @@ export class UserController {
       displayName: user.displayName || '',
       bio: user.bio || '',
       email: user.email || null,
-      // La URL ya debería venir completa desde Cloudinary
       profileImage: user.profileImage || null,
       followersCount: user.followers?.length || 0,
       followingCount: user.following?.length || 0,

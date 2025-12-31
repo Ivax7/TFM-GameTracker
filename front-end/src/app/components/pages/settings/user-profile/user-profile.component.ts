@@ -69,7 +69,6 @@ export class UserProfileComponent implements OnInit {
         const imageUrl = updatedUser.profileImage || 'assets/images/icons/profile.svg';
         this.profileImageUrl = imageUrl;
 
-        // Actualizar usuario en auth service
         this.authService.updateCurrentUser({
           username: updatedUser.username,
           email: updatedUser.email,
@@ -77,7 +76,6 @@ export class UserProfileComponent implements OnInit {
           profileImage: imageUrl
         });
 
-        // Notificar a toda la app que el perfil fue actualizado
         this.profileSync.notifyProfileUpdate(updatedUser);
 
         this.originalDisplayName = updatedUser.displayName;

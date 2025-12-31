@@ -83,42 +83,24 @@ export class CollectionStatusComponent implements OnInit {
     }
   }
 
-// private assignGames(statusKey: string, games: any[]) {
-//   this.gamesByStatus[statusKey] = games.map(g => ({
-//     id: g.game?.id,
-//     name: g.game?.name,
-//     background_image: g.game?.backgroundImage,
-//     status: g.status,
-//   }));
+  private assignGames(statusKey: string, games: any[]) {
+    this.gamesByStatus[statusKey] = games.map(g => ({
+      id: g.game?.id,
+      name: g.game?.name,
+      background_image: g.game?.backgroundImage,
+      status: g.status,
+    }));
 
-//   this.statusCounts[statusKey] = games.length;
+    this.statusCounts = {
+      ...this.statusCounts,
+      [statusKey]: games.length
+    };
 
-//   console.log('Status counts:', this.statusCounts); 
+    console.log('Status counts:', JSON.stringify(this.statusCounts)); // Usar JSON.stringify para mejor visualización
 
-//   const total = Object.values(this.statusCounts).reduce((a, b) => a + b, 0);
-//   this.chartReady = total > 0;
-// }
-
-private assignGames(statusKey: string, games: any[]) {
-  this.gamesByStatus[statusKey] = games.map(g => ({
-    id: g.game?.id,
-    name: g.game?.name,
-    background_image: g.game?.backgroundImage,
-    status: g.status,
-  }));
-
-  this.statusCounts = {
-    ...this.statusCounts,
-    [statusKey]: games.length
-  };
-
-  console.log('Status counts:', JSON.stringify(this.statusCounts)); // Usar JSON.stringify para mejor visualización
-
-  const total = Object.values(this.statusCounts).reduce((a, b) => a + b, 0);
-  this.chartReady = total > 0;
-}
-
-
+    const total = Object.values(this.statusCounts).reduce((a, b) => a + b, 0);
+    this.chartReady = total > 0;
+  }
 
   selectTab(statusKey: string) {
     this.selectedTab = statusKey;

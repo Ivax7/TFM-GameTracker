@@ -13,7 +13,6 @@ export interface WishlistItem {
   providedIn: 'root'
 })
 export class WishlistService {
-  // private apiUrl = 'http://localhost:3000/wishlist';
   private apiUrl = `${environment.apiUrl}/wishlist`;
 
   constructor(private http: HttpClient) {}
@@ -35,7 +34,6 @@ export class WishlistService {
     return this.http.delete(`${this.apiUrl}/${gameId}`, { headers: this.getHeaders() });
   }
 
-  // Opcional: crear endpoint backend para check
   isInWishlist(gameId: number): Observable<boolean> {
     return this.http.get<boolean>(`${this.apiUrl}/check/${gameId}`, { headers: this.getHeaders() });
   }

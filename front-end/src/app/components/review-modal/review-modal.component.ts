@@ -24,14 +24,13 @@ export class ReviewModalComponent {
 
   constructor(private alertService: AlertService) {}
 
-
   ngOnChanges(changes: SimpleChanges) {
     if(changes['showReview'] && this.showReview) {
       this.reviewText = '';
     }
   }
 
-    onSubmit() {
+  onSubmit() {
     if (!this.reviewText.trim()) return;
 
     this.save.emit(this.reviewText.trim());

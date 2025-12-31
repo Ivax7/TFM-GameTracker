@@ -15,21 +15,21 @@ interface AuthRequest extends Request {
 export class UserGameController {
   constructor(private readonly userGameService: UserGameService) {}
 
-  // ========== ENDPOINTS PÚBLICOS ==========
+  // ENDPOINTS PÚBLICOS 
 
-  // Endpoint público: reviews de un juego específico
+  // reviews de un juego específico
   @Get(':gameId/reviews')
   async getReviews(@Param('gameId', ParseIntPipe) gameId: number) {
     return this.userGameService.getReviewsForGame(gameId);
   }
 
-  // Endpoint público: reviews de un usuario específico (para perfiles públicos)
+  // reviews de un usuario específico (para perfiles públicos)
   @Get('user/:userId/reviews')
   async getPublicUserReviews(@Param('userId', ParseIntPipe) userId: number) {
     return this.userGameService.getReviewsByUser(userId);
   }
 
-  // Endpoint público: colección de un usuario
+  // colección de un usuario
   @Get('user/:userId/status/:status')
   async getUserGamesByStatus(
     @Param('userId', ParseIntPipe) userId: number,
@@ -38,7 +38,7 @@ export class UserGameController {
     return this.userGameService.getUserGamesByStatus(userId, status);
   }
 
-  // ========== ENDPOINTS AUTENTICADOS ==========
+  // ENDPOINTS AUTENTICADOS
 
   @UseGuards(AuthGuard('jwt'))
   @Get('status/:gameId')
@@ -89,7 +89,7 @@ export class UserGameController {
     return this.userGameService.setPlaytime(req.user.userId, body.gameId, body.playtime);
   }
 
-  // Reviews del usuario autenticado (para perfil propio)
+  // Reviews del usuario autenticado
   @UseGuards(AuthGuard('jwt'))
   @Get('user-reviews')
   async getUserReviews(@Req() req: AuthRequest) {

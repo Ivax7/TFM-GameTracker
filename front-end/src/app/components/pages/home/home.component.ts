@@ -22,18 +22,15 @@ type HomeSection = 'trending' | 'top250' | 'indies';
 export class HomeComponent {
 
   selectedSection: HomeSection = 'trending';
-  isSidebarVisible = true; // Cambié el nombre para claridad
+  isSidebarVisible = true;
   
-  // Para móvil: controlar si el sidebar está abierto
   isMobileSidebarOpen = false;
   
-  // Detectar si es móvil
   isMobile = window.innerWidth <= 1024;
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.isMobile = window.innerWidth <= 1024;
-    // En desktop, siempre mostrar sidebar por defecto
     if (!this.isMobile) {
       this.isMobileSidebarOpen = false;
     }
@@ -41,7 +38,6 @@ export class HomeComponent {
 
   selectSection(section: HomeSection) {
     this.selectedSection = section;
-    // En móvil, cerrar sidebar al seleccionar
     if (this.isMobile) {
       this.isMobileSidebarOpen = false;
     }
@@ -49,15 +45,12 @@ export class HomeComponent {
 
   toggleSidebar() {
     if (this.isMobile) {
-      // En móvil: toggle del overlay/sidebar
       this.isMobileSidebarOpen = !this.isMobileSidebarOpen;
     } else {
-      // En desktop: mostrar/ocultar completamente
       this.isSidebarVisible = !this.isSidebarVisible;
     }
   }
 
-  // Método para saber si el sidebar se debe mostrar
   get shouldShowSidebar(): boolean {
     if (this.isMobile) {
       return this.isMobileSidebarOpen;

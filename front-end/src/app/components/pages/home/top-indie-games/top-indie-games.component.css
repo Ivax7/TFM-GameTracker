@@ -1,6 +1,5 @@
 @import '../trending-games/trending-games.component.css';
 
-/* Botón cargar más */
 .load-more-btn {
   display: block;
   margin: 20px auto;

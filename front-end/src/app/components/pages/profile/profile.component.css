@@ -8,7 +8,6 @@
   color: var(--text-main);
 }
 
-/* Izquierda: foto + info */
 .profile-left {
   display: flex;
   gap: 1rem;
@@ -45,7 +44,6 @@
   margin-right: 400px;
 }
 
-/* Toggle Follow Minimalista */
 .toggle-follow {
   padding: 6px 14px;
   width: 100px;
@@ -69,7 +67,6 @@
   color: #fff;
 }
 
-/* Botón */
 .btn-action {
   position: relative;
   z-index: 0;
@@ -89,7 +86,6 @@
   transition: color 0.3s, transform 0.2s;
 }
 
-/* Número y label */
 .btn-action .count {
   font-size: 20px;
   font-weight: bold;
@@ -100,7 +96,6 @@
   text-transform: uppercase;
 }
 
-/* ::after animación de fondo */
 .btn-action::after {
   content: "";
   position: absolute;
@@ -121,7 +116,6 @@
   transform: translateY(0);
 }
 
-/* MODAL */
 .modal {
   position: fixed;
   top: 0;
@@ -169,7 +163,6 @@
   background-color: rgba(255,255,255,0.05);
 }
 
-/* FOLLOWERS/FOLLOWING MODAL STYLE */
 .modal-title {
   margin-top: 0;
   text-align: center;
@@ -228,7 +221,6 @@
   color: var(--text-secondary);
 }
 
-/* NAV RATING / REVIEWS */
 .ratings-reviews-nav {
   display: flex;
   padding: 1.5rem;

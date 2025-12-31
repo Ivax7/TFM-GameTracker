@@ -18,7 +18,6 @@
   height: 400px;
 }
 
-/* IZQUIERDA */
 .modal-left {
   position: relative;
   width: 40%;
@@ -57,7 +56,6 @@
   z-index: 1;
 }
 
-/* DERECHA */
 .modal-right {
   flex: 1;
   padding: 1rem 1.5rem;

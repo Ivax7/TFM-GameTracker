@@ -6,9 +6,7 @@ import { WishlistService } from './wishlist.service';
 export class WishlistController {
   constructor(private wishlistService: WishlistService) {}
 
-  // ------------------------
   // Endpoints privados (requieren JWT)
-  // ------------------------
   @Post(':gameId')
   @UseGuards(AuthGuard('jwt'))
   async addToWishlist(@Param('gameId') gameId: number, @Body() body: any, @Req() req) {
@@ -42,9 +40,7 @@ export class WishlistController {
     return this.wishlistService.isInWishlist(userId, gameId);
   }
 
-  // ------------------------
   // Endpoints públicos
-  // ------------------------
   @Get('user/:userId')
   async getWishlistByUser(@Param('userId') userId: number) {
     return this.wishlistService.getWishlistByUser(userId);

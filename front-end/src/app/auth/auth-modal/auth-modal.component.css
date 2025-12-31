@@ -17,7 +17,6 @@
   box-shadow: 0 0 15px rgba(0,0,0,0.3);
 }
 
-/* 🔹 Selector Login / Join */
 .mode-toggle {
   display: flex;
   justify-content: center;
@@ -91,7 +90,6 @@ button:hover {
   color: var(--text-secondary);
 }
 
-/* Ocultamos el link original */
 a {
   display: none;
 }

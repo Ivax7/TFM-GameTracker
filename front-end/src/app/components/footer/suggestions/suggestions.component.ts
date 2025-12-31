@@ -70,7 +70,4 @@ export class SuggestionsComponent implements OnInit {
       }
     });
   }
-
-
-
 }

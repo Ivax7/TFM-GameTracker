@@ -29,7 +29,6 @@ export class TrendingGamesComponent implements OnInit {
       complete: () => this.loading = false
     });
 
-    // Marcar bookmarks
     this.wishlistService.getWishlist().subscribe({
       next: wishlist => {
         const ids = wishlist.map((item: any) => item.gameId);

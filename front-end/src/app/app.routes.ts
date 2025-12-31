@@ -21,7 +21,6 @@ export const routes: Routes = [
   { path: 'trending', component: TrendingGamesComponent },
   { path: 'search/:query', component: SearchResultsComponent },
   { path: 'detail/:id', component: GameDetailComponent },
-  // Private profile
   { path: 'profile', component: ProfileComponent },
   { path: 'wishlist', component: WishlistComponent },
   { path: 'custom-lists', component: CustomListsComponent },
@@ -30,7 +29,6 @@ export const routes: Routes = [
   { path: 'collection', component: CollectionStatusComponent },
   { path: 'settings', component: SettingsComponent },
   { path: 'users/search/:query', component: UserSearchResultsComponent },
-  // Public profile
   { path: 'user/:username', component: ProfileComponent },
   { path: 'apps', component: AppsComponent },
   { path: 'suggestions', component: SuggestionsComponent },

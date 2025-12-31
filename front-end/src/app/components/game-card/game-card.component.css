@@ -35,7 +35,6 @@ h2 {
   padding: 10px;
 }
 
-/* info que aparece desde abajo */
 .game-info {
   position: absolute;
   bottom: 0;
@@ -49,7 +48,6 @@ h2 {
   transition: all 0.3s ease-in-out;
 }
 
-/* hover: se muestra desde abajo */
 .game-card:hover .game-info {
   opacity: 1;
 }
@@ -60,7 +58,6 @@ h2 {
 }
 
 
-/* Responsivo */
 @media (max-width: 1600px) {
   .games-grid {
     grid-template-columns: repeat(6, 1fr);

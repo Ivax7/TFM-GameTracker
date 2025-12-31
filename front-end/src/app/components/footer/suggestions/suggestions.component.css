@@ -1,4 +1,3 @@
-/* Reset básico */
 body, html {
   margin: 0;
   padding: 0;
@@ -6,7 +5,6 @@ body, html {
   font-family: 'Arial', sans-serif;
 }
 
-/* Página de sugerencias */
 .suggestions-page {
   display: flex;
   flex-direction: column;
@@ -19,7 +17,6 @@ body, html {
   justify-content: center;
 }
 
-/* Contenedor del contenido */
 .content {
   flex: 1;
   display: flex;
@@ -27,7 +24,6 @@ body, html {
   align-items: center;
 }
 
-/* Cartel principal */
 .suggestions-container {
   max-width: 700px;
   width: 90%;
@@ -65,7 +61,6 @@ body, html {
   transform: scale(1.02);
 }
 
-/* Lista de sugerencias */
 .suggestions-list {
   max-width: 700px;
   width: 90%;
@@ -83,14 +78,12 @@ body, html {
   font-size: 1.5rem;
 }
 
-/* Mensaje cuando no hay sugerencias */
 .no-suggestions {
   color: var(--text-secondary);
   font-style: italic;
   text-align: center;
 }
 
-/* Card de cada sugerencia */
 .suggestion-card {
   background-color: var(--background-secondary-dark);
   color: var(--text-main);
@@ -120,7 +113,6 @@ body, html {
   font-size: 0.85rem;
 }
 
-/* Modal */
 .suggestion-modal {
   position: fixed;
   inset: 0;
@@ -149,7 +141,6 @@ body, html {
   animation: modalFadeIn 0.3s ease;
 }
 
-/* Header y footer del modal */
 .suggestion-modal .modal-header,
 .suggestion-modal .modal-footer {
   padding: 1rem 1.5rem;
@@ -169,7 +160,6 @@ body, html {
   border-top: 1px solid var(--hover-color);
 }
 
-/* Inputs y textarea */
 .suggestion-modal input,
 .suggestion-modal textarea {
   padding: 0.6rem;
@@ -186,7 +176,6 @@ body, html {
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* Focus */
 .suggestion-modal input:focus,
 .suggestion-modal textarea:focus {
   outline: none;
@@ -200,7 +189,6 @@ body, html {
   resize: none;
 }
 
-/* Botón cerrar modal */
 .suggestion-modal .btn-close {
   background: none;
   border: none;
@@ -210,7 +198,6 @@ body, html {
   transition: transform 0.2s ease, color 0.2s ease;
 }
 
-/* Botones genéricos */
 .suggestion-modal .action-btn {
   background: none;
   color: var(--text-main);
@@ -222,20 +209,17 @@ body, html {
   font-size: 14px;
 }
 
-/* Hover enviar */
 .suggestion-modal .submit-btn:hover {
   background-color: var(--primary-color);
   border-color: var(--primary-color);
   color: var(--text-main);
 }
 
-/* Hover cancelar */
 .suggestion-modal .clear-btn:hover {
   background-color: var(--error-color);
   color: var(--text-main);
 }
 
-/* Botón cerrar modal superior */
 .suggestion-modal .close-btn {
   color: var(--primary-color);
   position: absolute;

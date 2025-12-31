@@ -278,8 +278,6 @@ h2 {
   box-shadow: 0 4px 12px rgba(214, 0, 0, 0.3);
 }
 
-/* Animación */
-
 @keyframes modalFadeIn {
   from {
     opacity: 0;
@@ -290,8 +288,6 @@ h2 {
     transform: translate(-50%, -50%);
   }
 }
-
-/* Responsive */
 
 @media (max-width: 480px) {
   .confirm-modal {

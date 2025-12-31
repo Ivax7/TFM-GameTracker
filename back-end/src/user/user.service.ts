@@ -29,7 +29,6 @@ export class UserService {
     return this.userRepo.findOne({ where: { id: userId } });
   }
 
-  // NUEVO: cargar relaciones followers y following
   async findByIdWithRelations(userId: number): Promise<User | null> {
     return this.userRepo.findOne({
       where: { id: userId },

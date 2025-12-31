@@ -33,7 +33,6 @@ export class EmailComponent implements OnInit {
   updateEmail() {
     this.userService.updateEmail(this.newEmail).subscribe({
       next: updatedUser => {
-        // Actualizamos usuario global
         this.authService.updateCurrentUser({ email: updatedUser.email });
         this.alertService.show('EMAIL_UPDATED_SUCCESSFULLY');
       },

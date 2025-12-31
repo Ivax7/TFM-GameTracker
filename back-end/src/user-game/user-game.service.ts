@@ -20,9 +20,7 @@ export class UserGameService {
     private readonly gameService: GameService,
   ) {}
 
-  // ------------------------------------------
   // HELPERS
-  // ------------------------------------------
   private async getUser(userId: number) {
     const user = await this.userRepo.findOne({ 
       where: { id: userId },
@@ -46,9 +44,7 @@ export class UserGameService {
     });
   }
 
-  // ------------------------------------------
   // SET STATUS
-  // ------------------------------------------
   async setStatus(
     userId: number,
     gameId: number,
@@ -86,9 +82,7 @@ export class UserGameService {
     return this.repo.save(userGame);
   }
 
-  // ------------------------------------------
   // SET RATING
-  // ------------------------------------------
   async setRating(userId: number, gameId: number, rating: number) {
     const user = await this.getUser(userId);
     const game = await this.getGame(gameId);
@@ -110,9 +104,7 @@ export class UserGameService {
     return this.repo.save(userGame);
   }
 
-  // ------------------------------------------
   // SET PLAYTIME
-  // ------------------------------------------
   async setPlaytime(userId: number, gameId: number, playtime: number) {
     const user = await this.getUser(userId);
     const game = await this.getGame(gameId);
@@ -134,9 +126,7 @@ export class UserGameService {
     return this.repo.save(userGame);
   }
 
-  // ------------------------------------------
   // SET REVIEW
-  // ------------------------------------------
 
   async setReview(
     userId: number,
@@ -150,8 +140,6 @@ export class UserGameService {
 
     const user = await this.getUser(userId);
     const game = await this.getGame(gameId, { name: gameName, backgroundImage, rating });
-
-    // SOLUCIÓN TEMPORAL: Obtener el usuario con todos los campos
     const userWithImage = await this.userRepo.findOne({
       where: { id: userId },
       select: ['id', 'username', 'displayName', 'profileImage']
@@ -159,7 +147,6 @@ export class UserGameService {
 
     console.log('[DEBUG] User con imagen:', userWithImage);
 
-    // Crear un nuevo registro de review
     const userGame = this.repo.create({
       user: user as any,
       game: game as any,
@@ -172,7 +159,6 @@ export class UserGameService {
 
     const saved = await this.repo.save(userGame);
 
-    // Usar userWithImage que tiene garantizado profileImage
     const finalUser = userWithImage || user;
 
     return {
@@ -189,9 +175,7 @@ export class UserGameService {
     };
   }
 
-  // ------------------------------------------
   // GET REVIEWS FOR GAME (público)
-  // ------------------------------------------
   async getReviewsForGame(gameId: number) {
     const reviews = await this.repo.find({
       where: { game: { id: gameId }, review: Not('') },
@@ -215,14 +199,12 @@ export class UserGameService {
     }));
   }
 
-  // ------------------------------------------
   // GET USER REVIEWS
-  // ------------------------------------------
   async getReviewsByUser(userId: number) {
     const reviews = await this.repo.find({
       where: { 
         user: { id: userId }, 
-        review: Not('')  // Solo reviews con texto
+        review: Not('')
       },
       relations: ['user', 'game'],
       order: { createdAt: 'DESC' },
@@ -240,14 +222,12 @@ export class UserGameService {
       review: r.review,
       rating: r.rating,
       playtime: r.playtime,
-      createdAt: r.createdAt,  // ¡Usar createdAt en lugar de updatedAt!
+      createdAt: r.createdAt,
       profileImage: r.user.profileImage || null,
     }));
   }
 
-  // ------------------------------------------
-  // USED BY LISTS (PLAYING, COMPLETED…)
-  // ------------------------------------------
+
   async findByStatus(userId: number, status: GameStatus) {
     return this.repo.find({
       where: { user: { id: userId }, status },

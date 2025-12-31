@@ -8,7 +8,7 @@ import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthModalComponent } from '../../auth/auth-modal/auth-modal.component';
-import { AuthService, User } from '../../services/auth.service'; // Importar User
+import { AuthService, User } from '../../services/auth.service';
 import { RawgService } from '../../services/rawg.service';
 import { Subject, debounceTime, distinctUntilChanged, switchMap, of } from 'rxjs';
 import { UserService } from '../../services/user.service';

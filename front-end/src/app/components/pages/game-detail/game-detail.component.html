@@ -1,11 +1,9 @@
 @if (game) {
   <div class="game-detail">
-    <!-- CABECERA: solo la imagen -->
     <div class="header">
       <img [src]="game.background_image" [alt]="game.name" class="cover" />
     </div>
 
-    <!-- INFO DEL JUEGO -->
     <div class="info">
       <h1>{{ game.name }}</h1>
     
@@ -22,7 +20,6 @@
       </div>
     </div>
 
-    <!-- DESCRIPCIÓN -->
     <div class="description">
       <div class="description-content">
         <div class="text">
@@ -33,7 +30,6 @@
             <img [src]="game.background_image" [alt]="game.name" />
           </div>
           
-          <!-- RATING -->
           @if(game.rating) {
             <p class="rating">
               Community rating: <span>{{ game.rating }}</span>
@@ -41,7 +37,6 @@
             </p>
           }
           
-          <!-- DURATION -->
           @if (game.playtime && game.playtime > 0) {
             <p class="duration">
               Average playtime: <span>{{ game.playtime }} hours</span>
@@ -53,7 +48,6 @@
     </div>
 
 
-    <!-- ADDITIONAL INFO -->
     <div class="additional-info">
       <div class="info-item">
         <h3>Release Date</h3>
@@ -111,7 +105,6 @@
   <p>Loading game details...</p>
 }
 
-<!-- USER REVIEWS -->
 <div class="reviews">
 
   <div class="reviews-header">
@@ -136,7 +129,6 @@
 
   <p *ngIf="reviews.length === 0" class="no-reviews">No reviews yet.</p>
 
-  <!-- REVIEWS GRID -->
 <div class="reviews-grid" *ngIf="!showAll && limitedReviews.length > 0">
   <div class="review-card" *ngFor="let r of limitedReviews">
     <div class="review-header">
@@ -170,7 +162,6 @@
     <p class="comment">{{ r.review }}</p>
   </div>
 </div>
-
 
 </div>
 

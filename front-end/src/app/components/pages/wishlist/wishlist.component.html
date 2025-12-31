@@ -3,22 +3,18 @@
     {{ userName === 'My' ? 'My Wishlist' : userName + "'s Wishlist" }}
   </h2>
 
-  <!-- Loading -->
   <div *ngIf="loading">
     <p>Cargando juegos...</p>
   </div>
 
-  <!-- Error -->
   <div *ngIf="error && !loading">
     <p class="error">{{ error }}</p>
   </div>
 
-  <!-- Empty state -->
   <div *ngIf="!loading && wishlist.length === 0 && !error">
     <p>No games yet.</p>
   </div>
 
-  <!-- Wishlist Grid -->
   <div *ngIf="!loading && wishlist.length > 0" class="wishlist-grid">
     <app-game-card
       *ngFor="let game of wishlist; trackBy: trackByGameId"

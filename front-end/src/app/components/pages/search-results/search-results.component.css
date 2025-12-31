@@ -79,7 +79,6 @@ h2 {
   filter: invert(1);
 }
 
-/* Responsive */
 @media (max-width: 1600px) {
   .games-grid {
     grid-template-columns: repeat(6, 1fr);

@@ -1,19 +1,16 @@
 <div class="home-container" [class.sidebar-hidden]="!isSidebarVisible && !isMobile">
 
-  <!-- Hamburger con SVG -->
   <button class="hamburger" 
           (click)="toggleSidebar()">
     <img src="assets/images/icons/menu.svg" alt="Menu">
   </button>
 
-  <!-- Overlay solo móvil -->
   <div 
     class="sidebar-overlay"
     *ngIf="isMobileSidebarOpen && isMobile"
     (click)="toggleSidebar()">
   </div>
 
-  <!-- Sidebar -->
   <aside class="home-sidebar" 
         [class.hidden]="!isSidebarVisible && !isMobile"
         [class.open]="isMobileSidebarOpen && isMobile">
@@ -24,7 +21,6 @@
     </ul>
   </aside>
 
-  <!-- Contenido -->
   <section class="home-content" 
     [class.full-width]="(!isSidebarVisible && !isMobile) || (isMobile && !isMobileSidebarOpen)">
     <ng-container [ngSwitch]="selectedSection">
